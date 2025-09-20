@@ -1,0 +1,64 @@
+/* Left panel background with overlay */
+.left-panel {
+  background: url('https://images.unsplash.com/photo-1666886573206-e31fe221db88?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxtZWRpY2FsJTIwc3RldGhvc2NvcGUlMjBoZWFsdGhjYXJlJTIwcHJvZmVzc2lvbmFsfGVufDF8fHx8MTc1ODE4MDYwNnww&ixlib=rb-4.1.0&q=80&w=1080') center/cover no-repeat;
+  position: relative;
+  min-height: 100vh;
+}
+.left-panel::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(15, 58, 123, 0.8);
+}
+.left-panel > * {
+  position: relative;
+  z-index: 1;
+}
+
+/* Reduce padding and text size on small screens */
+@media (max-width: 767.98px) {
+  .left-panel {
+    min-height: 40vh;           /* smaller hero section */
+    padding: 2rem 1.5rem !important;
+    text-align: center;
+  }
+  .left-panel h1 {
+    font-size: 1.5rem;
+  }
+  .info-box {
+    padding: 0.5rem 0.75rem;
+    font-size: 0.9rem;
+  }
+}
+
+/* Adjust card width on small devices */
+@media (max-width: 575.98px) {
+  .card {
+    max-width: 100% !important;
+  }
+}
+
+/* Feature boxes */
+.info-box {
+  background: rgba(255,255,255,0.15);
+  border-radius: 10px;
+  padding: 0.75rem 1rem;
+  backdrop-filter: blur(6px);
+  font-weight: 500;
+}
+.info-box p {
+  font-size: 0.8rem;
+  margin: 0;
+  opacity: 0.8;
+}
+
+/* Toggle tabs */
+.toggle-tabs .nav-link {
+  border-radius: 20px;
+  color: #6c757d;
+  font-weight: 500;
+}
+.toggle-tabs .nav-link.active {
+  background-color: #0d6efd;
+  color: #fff;
+}

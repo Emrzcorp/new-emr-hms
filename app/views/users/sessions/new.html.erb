@@ -1,0 +1,81 @@
+<div class="container-fluid p-0">
+  <div class="row g-0">
+  <!-- Left panel -->
+    <div class="col-12 col-lg-6 d-none d-lg-flex flex-column justify-content-center text-white left-panel p-5">
+      <div class="mb-5">
+        <h3 class="fw-bold mb-1">
+          <%= link_to root_path, class: 'text-decoration-none text-white' do %>
+            <i class="fa-solid fa-stethoscope me-2"></i> EmrHms
+          <% end %>
+        </h3>
+        <p class="opacity-75">System</p>
+      </div>
+
+      <h1 class="fw-bold mb-3 display-6">Advanced Healthcare Management Platform</h1>
+      <p class="mb-5 lead opacity-75">
+        Streamline patient care with our comprehensive EMR solution. Secure, efficient, and
+        designed for modern healthcare professionals.
+      </p>
+
+      <div class="row g-3">
+        <div class="col-md-6">
+          <div class="info-box">
+            <i class="fa-solid fa-heart-pulse me-2"></i> Patient Care
+            <p>Comprehensive records</p>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="info-box">
+            <i class="fa-solid fa-shield-halved me-2"></i> HIPAA Compliant
+            <p>Secure &amp; protected</p>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="info-box">
+            <i class="fa-solid fa-users me-2"></i> Team Collaboration
+            <p>Seamless workflow</p>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="info-box">
+            <i class="fa-solid fa-chart-line me-2"></i> Real-time Analytics
+            <p>Data-driven insights</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Right panel -->
+    <div class="col-12 col-lg-6 d-flex flex-column justify-content-center align-items-center p-4">
+      <ul class="nav nav-pills mb-4 toggle-tabs" id="authTabs" role="tablist">
+        <li class="nav-item">
+          <a class="nav-link active" id="signin-tab" data-bs-toggle="tab" href="#signin" role="tab">Sign In</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" id="signup-tab" data-bs-toggle="tab" href="#signup" role="tab">Sign Up</a>
+        </li>
+      </ul>
+
+      <div class="card shadow-sm p-4 rounded-4" style="max-width: 360px; width: 100%;">
+        <div class="tab-content" id="authTabsContent">
+          <div class="tab-pane fade show active" id="signin" role="tabpanel">
+            <h4 class="fw-bold text-center mb-2">Welcome Back</h4>
+            <p class="text-center text-muted small">Sign in to access your medical records system</p>
+            <%= render 'users/sessions/signin_form' %>
+          </div>
+
+          <div class="tab-pane fade" id="signup" role="tabpanel">
+            <h4 class="fw-bold text-center mb-2">Create Account</h4>
+            <p class="text-center text-muted small">Start using our EMR platform today</p>
+            <%= render 'users/registrations/signup_form' %>
+          </div>
+        </div>
+      </div>
+
+      <p class="small text-muted mt-4">
+        Trusted by healthcare professionals worldwide<br>
+        © 2024 EmrHms. All rights reserved.
+      </p>
+    </div>
+  </div>
+</div>
