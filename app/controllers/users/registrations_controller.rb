@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class Users::RegistrationsController < Devise::RegistrationsController
-  # before_action :configure_sign_up_params, only: [:create]
+  before_action :configure_sign_up_params, only: [:create]
   # before_action :configure_account_update_params, only: [:update]
 
   # GET /resource/sign_up
@@ -10,9 +10,34 @@ class Users::RegistrationsController < Devise::RegistrationsController
   # end
 
   # POST /resource
-  # def create
-  #   super
-  # end
+  def create
+    super do |user|
+      if user.persisted?
+        case user.role
+        when "doctor"
+          user.build_doctor(
+            first_name: params[:doctor][:first_name],
+            last_name: params[:doctor][:last_name],
+            medical_specialty: params[:doctor][:medical_specialty],
+            license_number: params[:doctor][:license_number],
+            email_address: params[:doctor][:email_address],
+            phone_number: params[:doctor][:phone_number],
+            professional_bio: params[:doctor][:professional_bio],
+            profile_picture: params[:doctor][:profile_picture]
+          )
+          user.doctor.save
+        when "patient"
+          user.build_patient(
+            first_name: params[:patient][:first_name],
+            last_name: params[:patient][:last_name],
+            phone_number: params[:patient][:phone_number],
+            date_of_birth: params[:patient][:date_of_birth]
+          )
+          user.patient.save
+        end
+      end
+    end
+  end
 
   # GET /resource/edit
   # def edit
@@ -38,12 +63,12 @@ class Users::RegistrationsController < Devise::RegistrationsController
   #   super
   # end
 
-  # protected
+  protected
 
   # If you have extra params to permit, append them to the sanitizer.
-  # def configure_sign_up_params
-  #   devise_parameter_sanitizer.permit(:sign_up, keys: [:attribute])
-  # end
+  def configure_sign_up_params
+    devise_parameter_sanitizer.permit(:sign_up, keys: [:role])
+  end
 
   # If you have extra params to permit, append them to the sanitizer.
   # def configure_account_update_params

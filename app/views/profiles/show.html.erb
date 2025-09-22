@@ -1,0 +1,58 @@
+<div class="mt-3">
+  <h3 class="d-flex align-items-center">
+    <i class="bi bi-gear me-2 fs-4"></i>
+    Setting
+  </h3>
+  <p class="text-muted mb-4">
+    Manage your account, preferences, and system settings
+  </p>
+
+  <div class="row">
+    <div class="col-12 col-lg-12">
+      <div class="card shadow-sm rounded-3 p-3">
+        <div class="row align-items-center">
+          <div class="col-10">
+            <h5 class="mb-0 d-flex align-items-center">
+              <i class="bi bi-person me-2 fs-4"></i> Profile Information of <%= @user.full_name %> | <%= @user.role.upcase %>
+            </h5>
+            <p class="text-muted mb-0">
+              Update your personal and professional information
+            </p>
+          </div>
+          <div class="col-2 text-end">
+            <%= link_to edit_profile_path, class: "btn-secondary" do %>
+              <i class="bi bi-pencil-square fs-5"></i>
+            <% end %>
+          </div>
+        </div>
+
+        <hr>
+
+        <div class="card-body p-2">
+          <!-- User Info -->
+          <h6 class="text-muted">Account Info</h6>
+          <p class="mb-1"><strong>Email:</strong> <%= @user.email %></p>
+
+          <% if @user.role == "doctor" && @user.doctor.present? %>
+            <p class="mb-1"><strong>Name:</strong> <%= @user.doctor.first_name %> <%= @user.doctor.last_name %></p>
+            <p class="mb-1"><strong>Specialty:</strong> <%= @user.doctor.medical_specialty %></p>
+            <p class="mb-1"><strong>Phone:</strong> <%= @user.doctor.phone_number %></p>
+            <p class="mb-1"><strong>License Number:</strong> <%= @user.doctor.license_number || "N/A" %></p>
+            <p class="mb-1"><strong>NPI Number:</strong> <%= @user.doctor.npi_number || "N/A" %></p>
+            <p class="mb-1"><strong>Bio:</strong> <%= @user.doctor.professional_bio || "N/A" %></p>
+
+          <% elsif @user.role == "patient" && @user.patient.present? %>
+            <p class="mb-1"><strong>Name:</strong> <%= @user.patient.first_name %> <%= @user.patient.last_name %></p>
+            <p class="mb-1"><strong>Date of Birth:</strong> <%= @user.patient.dob %></p>
+          <% end %>
+
+          <!-- Admin Info -->
+          <% if @user.role == "admin" %>
+            <h6 class="text-muted mt-3">Admin Details</h6>
+            <p>This is an administrator account. Admin-specific settings go here.</p>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -4,11 +4,19 @@
     <%= f.email_field :email, autofocus: true, autocomplete: "email",
           class: 'form-control mt-1', placeholder: "doctor@medicalpractice.com", required: true %>
   </div>
+
   <div class="mb-3">
     <%= f.label :password, "Password" %>
     <%= f.password_field :password, autocomplete: "current-password",
           class: "form-control mt-1", placeholder: "Enter your password", required: true %>
   </div>
+
+  <!-- Role -->
+  <div class="field mt-2 mb-2">
+    <%= f.label :role, "Role" %><br />
+    <%= f.select :role, options_for_select([["Doctor", "doctor"], ["Patient", "patient"], ["Admin", "admin"]]), {prompt: 'Select Role'}, { class: "form-select" } %>
+  </div>
+
   <% if devise_mapping.rememberable? %>
     <div class="d-flex justify-content-between align-items-center mb-3">
       <div class="form-check">
@@ -18,5 +26,6 @@
       <%= link_to "Forgot password?", new_password_path(resource_name), class: 'small text-decoration-none' %>
     </div>
   <% end %>
+
   <%= f.submit "Sign in", class: "btn btn-primary w-100 py-2 rounded-3" %>
 <% end %>
