@@ -1,12 +1,36 @@
-/* .app-layout {
-    min-height: 100vh;
-  }
+.app-layout {
+  min-height: 100vh;
+}
 
-  .sidebar {
-    background: #f8f9fa; 
-    border-right: 1px solid #ddd;
-  }
+/* Sidebar for desktop */
+.sidebar {
+  width: 280px;
+  background: #fff;
+  border-right: 1px solid #ddd;
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 1030;
+}
 
+/* Push content on desktop */
+@media (min-width: 768px) {
   .main-content {
-    background: #fff;
-  }*/
+    margin-left: 280px;
+  }
+}
+
+.main-content {
+  background: #fff;
+  flex-grow: 1;
+}
+
+/* Auth pages (sign in, sign up, password reset) full screen */
+.auth-layout {
+  /*min-height: 100vh;*/
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  /*background: #f9f9f9;*/
+}

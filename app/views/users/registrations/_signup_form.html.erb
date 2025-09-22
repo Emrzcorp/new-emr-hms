@@ -1,18 +1,98 @@
 <%= form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f| %>
+  <%= render "users/shared/error_messages", resource: resource %>
   <div class="mb-3">
     <%= f.label :email, "Email Address" %>
     <%= f.email_field :email, autofocus: true, autocomplete: "email",
           class: 'form-control mt-1', placeholder: "doctor@medicalpractice.com", required: true %>
   </div>
+  
   <div class="mb-3">
     <%= f.label :password, "Password" %>
     <%= f.password_field :password, autocomplete: "new-password",
           class: "form-control mt-1", placeholder: "Create a password", required: true %>
   </div>
+  
   <div class="mb-3">
     <%= f.label :password_confirmation, "Confirm Password" %>
     <%= f.password_field :password_confirmation, autocomplete: "new-password",
           class: "form-control mt-1", placeholder: "Confirm password", required: true %>
   </div>
-  <%= f.submit "Sign up", class: "btn btn-primary w-100 py-2 rounded-3" %>
+
+  <div class="mb-3">
+    <%= f.label :role, "I am a:" %>
+    <%= f.select :role, User.roles.keys.map { |r| [r.titleize, r] },
+          {prompt: true}, { class: 'form-select  mt-1', id: 'user_role_select', required: true } %>
+  </div>
+
+  <!-- Doctor Fields -->
+  <div id="doctor_fields" style="display: none;">
+    <%= fields_for :doctor do |df| %>
+      <h3 class="mt-3">Doctor Information</h3>
+
+      <div class="field mb-3">
+        <%= label_tag 'doctor[first_name]', 'First Name' %>
+        <%= text_field_tag 'doctor[first_name]', nil, class: 'form-control  mt-1', placeholder: "Doctor First Name" %>
+      </div>
+
+      <div class="field mb-3">
+        <%= label_tag 'doctor[last_name]', 'Last Name' %>
+        <%= text_field_tag 'doctor[last_name]', nil, class: 'form-control  mt-1', placeholder: "Doctor First Name" %>
+      </div>
+
+      <div class="field mb-3">
+        <%= label_tag 'doctor[license_number]', 'License Number' %>
+        <%= text_field_tag 'doctor[license_number]', nil, class: 'form-control  mt-1', placeholder: "Doctor License Number" %>
+      </div>
+    <% end %>
+  </div>
+
+  <!-- Patient Fields -->
+  <div id="patient_fields" style="display: none;">
+    <%= fields_for :patient do |pf| %>
+      <h3>Patient Information</h3>
+
+      <div class="field mb-3">
+        <%= label_tag 'patient[first_name]', 'First Name' %>
+        <%= text_field_tag 'patient[first_name]', nil, class: 'form-control  mt-1', placeholder: "Patient First Name" %>
+      </div>
+
+      <div class="field mb-3">
+        <%= label_tag 'patient[last_name]', 'Last Name' %>
+        <%= text_field_tag 'patient[last_name]', nil, class: 'form-control  mt-1', placeholder: "Patient Last Name" %>
+      </div>
+
+      <div class="field mb-3">
+        <%= label_tag 'patient[phone_number]', 'Phone Number' %>
+        <%= telephone_field_tag 'patient[phone_number]', nil, class: 'form-control  mt-1', placeholder: "Patient Phone Number" %>
+      </div>
+
+      <div class="field mb-3">
+        <%= label_tag 'patient[date_of_birth]', 'Date of Birth' %>
+        <%= date_field_tag 'patient[date_of_birth]', nil, class: 'form-control  mt-1' %>
+      </div>
+    <% end %>
+  </div>
+
+  <div class="mt-3">
+    <%= f.submit "Sign up", class: "btn btn-primary w-100 py-2 rounded-3" %>
+  </div>
 <% end %>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function() {
+    const roleSelect = document.getElementById("user_role_select");
+    const doctorFields = document.getElementById("doctor_fields");
+    const patientFields = document.getElementById("patient_fields");
+
+    function toggleRoleFields() {
+      const role = roleSelect.value;
+      doctorFields.style.display = role === "doctor" ? "block" : "none";
+      patientFields.style.display = role === "patient" ? "block" : "none";
+    }
+
+    roleSelect.addEventListener("change", toggleRoleFields);
+    toggleRoleFields(); // initialize on page load
+  });
+</script>
+
+
