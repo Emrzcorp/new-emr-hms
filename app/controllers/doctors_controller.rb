@@ -11,7 +11,7 @@ class DoctorsController < ApplicationController
   end
 
   def create
-    @doctor = Doctor.create(doctor_params)
+    @doctor = current_user.build_doctor(doctor_params)  # ✅ ensures link with user
     if @doctor.save
       redirect_to doctors_path, notice: "Doctor record created successfully!"
     else

@@ -1,2 +1,93 @@
-<h1>Patients#show</h1>
-<p>Find me in app/views/patients/show.html.erb</p>
+<div class="py-4">
+ 
+ 	<!-- Header -->
+	<div class="row align-items-center mb-3">
+	  <!-- Back button -->
+	  <div class="col-12 col-md-2 col-lg-1 mb-2 mb-md-0">
+	    <%= link_to "← Back", patients_path, class: "btn btn-light w-100 w-md-auto"  %>
+	  </div>
+
+	  <!-- Title + subtitle -->
+	  <div class="col-12 col-md-7 col-lg-9 text-center text-md-start mb-2 mb-md-0">
+	    <h4 class="fw-bold mb-1">Patient Profile</h4>
+	    <p class="text-muted small mb-0">Comprehensive patient information and medical history</p>
+	  </div>
+
+	  <!-- Edit profile button -->
+	  <div class="col-12 col-md-3 col-lg-2 text-md-end">
+	    <button class="btn btn-outline-primary btn-sm w-100 w-md-auto">
+	      <i class="bi bi-pencil me-2"></i> Edit Profile
+	    </button>
+	  </div>
+	</div>
+
+
+  <!-- Profile Card -->
+  <div class="profile-card">
+    <div class="d-flex justify-content-between align-items-start profile-header mb-3">
+      <!-- Left Side -->
+      <div class="d-flex align-items-center gap-3">
+        <div class="avatar">
+        	<%= @patient.first_name.first.upcase %><%= @patient.last_name.first.upcase %>
+        </div>
+        <div>
+          <h5 class="mb-1 fw-bold"><%= @patient.full_name %></h5>
+          <p class="mb-0 text-muted small"><%= @patient.age %> years old • <%= @patient.gender %> • 
+	          <%# Blood Type: O+ %>
+	        </p>
+        </div>
+      </div>
+      <!-- Right Side -->
+      <div class="profile-header-right">
+        <span class="badge badge-active me-1 bg-success">Active</span>
+        <span class="badge badge-priority me-1 bg-secondary">Normal Priority</span>
+      </div>
+    </div>
+
+    <!-- Contact Info -->
+    <div class="row g-3 mb-3">
+      <div class="col-12 col-md-4">
+        <div class="info-box info-phone">
+          <small class="d-block text-muted">Phone</small>
+          <span class="fw-semibold"><%= @patient.phone_number %></span>
+        </div>
+      </div>
+      <div class="col-12 col-md-4">
+        <div class="info-box info-email">
+          <small class="d-block text-muted">Email</small>
+          <span class="fw-semibold text-success"><%= @patient.email_address %></span>
+        </div>
+      </div>
+      <div class="col-12 col-md-4">
+        <div class="info-box info-insurance">
+          <small class="d-block text-muted">Insurance</small>
+          <span class="fw-semibold">NA</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Address -->
+    <div class="info-box border bg-light">
+      <small class="d-block text-muted">Address</small>
+      <span class="fw-semibold"><%= @patient.complete_address %></span>
+    </div>
+  </div>
+	
+	<!-- Medical Records -->
+	<div class="row align-items-center mb-3 mt-3">
+	  <div class="col-12 col-md-4 col-lg-3 mb-2 mb-md-0">
+	  	<button class="btn btn-outline-secondary w-100">Medical History</button>
+	  </div>
+	  <div class="col-12 col-md-4 col-lg-3 mb-2 mb-md-0">
+	  	<button class="btn btn-outline-secondary w-100">Medical History</button>
+	  </div>
+	  <div class="col-12 col-md-4 col-lg-3 mb-2 mb-md-0">
+	  	<button class="btn btn-outline-secondary w-100">Medical History</button>
+	  </div>
+	  <div class="col-12 col-md-4 col-lg-3 mb-2 mb-md-0">
+	  	<button class="btn btn-outline-secondary w-100">Medical History</button>
+	  </div>
+	</div>
+</div>
+
+

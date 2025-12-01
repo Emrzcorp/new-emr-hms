@@ -40,7 +40,7 @@ class ProfilesController < ApplicationController
     when "patient"
       params.require(:user).permit(
         :email,
-        patient_attributes: [:id, :first_name, :last_name, :dob, :profile_picture]
+        patient_attributes: [:id, :first_name, :last_name, :date_of_birth, :profile_picture]
       )
     else
       params.require(:user).permit(:email)

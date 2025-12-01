@@ -1,0 +1,179 @@
+<div class="my-5 mt-3">
+  <!-- Header -->
+  <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center mb-4">
+    <div class="mb-3 mb-md-0">
+      <h3 class="mb-0">
+        <i class="bi bi-calendar text-primary"></i> Appointments
+      </h3>
+      <small class="text-muted">Manage patient appointments and scheduling</small>
+    </div>
+
+    <%= link_to new_appointment_path, class: 'btn btn-primary btn-sm rounded-3', data: { bs_toggle: 'modal', bs_target: "#appointmentModal" }  do %>
+      <i class="fa-solid fa-plus me-2"></i> Schedule Appointment
+    <% end %>
+
+    <!-- Modal -->
+    <div class="modal fade" id="appointmentModal" tabindex="-1" aria-labelledby="appointmentModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header">
+            <div>
+              <h1 class="modal-title fs-5 mb-0" id="appointmentModalLabel">
+                <i class="bi bi-calendar me-1"></i> Schedule Appointment
+              </h1>
+              <p class="text-muted fs-6 mb-0">Schedule a new appointment for a patient.</p>
+            </div>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <%= render 'appointments/form', appointment: @appointment %>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Summary Cards -->
+  <div class="row g-3 mb-4">
+    <div class="col-6 col-md-3">
+      <div class="card-summary bg-light text-center p-3 rounded-3 shadow-sm" style="min-height: 110px;">
+        <span><i class="fa-solid fa-calendar fs-6 me-2"></i> <b>Today</b></span>
+        <h5 class="mt-2"><%= @today_count %></h5>
+      </div>
+    </div>
+
+    <div class="col-6 col-md-3">
+      <div class="card-summary text-center p-3 rounded-3 shadow-sm" style="background-color: #e6f9e8; min-height: 110px;">
+        <span><i class="fa-solid fa-clock fs-6 me-2"></i> <b>Upcoming</b></span>
+        <h5 class="mt-2"><%= @upcoming_count %></h5>
+      </div>
+    </div>
+
+    <div class="col-6 col-md-3">
+      <div class="card-summary text-center p-3 rounded-3 shadow-sm" style="background-color: #fff4e5; min-height: 110px;">
+        <span><i class="fa-solid fa-circle-check fs-6 me-2"></i> <b>Completed Today</b></span>
+        <h5 class="mt-2">0</h5>
+      </div>
+    </div>
+
+    <div class="col-6 col-md-3">
+      <div class="card-summary text-center p-3 rounded-3 shadow-sm" style="background-color: #f4e8ff; min-height: 110px;">
+        <span><i class="fa-solid fa-circle-exclamation fs-6 me-2"></i> <b>Pending</b></span>
+        <h5 class="mt-2"><%= @pending_count %></h5>
+      </div>
+    </div>
+  </div>
+
+  <!-- Filters -->
+  <div class="card p-3 mb-4">
+    <h5>Search Appointments</h5>
+    <p class="text-muted">Find and filter appointments by patient, date, or status</p>
+
+    <div class="row g-2">
+      <div class="col-12 col-md-6">
+        <input type="text" class="form-control" placeholder="Search by patient's name, reason, or type...">
+      </div>
+      <div class="col-6 col-md-2">
+        <select class="form-select">
+          <option>All Status</option>
+          <option>Scheduled</option>
+          <option>Confirmed</option>
+          <option>Completed</option>
+          <option>Cancelled</option>
+        </select>
+      </div>
+      <div class="col-6 col-md-2">
+        <select class="form-select">
+          <option>All Types</option>
+          <option>Consultation</option>
+          <option>Follow-up</option>
+          <option>Annual Physical</option>
+          <option>Emergency</option>
+        </select>
+      </div>
+      <div class="col-12 col-md-2">
+        <input type="date" id="appointment_date" name="appointment_date" class="form-control">
+      </div>
+    </div>
+  </div>
+
+  <!-- Appointment Cards -->
+  <% if @appointments.present? %>
+    <div class="row g-3">
+      <% @appointments.each do |appt| %>
+        <div class="col-12 col-md-6 col-lg-12">
+          <div class="appointment-card border rounded-3 p-3 shadow-sm">
+            <!-- Header -->
+            <div class="d-flex justify-content-between align-items-start flex-wrap mb-2">
+              <div class="d-flex align-items-center mb-2">
+                <div class="rounded-circle bg-secondary text-white fw-bold d-flex align-items-center justify-content-center me-3"
+                     style="width: 45px; height: 45px; font-size: 1.1rem;">
+                  <%= appt.patient.first_name.first.upcase %><%= appt.patient.last_name.first.upcase %>
+                </div>
+                <div>
+                  <h6 class="mb-0"><%= appt.patient.full_name %></h6>
+                  <small class="text-muted">
+                    <%= appt.date.strftime("%b %d, %Y") if appt.date %> at <%= appt.time.strftime("%I:%M %p") if appt.time %>
+                  </small>
+                </div>
+              </div>
+
+              <div class="text-end">
+                <span class="badge bg-light text-dark"><%= appt.appointment_type %></span>
+                <span class="badge bg-success text-white"><%= appt.priority %></span>
+              </div>
+            </div>
+
+            <!-- Details -->
+            <div class="row mb-3">
+              <div class="col-12 col-sm-6">
+                <div class="section-title fw-bold mb-1">Appointment Details</div>
+                <p class="mb-1"><i class="fa-solid fa-stethoscope me-2"></i><%= appt.appointment_type %></p>
+                <p class="mb-1"><i class="bi bi-exclamation-circle me-2"></i><%= appt.reason_for_visit %></p>
+                <p class="mb-1"><i class="bi bi-stopwatch me-2"></i><%= appt.duration %> Minutes</p>
+              </div>
+              <div class="col-12 col-sm-6">
+                <div class="section-title fw-bold mb-1">Patient Info</div>
+                <p class="mb-1"><i class="bi bi-person me-2"></i>ID: <%= appt.patient.id %></p>
+                <p class="mb-1"><i class="bi bi-calendar me-2"></i>Scheduled: <%= appt.date %></p>
+              </div>
+            </div>
+
+            <!-- Notes -->
+            <% if appt.additional_notes.present? %>
+              <div class="section-title fw-bold mb-1">Notes</div>
+              <div class="notes-box bg-light p-2 rounded-2 small mb-3">
+                <%= appt.additional_notes %>
+              </div>
+            <% end %>
+
+            <!-- Footer -->
+            <div class="d-flex justify-content-between align-items-center mt-auto pt-2 border-top">
+              <div class="small">
+                Status: <span class="text-primary fw-semibold"><%= appt.status.capitalize %></span> • 
+                Priority: <span class="text-secondary fw-semibold"><%= appt.priority %></span>
+              </div>
+              <div class="d-flex gap-2">
+                <%= link_to edit_appointment_path(appt), class: "btn btn-outline-primary btn-sm" do %>
+                  <i class="bi bi-pencil"></i>
+                <% end %>
+                <%= link_to '#', class: "btn btn-outline-danger btn-sm" do %>
+                  <i class="bi bi-trash"></i>
+                <% end %>
+              </div>
+            </div>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  <% else %>
+    <div class="card p-4 text-center">
+      <i class="bi bi-calendar fs-2"></i>
+      <h5 class="mt-2">No appointments found</h5>
+      <p class="text-muted mb-3">No appointments have been scheduled yet.</p>
+      <%= link_to new_appointment_path, class: 'btn btn-dark btn-sm rounded-3', data: { bs_toggle: 'modal', bs_target: "#appointmentModal" }  do %>
+        <i class="fa-solid fa-plus me-2"></i> Schedule Appointment
+      <% end %>
+    </div>
+  <% end %>
+</div>

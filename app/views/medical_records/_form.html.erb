@@ -1,0 +1,75 @@
+<%= form_with model: @medical_record, local: true do |f| %>
+  <h5>Visit Information</h5>
+  <div class="row mb-3">
+    <div class="col-md-6">
+      <%= f.label :patient_id, "Patient *" %>
+      <%= f.collection_select :patient_id, @patients, :id, :full_name, { prompt: "Select patient" }, class: "form-select" %>
+    </div>
+    <div class="col-md-6">
+      <%= f.label :visit_date, "Visit Date *" %>
+      <%= f.date_field :visit_date, class: "form-control" %>
+    </div>
+  </div>
+
+  <div class="row mb-3">
+    <div class="col-md-6">
+      <%= f.label :visit_type, "Visit Type *" %>
+      <%= f.select :visit_type, MedicalRecord::VISIT_TYPES, { prompt: "Select visit type" }, class: "form-select" %>
+    </div>
+    <div class="col-md-6">
+      <%= f.label :doctor_id, "Attending Physician" %>
+      <%= f.collection_select :doctor_id, @doctors, :id, :full_name, { prompt: "Select doctor" }, class: "form-select" %>
+    </div>
+  </div>
+
+  <h5>Clinical Information</h5>
+  <div class="mb-3">
+    <%= f.label :diagnosis, "Diagnosis *" %>
+    <%= f.text_field :diagnosis, class: "form-control", placeholder: "Primary diagnosis" %>
+  </div>
+
+  <div class="mb-3">
+    <%= f.label :symptoms %>
+    <%= f.text_field :symptoms, class: "form-control", placeholder: "Comma separated symptoms (e.g., Headache, Fatigue)" %>
+  </div>
+
+  <div class="mb-3">
+    <%= f.label :treatment_provided, "Treatment Provided" %>
+    <%= f.text_field :treatment_provided, class: "form-control", placeholder: "Treatment given during visit" %>
+  </div>
+
+  <h5>Vital Signs</h5>
+  <div class="row mb-3">
+    <div class="col-md-3">
+      <%= f.label :blood_pressure, "Blood Pressure" %>
+      <%= f.text_field :blood_pressure, class: "form-control", placeholder: "120/80" %>
+    </div>
+    <div class="col-md-3">
+      <%= f.label :heart_rate, "Heart Rate" %>
+      <%= f.text_field :heart_rate, class: "form-control", placeholder: "72 bpm" %>
+    </div>
+    <div class="col-md-3">
+      <%= f.label :temperature, "Temperature" %>
+      <%= f.text_field :temperature, class: "form-control", placeholder: "98.6°F" %>
+    </div>
+    <div class="col-md-3">
+      <%= f.label :weight, "Weight" %>
+      <%= f.text_field :weight, class: "form-control", placeholder: "165 lbs" %>
+    </div>
+  </div>
+
+  <div class="mb-3">
+    <%= f.label :clinical_notes, "Clinical Notes & Follow-up" %>
+    <%= f.text_area :clinical_notes, class: "form-control", rows: 3 %>
+  </div>
+
+  <div class="mb-3">
+    <%= f.label :follow_up_date, "Follow-up Date" %>
+    <%= f.date_field :follow_up_date, class: "form-control" %>
+  </div>
+
+  <div class="mt-3">
+    <%= f.submit "Save Record", class: "btn btn-primary" %>
+    <%= link_to "Cancel", medical_records_path, class: "btn btn-secondary" %>
+  </div>
+<% end %>

@@ -5,8 +5,8 @@ class User < ApplicationRecord
          :recoverable, :rememberable, :validatable, :trackable
 
   enum role: { patient: "patient", doctor: "doctor", admin: "admin" }
-
-  has_one :doctor
+  
+  has_one :doctor, dependent: :destroy
   has_one :patient
   # has_many :appointments, foreign_key: :patient_id
 
@@ -21,8 +21,8 @@ class User < ApplicationRecord
       doctor&.full_name
     when 'patient'
       patient&.full_name
-    else
-      email
+    # else
+    #   email
     end
   end
 end

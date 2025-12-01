@@ -7,37 +7,55 @@
   <ul class="nav nav-pills flex-column mb-auto">
     <%# <li class="nav-item">
       <a href="/" class="nav-link link-dark" aria-current="page">
-        <i class="bi bi-house me-2 fs-5"></i>
+        <i class="bi bi-house me-2 fs-6"></i>
         Home
       </a>
     </li> %>
     <li>
       <a href="<%= dashboard_index_path %>" class="nav-link link-dark">
-        <i class="bi bi-speedometer2 me-2 fs-5"></i>
+        <i class="bi bi-speedometer2 me-2 fs-6"></i>
         Dashboard
       </a>
     </li>
     <li>
+      <%= link_to appointments_path, class: "nav-link link-dark" do %>
+        <i class="bi bi-calendar me-2 fs-6"></i>
+        Appointments
+        <% end %>
+    </li>
+    <li>
       <a href="<%= patients_path %>" class="nav-link link-dark">
-        <i class="bi bi-people me-2 fs-5"></i>
+        <i class="bi bi-people me-2 fs-6"></i>
         Patients
       </a>
     </li>
     <li>
-      <a href="#" class="nav-link link-dark">
-        <i class="bi bi-grid me-2 fs-5"></i>
-        Products
+      <a href="<%= medical_records_path %>" class="nav-link link-dark">
+        <i class="bi bi-file-earmark-text me-2 fs-6"></i>
+        Medical History
       </a>
     </li>
     <li>
       <a href="#" class="nav-link link-dark">
-        <i class="bi bi-people me-2 fs-5"></i>
-        Customers
+        <i class="fa-solid fa-stethoscope me-2 fs-6"></i>
+        Diagnoses
+      </a>
+    </li>
+    <li>
+      <a href="#" class="nav-link link-dark">
+        <i class="bi bi-activity me-2 fs-6"></i>
+        Treatments
+      </a>
+    </li>
+    <li>
+      <a href="#" class="nav-link link-dark">
+        <i class="fa-solid fa-vial me-2 fs-6"></i>
+        Test Results
       </a>
     </li>
     <li>
       <%= link_to profile_path, class: 'nav-link link-dark' do %>
-        <i class="bi bi-gear me-2 fs-5"></i>
+        <i class="bi bi-gear me-2 fs-6"></i>
         Setting
       <% end %>
     </li>
@@ -46,7 +64,7 @@
   <ul class="nav nav-pills flex-column mb-auto">
     <li class="nav-item">
       <%= link_to destroy_user_session_path, class:"btn btn-outline-danger w-100" do %>
-        <i class="bi bi-box-arrow-right me-2 fs-5"></i>
+        <i class="bi bi-box-arrow-right me-2 fs-6"></i>
         Sign Out
       <% end %>
     </li>

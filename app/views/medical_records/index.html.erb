@@ -1,0 +1,159 @@
+<div class="container mt-3">
+  <!-- Header -->
+  <div class="row align-items-center mb-4">
+    <div class="col-md-8">
+      <h3 class="mb-0"><i class="bi bi-file-earmark-text text-primary"></i> Medical History</h3>
+      <small class="text-muted">Comprehensive medical records and patient history</small>
+    </div>
+    <div class="col-md-4 text-md-end mt-3 mt-md-0">
+      <%= link_to 'javascript:void(0)', class: "btn btn-outline-secondary btn-sm rounded-3 me-2 mb-2" do %>
+        <i class="bi bi-download"></i> Export Records
+      <% end %>
+
+      <%= link_to new_medical_record_path, class: 'btn btn-primary btn-sm rounded-3 mb-2', data: { bs_toggle: 'modal', bs_target: "#appointmentModal" }  do %>
+        <i class="fa-solid fa-plus me-2"></i> New Record
+      <% end %>
+    </div>
+  </div>
+
+  <!-- Modal -->
+  <div class="modal fade" id="appointmentModal" tabindex="-1" aria-labelledby="appointmentModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-scrollable">
+      <div class="modal-content">
+        <div class="modal-header">
+          <div>
+            <h5 class="modal-title" id="appointmentModalLabel"><i class="bi bi-calendar me-2"></i> Add Medical Record</h5>
+            <p class="text-muted mb-0">Create a new medical record for a patient visit.</p>
+          </div>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <%= render 'medical_records/form', medical_record: @medical_record %>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Filters Section -->
+  <div class="card p-4 mb-4 shadow-sm border rounded-3">
+    <h5 class="fw-semibold mb-2">Search Medical Records</h5>
+    <p class="text-muted mb-3">Find specific medical records using filters and search</p>
+
+    <div class="row g-2">
+      <div class="col-12 col-md-8">
+        <input type="text" class="form-control" placeholder="Search by patient name, diagnosis, or doctor...">
+      </div>
+      <div class="col-6 col-md-2">
+        <select class="form-select">
+          <option>All Types</option>
+          <option>Annual Physical</option>
+          <option>Follow-up</option>
+          <option>Consultation</option>
+          <option>Emergency</option>
+          <option>Preventive Care</option>
+          <option>Post-Surgery</option>
+        </select>
+      </div>
+      <div class="col-6 col-md-2">
+        <input type="date" class="form-control">
+      </div>
+    </div>
+  </div>
+
+  <!-- Summary Cards -->
+  <div class="row g-3 mb-4">
+    <div class="col-6 col-md-3">
+      <div class="card-summary bg-light p-3 text-center rounded shadow-sm" style="min-height: 110px;" >
+        <span class="d-block mb-1"><i class="bi-file-earmark-text fs-5 me-1"></i><b>Total Records</b></span>
+        <h5 class="mb-0">0</h5>
+      </div>
+    </div>
+
+    <div class="col-6 col-md-3">
+      <div class="card-summary p-3 text-center rounded shadow-sm" style="background-color: #e6f9e8; min-height: 110px;">
+        <span class="d-block mb-1"><i class="bi bi-activity fs-5 me-1"></i><b>This Week</b></span>
+        <h5 class="mb-0">0</h5>
+      </div>
+    </div>
+
+    <div class="col-6 col-md-3">
+      <div class="card-summary p-3 text-center rounded shadow-sm" style="background-color: #fff4e5; min-height: 110px;">
+        <span class="d-block mb-1"><i class="bi bi-heart fs-5 me-1"></i><b>Follow-ups Due</b></span>
+        <h5 class="mb-0">0</h5>
+      </div>
+    </div>
+
+    <div class="col-6 col-md-3">
+      <div class="card-summary p-3 text-center rounded shadow-sm" style="background-color: #f4e8ff; min-height: 110px;">
+        <span class="d-block mb-1"><i class="bi bi-clock fs-5 me-1"></i><b>Active Cases</b></span>
+        <h5 class="mb-0">0</h5>
+      </div>
+    </div>
+  </div>
+
+  <!-- Medical Records -->
+  <% if @medical_records.present? %>
+    <div class="row g-4">
+      <% @medical_records.each do |record| %>
+        <div class="col-12 col-lg-12 mb-5">
+          <div class="appointment-card border rounded shadow-sm p-3">
+            <div class="d-flex justify-content-between align-items-start flex-wrap">
+              <div class="d-flex align-items-center mb-3 mb-md-0">
+                <div class="rounded-circle bg-secondary text-white fw-bold d-flex align-items-center justify-content-center me-3"
+                     style="width: 45px; height: 45px; font-size: 1.1rem;">
+                  <%= record.patient.first_name.first.upcase %><%= record.patient.last_name.first.upcase %>
+                </div>
+                <div>
+                  <h5 class="mb-1"><%= record.patient.full_name %></h5>
+                  <small class="text-muted">
+                    Patient ID: <%= record.patient.id %> • 
+                    <%= record.visit_date.strftime("%b %d, %Y") if record.visit_date.present? %>
+                  </small>
+                </div>
+              </div>
+
+              <div>
+                <span class="badge bg-success"><%= record.visit_type %></span>
+              </div>
+            </div>
+
+            <hr>
+
+            <div class="row mt-3">
+              <div class="col-sm-6">
+                <h6 class="mb-3">Diagnosis & Treatment</h6>
+                <p><strong>Diagnosis:</strong> <%= record.diagnosis.titleize %></p>
+                <p><strong>Treatment:</strong> <%= record.treatment_provided.titleize %></p>
+                <p><strong>Doctor:</strong> Dr. <%= record.doctor.full_name %></p>
+                <p><strong>Symptoms:</strong> <%= record.symptoms.titleize %></p>
+              </div>
+              <div class="col-sm-6">
+                <h6 class="mb-3">Vital Signs</h6>
+                <p><strong>BP:</strong> <%= record.blood_pressure %></p>
+                <p><strong>Temp:</strong> <%= record.temperature %></p>
+                <p><strong>HR:</strong> <%= record.heart_rate %></p>
+                <p><strong>Weight:</strong> <%= record.weight %></p>
+              </div>
+            </div>
+
+            <div class="mt-1">
+              <strong>Clinical Notes:</strong>
+              <div class="border rounded bg-light p-2 mt-1" style="min-height: 50px;">
+                <%= record.clinical_notes %>
+              </div>
+            </div>
+
+            <div class="d-flex justify-content-between align-items-center mt-3 flex-wrap">
+              <small>Next Follow-up: <span class="text-primary"><%= record.follow_up_date %></span></small>
+              <%= link_to medical_record_path(record), class: "btn btn-outline-primary btn-sm mt-2 mt-md-0" do %>
+                <i class="bi bi-eye"></i> View Details
+              <% end %>
+            </div>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  <% else %>
+    <div class="alert alert-info mt-4 text-center">No medical records found.</div>
+  <% end %>
+</div>
