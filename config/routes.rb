@@ -11,7 +11,12 @@ Rails.application.routes.draw do
   get 'dashboard/index'
 
   resources :doctors do
-    resources :patients
+    resources :patients do
+      resources :appointments
+    end
   end
+
   resources :patients
+  resources :appointments
+  resources :medical_records
 end

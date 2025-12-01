@@ -1,2 +1,138 @@
-<h1>Patients#index</h1>
-<p>Find me in app/views/patients/index.html.erb</p>
+<div class="my-5 mt-3">
+  <!-- Header -->
+  <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center mb-4">
+    <div class="mb-3 mb-md-0">
+      <h3 class="mb-0"><i class="bi bi-people"></i> Patient Management</h3>
+      <small class="text-muted">Manage and view all patient records</small>
+    </div>
+
+    <%= link_to new_doctor_patient_path(current_user.doctor), class: 'btn btn-primary btn-sm mb-2', data: { bs_toggle: 'modal', bs_target: "#patientModal" }  do %>
+				<i class="fa-solid fa-plus me-2"></i> Add New Patients
+			<% end %>
+
+			<!-- Modal -->
+			<div class="modal fade" id="patientModal" tabindex="-1" aria-labelledby="patientModalLabel" aria-hidden="true">
+			  <div class="modal-dialog modal-lg">
+			    <div class="modal-content">
+			      <div class="modal-header">
+			        <h1 class="modal-title fs-5" id="patientModalLabel"><i class="bi bi-person me-1"></i> Add New Patients
+			        	<br>
+			        	<p class="text-muted fs-6">Enter the patient's information to create a new medical record.</p>
+			        </h1>
+			        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+			      </div>
+			      <div class="modal-body">
+			        <%= render 'patients/form', patient: @patient %>
+			      </div>
+			    </div>
+			  </div>
+			</div>
+  </div>
+
+  <!-- Patient Directory -->
+  <div class="card shadow-sm rounded-3 p-3">
+  	<h5>Patient Directory</h5>
+  	<p class="text-muted">
+  		Search and filter through your patient database
+  	</p>
+    <!-- Filters -->
+    <div class="row g-2 mb-3">
+      <div class="col-12 col-md-6">
+        <input type="text" class="form-control" placeholder="Search patients by name, condition, or email...">
+      </div>
+      <div class="col-6 col-md-3">
+        <select class="form-select">
+          <option>All Status</option>
+          <option>Active</option>
+          <option>Inactive</option>
+        </select>
+      </div>
+      <div class="col-6 col-md-3">
+        <select class="form-select">
+          <option>All Priority</option>
+          <option>Normal</option>
+          <option>High</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- Summary Cards -->
+  <div class="row g-3 mb-4 mt-2">
+    <div class="col-6 col-md-3">
+      <div class="card-summary bg-light">
+        <span><i class="fa-solid fa-user fs-6 me-2"></i> <b>Total Patients</b></span>
+        <h5><%= @patients.count %></h5>
+      </div>
+    </div>
+
+    <div class="col-6 col-md-3">
+      <div class="card-summary" style="background-color: #e6f9e8;">
+        <span><i class="fa-solid fa-heart fs-6 me-2"></i> <b>Active Patients</b></span>
+        <h5>0</h5>
+      </div>
+    </div>
+    <div class="col-6 col-md-3">
+      <div class="card-summary" style="background-color: #fff4e5;">
+        <span><i class="fa-solid fa-triangle-exclamation fs-6 me-2"></i> <b>High Priority</b></span>
+        <h5>0</h5>
+      </div>
+    </div>
+    <div class="col-6 col-md-3">
+      <div class="card-summary" style="background-color: #f4e8ff;">
+        <span><i class="fa-solid fa-calendar fs-6 me-2"></i> <b>Today's Appointments</b></span>
+        <h5>0</h5>
+      </div>
+    </div>
+  </div>
+
+    <!-- Table -->
+    <div class="table-responsive mt-2">
+      <table class="table table-hover align-middle">
+        <thead class="table-light d-md-table-header-group">
+          <tr>
+            <th>Patient</th>
+            <th>Contact</th>
+            <th>Condition</th>
+            <th>Last Visit</th>
+            <th>Next Appointment</th>
+            <th>Priority</th>
+            <th>Status</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% @patients.each do |patient| %>
+	          <tr>
+	            <td data-label="Patient">
+	              <div class="d-flex align-items-center">
+	                <div class="rounded-circle bg-secondary text-white text-center me-2" style="width: 40px; height: 40px; line-height: 40px;">
+	                	<%= patient.first_name.first.upcase %><%= patient.last_name.first.upcase %>
+	                </div>
+	                <div>
+	                  <div><%= patient.full_name %></div>
+	                  <small class="text-muted"><%= patient.age %> years • <%= patient.gender %></small>
+	                </div>
+	              </div>
+	            </td>
+	            <td data-label="Contact">
+	              <div><i class="bi bi-telephone"></i> <%= patient.phone_number %></div>
+	              <div><i class="bi bi-envelope"></i> <%= patient.email_address %></div>
+	            </td>
+	            <td data-label="Condition">NA</td>
+	            <td data-label="Last Visit">NA</td>
+	            <td data-label="Next Appointment">NA</td>
+	            <td data-label="Priority"><span class="badge bg-secondary">NA</span></td>
+	            <td data-label="Status"><span class="badge badge-status bg-success">NA</span></td>
+	            <td data-label="Actions">
+	            	<%# <button class="btn btn-outline-primary btn-view"><i class="bi bi-eye"></i> View</button> %>
+	            	<%= link_to patient_path(patient), class: 'btn btn-outline-primary btn-view btn-sm' do %>
+	            		<i class="bi bi-eye"></i> View
+	            	<% end %>
+	            </td>
+	          </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

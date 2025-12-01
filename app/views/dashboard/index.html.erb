@@ -1,49 +1,74 @@
-<div class="mt-3">
+<div class="mt-3 mb-5">
 	<div class="row mb-3">
 		<div class="col-lg-9">
 			<h2>Welcome back <%= current_user.full_name if user_signed_in? %></h2>
 		</div>
 		<div class="col-lg-3">
-			<%= link_to 'javascript:void(0)', class: 'btn btn-light mb-2' do %>
+			<%= link_to new_appointment_path, class: 'btn btn-light me-2 mb-2' do %>
 				<i class="fa-solid fa-calendar me-2"></i> Schedule
 			<% end %>
 
-			<%= link_to 'javascript:void(0)', class: 'btn btn-primary mb-2' do %>
-				<i class="fa-solid fa-users me-2"></i> New Patients
+			<!-- Button trigger modal -->
+			<% if current_user.doctor? %>
+				<%= link_to new_doctor_patient_path(current_user.doctor), class: 'btn btn-primary mb-2', data: { bs_toggle: 'modal', bs_target: "#patientModal" }  do %>
+					<i class="fa-solid fa-users me-2"></i> New Patients
+				<% end %>
 			<% end %>
+
+			<!-- Modal -->
+			<div class="modal fade" id="patientModal" tabindex="-1" aria-labelledby="patientModalLabel" aria-hidden="true">
+			  <div class="modal-dialog modal-lg">
+			    <div class="modal-content">
+			      <div class="modal-header">
+			        <h1 class="modal-title fs-5" id="patientModalLabel"><i class="bi bi-person me-1"></i> Add New Patients
+			        	<br>
+			        	<p class="text-muted fs-6">Enter the patient's information to create a new medical record.</p>
+			        </h1>
+			        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+			      </div>
+			      <div class="modal-body">
+			        <%= render 'patients/form', doctor: @doctor, patient: @doctor.patients.build %>
+			      </div>
+			    </div>
+			  </div>
+			</div>
 		</div>
 	</div>
 	<div class="row g-3">
-		<div class="col-lg-3">
-			<div class="card shadow-sm rounded-3">
-				<div class="card-body">
-					<h5>Total Patients</h5>
-				</div>
-			</div>
-		</div>
+		<div class="col-md-3">
+      <div class="dashboard-card bg-blue">
+        <h5>Total Patients <i class="fa-solid fa-user icon"></i></h5>
+        <h6><%= @patients.count if @patients.present? %></h6>
+        <%# <p class="details">+12 from last month</p> %>
+	      </div>
+	    </div>
 
-		<div class="col-lg-3">
-			<div class="card shadow-sm rounded-3">
-				<div class="card-body">
-					<h5>Today's Appointments</h5>
-				</div>
-			</div>
-		</div>
+	    <div class="col-md-3">
+	      <div class="dashboard-card bg-green">
+	        <h5>Today's Appointments <i class="fa-solid fa-chart-line icon"></i></h5>
+					<h6><%= @today_count %></h6>
+					<p class="details">
+					  <%= @pending_count %> Pending, 
+					  <%= @upcoming_count %> Upcoming
+					</p>
 
-		<div class="col-lg-3">
-			<div class="card shadow-sm rounded-3">
-				<div class="card-body">
-					<h5>Pending Tests</h5>
-				</div>
-			</div>
-		</div>
+	      </div>
+	    </div>
 
-		<div class="col-lg-3">
-			<div class="card shadow-sm rounded-3">
-				<div class="card-body">
-					<h5>Critical Alerts</h5>
-				</div>
-			</div>
-		</div>
+	    <div class="col-md-3">
+	      <div class="dashboard-card bg-purple">
+	        <h5>Pending Tests <i class="fa-solid fa-vial icon"></i></h5>
+	        <%# <h6>5</h6>
+	        <p class="details">3 blood work, 2 imaging</p> %>
+	      </div>
+	    </div>
+
+	    <div class="col-md-3">
+	      <div class="dashboard-card bg-orange">
+	        <h5>Critical Alerts <i class="fa-solid fa-triangle-exclamation icon"></i></h5>
+	        <%# <h6>2</h6>
+	        <p class="details">Require immediate attention</p> %>
+	      </div>
+	    </div>
 	</div>
 </div>

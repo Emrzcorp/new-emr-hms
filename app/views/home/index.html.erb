@@ -1,4 +1,155 @@
-<div class="container mt-2">
-	<h1>Home#index</h1>
-	<p>Find me in app/views/home/index.html.erb</p>
+<!-- Records dashboard-->
+<div class="container text-center">
+	<small class="d-block mb-2 text-primary mt-5"><i class="bi bi-activity"></i> Next-Generation EMR System</small>
+	<h1 class="hero-title">
+		Modern <span class="highlight-blue">Electronic</span> <span class="highlight-green">Medical Records</span> for <span class="text-dark">Healthcare Professionals</span>
+	</h1>
+	<p class="hero-desc">
+		Streamline your practice with our comprehensive EMR solution. Manage patient records, <br> track diagnoses, monitor treatments, and maintain compliance – all in one intuitive platform.
+	</p>
+	<div class="mb-5">
+		<a href="#" class="btn btn-primary btn-lg cta-btn">Start Free Trial</a>
+		<a href="#" class="btn btn-outline-primary btn-lg">Learn More</a>
+	</div>
+
+	<div class="row dashboard-row">
+		<div class="col-md-4 mb-3">
+			<div class="dashboard-box h-100">
+				<div class="dashboard-label">Total Patients</div>
+				<div class="dashboard-value">0</div>
+				<div class="dashboard-footer">+0% from last month</div>
+			</div>
+		</div>
+		<div class="col-md-4 mb-3">
+			<div class="dashboard-box dashboard-box-green h-100">
+				<div class="dashboard-label">Today's Visits</div>
+				<div class="dashboard-value">0</div>
+				<div class="dashboard-footer">0 more scheduled</div>
+			</div>
+		</div>
+		<div class="col-md-4 mb-3">
+			<div class="dashboard-box dashboard-box-purple h-100">
+				<div class="dashboard-label">Pending Results</div>
+				<div class="dashboard-value">0</div>
+				<div class="dashboard-footer">Lab & imaging</div>
+			</div>
+		</div>
+	</div>
+
+  <!-- core features -->
+  <small class="d-block mb-2 text-primary mt-5"><i class="bi bi-star"></i> Core Features</small>
+  <h1 class="">
+    Everything You Need for Modern Healthcare
+  </h1>
+  <p class="hero-desc">
+    Our comprehensive EMR system provides all the tools you need to deliver exceptional patient care while maintaining efficiency and compliance.
+  </p>
+
+  <div class="row dashboard-row">
+    <div class="col-md-4 mb-3">
+      <div class="dashboard-box h-100">
+        <i class="bi bi-file-earmark-text fs-2"></i>
+        <div class="dashboard-label fs-5">Digital Medical Records</div>
+        <div class="dashboard-footer">Secure, comprehensive electronic medical records that replace traditional paper charts.</div>
+      </div>
+    </div>
+    <div class="col-md-4 mb-3">
+      <div class="dashboard-box dashboard-box-green h-100">
+        <i class="bi bi-people fs-2"></i>
+        <div class="dashboard-label fs-5">Patient Management</div>
+        <div class="dashboard-footer">Complete patient profiles with demographics, medical history, and appointment scheduling.</div>
+      </div>
+    </div>
+    <div class="col-md-4 mb-3">
+      <div class="dashboard-box dashboard-box-purple h-100">
+        <i class="fa-solid fa-stethoscope fs-4"></i>
+        <div class="dashboard-label fs-5">Diagnosis Tracking</div>
+        <div class="dashboard-footer">Comprehensive diagnosis management with ICD-10 codes and treatment plans.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row dashboard-row">
+    <div class="col-md-4 mb-3">
+      <div class="dashboard-box h-100">
+        <i class="fa-solid fa-vial fs-4"></i>
+        <div class="dashboard-label fs-5">Test Results</div>
+        <div class="dashboard-footer">Organize and track lab results, imaging studies, and diagnostic reports.</div>
+      </div>
+    </div>
+    <div class="col-md-4 mb-3">
+      <div class="dashboard-box dashboard-box-green h-100">
+        <i class="bi bi-activity fs-2"></i>
+        <div class="dashboard-label fs-5">Treatment Plans</div>
+        <div class="dashboard-footer">Monitor medications, procedures, and therapies with adherence tracking.</div>
+      </div>
+    </div>
+    <div class="col-md-4 mb-3">
+      <div class="dashboard-box dashboard-box-purple h-100">
+        <i class="fa-solid fa-shield fs-4"></i>
+        <div class="dashboard-label fs-5">HIPAA Compliant</div>
+        <div class="dashboard-footer">Enterprise-grade security ensuring patient data privacy and compliance.</div>
+      </div>
+    </div>
+  </div>
 </div>
+
+
+
+<style>
+  body {
+    background: #f5fbff;
+  }
+  .hero-title {
+      font-size: 3.75rem;
+      font-weight: 700;
+      margin-top: 60px;
+  }
+  .highlight-blue { color: #1773ea; }
+  .highlight-green { color: #1bb17c; }
+  .hero-desc {
+      font-size: 1.15rem;
+      color: #6c757d;
+      margin: 20px 0 30px 0;
+  }
+  .cta-btn {
+      margin-right: 12px;
+  }
+  .dashboard-box {
+      min-width: 220px;
+      padding: 25px 20px;
+      background: #fff;
+      border-radius: 16px;
+      box-shadow: 0 2px 18px rgba(17,115,234,0.09);
+  }
+  .dashboard-label {
+      color: #6c757d;
+      font-size: 1.05rem;
+      margin-bottom: 10px;
+  }
+  .dashboard-value {
+      font-size: 2.2rem;
+      font-weight: 600;
+  }
+  .dashboard-footer {
+      font-size: 0.95rem;
+      color: #79aab6;
+      margin-top: 6px;
+  }
+  .dashboard-row {
+      margin-top: 50px;
+      justify-content: center;
+  }
+  .dashboard-box-green {
+      border-left: 4px solid #1bb17c;
+  }
+  .dashboard-box-purple {
+      border-left: 4px solid #ae89ff;
+  }
+
+  .dashboard-box:hover {
+  	transform: translateY(-5px);
+  	box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+  }
+
+</style>

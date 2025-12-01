@@ -1,0 +1,63 @@
+.appointment-card {
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+  padding: 20px;
+  background-color: #fff;
+}
+.appointment-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+}
+.appointment-header h5 {
+  margin: 0;
+  font-weight: 600;
+}
+.badge-scheduled {
+  background-color: #E0F2FF;
+  color: #0D6EFD;
+  font-size: 0.8rem;
+  padding: 0.4em 0.7em;
+  border-radius: 0.5rem;
+}
+.badge-normal {
+  background-color: #F2F2F2;
+  color: #6C757D;
+  font-size: 0.8rem;
+  padding: 0.4em 0.7em;
+  border-radius: 0.5rem;
+  margin-left: 5px;
+}
+.section-title {
+  font-weight: 600;
+  margin-bottom: 10px;
+  font-size: 0.9rem;
+  color: #6C757D;
+}
+.info-label {
+  font-weight: 500;
+  color: #495057;
+}
+.info-value {
+  color: #212529;
+}
+.notes-box {
+  width: 100%;
+  min-height: 50px;
+  padding: 10px;
+  background-color: #F8F9FA;
+  border-radius: 6px;
+  margin-bottom: 15px;
+  border: 1px solid #E9ECEF;
+}
+.card-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.85rem;
+  color: #6C757D;
+}
+.action-buttons button {
+  margin-left: 5px;
+}

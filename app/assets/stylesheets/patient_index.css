@@ -1,0 +1,84 @@
+.card-summary {
+  border-radius: 0.75rem;
+  padding: 1rem;
+  text-align: center;
+}
+
+.card-summary h5 {
+  font-weight: 600;
+  margin-bottom: 0;
+}
+
+.card-summary span {
+  display: block;
+  margin-top: 0.25rem;
+  font-size: 0.85rem;
+  color: #6c757d;
+}
+
+.card-summary:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+}
+
+.badge-status {
+  padding: 0.4em 0.6em;
+  font-size: 0.75rem;
+  border-radius: 0.5rem;
+}
+
+.badge-active {
+  background-color: #d1f7dc;
+  color: #2f7a33;
+}
+
+.badge-high {
+  background-color: #fddcdc;
+  color: #c72424;
+}
+
+.btn-view {
+  font-size: 0.8rem;
+  padding: 0.25rem 0.6rem;
+}
+
+/* 📱 Mobile-friendly table */
+@media (max-width: 767.98px) {
+  table thead {
+    display: none;
+  }
+
+  table tbody tr {
+    display: block;
+    margin-bottom: 1rem;
+    border: 1px solid #dee2e6;
+    border-radius: 0.5rem;
+    padding: 0.75rem;
+    background: #fff;
+  }
+
+  table tbody td {
+    display: block;
+    /*justify-content: space-between;*/
+    padding: 0.5rem 0;
+    border-bottom: 1px solid #f1f1f1;
+  }
+
+  table tbody td:last-child {
+    border-bottom: none;
+  }
+
+  table tbody td::before {
+    content: attr(data-label);
+    display: block;
+    font-weight: 600;
+    color: #495057;
+    margin-bottom: 0.25rem;
+  }
+
+  /* 📞 Ensure phone/email stack properly */
+  td[data-label="Contact"] div {
+   display: block;
+   margin-bottom: 0.25rem;
+ }
+}
