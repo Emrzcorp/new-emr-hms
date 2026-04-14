@@ -1,4 +1,4 @@
-<div class="py-4">
+<div class="py-4 container">
  
  	<!-- Header -->
 	<div class="row align-items-center mb-3">
@@ -15,9 +15,12 @@
 
 	  <!-- Edit profile button -->
 	  <div class="col-12 col-md-3 col-lg-2 text-md-end">
-	    <button class="btn btn-outline-primary btn-sm w-100 w-md-auto">
+	  	<%= link_to edit_doctor_patient_path(@doctor, @patient), 
+	  		class: "btn btn-outline-primary btn-sm w-100 w-md-auto" do %>
 	      <i class="bi bi-pencil me-2"></i> Edit Profile
-	    </button>
+	  	<% end %>
+	    <%# <button class="btn btn-outline-primary btn-sm w-100 w-md-auto">
+	    </button> %>
 	  </div>
 	</div>
 

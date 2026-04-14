@@ -23,12 +23,14 @@
         Appointments
         <% end %>
     </li>
-    <li>
-      <a href="<%= patients_path %>" class="nav-link link-dark">
-        <i class="bi bi-people me-2 fs-6"></i>
-        Patients
-      </a>
-    </li>
+    <% if current_user.doctor? %>
+      <li>
+        <a href="<%= patients_path %>" class="nav-link link-dark">
+          <i class="bi bi-people me-2 fs-6"></i>
+          Patients
+        </a>
+      </li>
+    <% end %>
     <li>
       <a href="<%= medical_records_path %>" class="nav-link link-dark">
         <i class="bi bi-file-earmark-text me-2 fs-6"></i>
