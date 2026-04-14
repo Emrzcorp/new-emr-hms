@@ -1,10 +1,11 @@
 class Patient < ApplicationRecord
   belongs_to :user, optional: true
-  belongs_to :doctor
+  belongs_to :doctor, optional: true
   has_many :appointments, dependent: :destroy
   has_many :medical_records, dependent: :destroy
+  has_one_attached :profile_picture
 
-  validates :first_name, :last_name, :date_of_birth, presence: true
+  validates :first_name, :last_name, :date_of_birth, :email_address, presence: true
 
   # validates :active, inclusion: { in: [true, false] } 
 

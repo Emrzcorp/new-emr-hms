@@ -26,13 +26,13 @@
   <div class="row mb-3">
     <div class="col-md-6">
       <%= f.label :duration, class: "form-label" %>
-      <%= f.select :duration, ["15 minutes", "30 minutes", "45 minutes", "1 hour", "1.5 hours", "2 hours" ], {prompt: 'Select duration'}, class: "form-select", placeholder: "Minutes" %>
+      <%= f.select :duration, [[15, 15], [30, 30], [45, 45], [60, 60]], { prompt: 'Select duration' }, class: "form-select", placeholder: "Minutes" %>
     </div>
     <div class="col-md-6">
       <%#= f.label :appointment_type, class: "form-label" %>
       <%#= f.select :appointment_type, ["Consultation", "Follow-up", "Routine Checkup"], {prompt: 'Select Type'}, class: "form-select" %>
       <%= f.label :priority, class: "form-label" %>
-    	<%= f.select :priority, ["Low", "Normal", "High", "Urgent"], {}, class: "form-select" %>
+    	<%= f.select :priority, ["Normal", "High", "Urgent"], {}, class: "form-select" %>
     </div>
   </div>
 

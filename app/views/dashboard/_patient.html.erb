@@ -1,0 +1,77 @@
+<div class="container mt-4">
+
+  <!-- Header -->
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h2>Welcome <%= @patient.full_name %></h2>
+    <%= link_to "Book Appointment", new_patient_appointment_path, class: "btn btn-primary" %>
+  </div>
+
+  <!-- Stats Cards -->
+  <div class="row g-3 mb-4">
+    <div class="col-6 col-md-4">
+      <div class="card-summary bg-light text-center p-3 rounded-3 shadow-sm" style="min-height: 110px;">
+        <span><i class="fa-solid fa-calendar fs-6 me-2"></i> <b>Total Appointments</b></span>
+        <h5 class="mt-2"><%= @appointments.count %></h5>
+      </div>
+    </div>
+
+    <div class="col-6 col-md-4">
+      <div class="card-summary text-center p-3 rounded-3 shadow-sm" style="background-color: #e6f9e8; min-height: 110px;">
+        <span><i class="fa-solid fa-clock fs-6 me-2"></i> <b>Upcoming</b></span>
+        <h5 class="mt-2"><%= @upcoming_appointments.count %></h5>
+      </div>
+    </div>
+
+    <div class="col-6 col-md-4">
+      <div class="card-summary text-center p-3 rounded-3 shadow-sm" style="background-color: #fff4e5; min-height: 110px;">
+        <span><i class="fa-solid fa-circle-check fs-6 me-2"></i> <b>Medical Records</b></span>
+        <h5 class="mt-2"><%= @medical_records.count %></h5>
+      </div>
+    </div>
+  </div>
+
+  <!-- Upcoming Appointments -->
+  <div class="card mb-4">
+    <div class="card-header">
+      <strong>Upcoming Appointments</strong>
+    </div>
+    <div class="card-body">
+      <% if @upcoming_appointments.any? %>
+        <% @upcoming_appointments.each do |appt| %>
+          <div class="border-bottom py-2">
+            <strong><%= appt.date %> at <%= appt.time.strftime("%I:%M %p") %></strong>
+            <p class="mb-0">
+              Doctor: <%= appt.doctor&.full_name %>
+            </p>
+            <small class="text-muted"><%= appt.appointment_type %></small>
+          </div>
+        <% end %>
+      <% else %>
+        <p>No upcoming appointments</p>
+      <% end %>
+    </div>
+  </div>
+
+  <!-- Medical Records -->
+  <div class="card">
+    <div class="card-header">
+      <strong>Medical History</strong>
+    </div>
+    <div class="card-body">
+      <% if @medical_records.any? %>
+        <% @medical_records.each do |record| %>
+          <div class="border-bottom py-2">
+            <strong><%= record.visit_date %></strong>
+            <p class="mb-0"><%= record.diagnosis %></p>
+            <small class="text-muted">
+              Doctor: <%= record.doctor&.full_name %>
+            </small>
+          </div>
+        <% end %>
+      <% else %>
+        <p>No medical records available</p>
+      <% end %>
+    </div>
+  </div>
+
+</div>

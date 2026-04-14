@@ -16,7 +16,10 @@ class Appointment < ApplicationRecord
   private
 
   def patient_belongs_to_doctor
-    if patient && doctor && patient.doctor_id != doctor.id
+    return unless doctor.present? && patient.present?
+
+    # Only enforce if patient already assigned to a doctor
+    if patient.doctor_id.present? && patient.doctor_id != doctor.id
       errors.add(:patient_id, "must belong to the same doctor as the appointment")
     end
   end
