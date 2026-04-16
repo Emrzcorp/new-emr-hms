@@ -1,0 +1,67 @@
+<div class="col-12 col-md-7 col-lg-9 text-center text-md-start mb-2 mb-md-0">
+  <h4 class="fw-bold mb-1"><i class="bi bi-file-earmark-text me-2 fs-5"></i> Medical History</h4>
+  <p class="text-muted small mb-0">Complete medical history and visit records</p>
+</div>
+
+<% if medical_records.present? %>
+  <% medical_records.each do |record| %>
+    <div class="card mb-3 mt-3 shadow-sm border rounded-3 p-3">
+
+      <!-- Header -->
+      <div class="d-flex justify-content-between">
+        <div>
+          <h6 class="fw-bold mb-1">
+            <%= record.diagnosis.presence || "General Checkup" %>
+          </h6>
+          <small class="text-muted">
+            Dr. <%= record.doctor.full_name %> • 
+            <%= record.visit_date.strftime("%Y-%m-%d") if record.visit_date %>
+          </small>
+        </div>
+
+        <span class="badge bg-light text-dark">
+          <%= record.visit_type %>
+        </span>
+      </div>
+
+      <p class="mt-2 mb-3">
+        <%= record.clinical_notes.presence || "No notes available" %>
+      </p>
+
+      <!-- Vitals -->
+      <div class="row text-center">
+
+        <div class="col-md-3">
+          <div class="p-2 rounded bg-light">
+            <small>Blood Pressure</small>
+            <div class="fw-bold text-danger"><%= record.blood_pressure %></div>
+          </div>
+        </div>
+
+        <div class="col-md-3">
+          <div class="p-2 rounded bg-light">
+            <small>Heart Rate</small>
+            <div class="fw-bold text-primary"><%= record.heart_rate %></div>
+          </div>
+        </div>
+
+        <div class="col-md-3">
+          <div class="p-2 rounded bg-light">
+            <small>Temperature</small>
+            <div class="fw-bold text-success"><%= record.temperature %></div>
+          </div>
+        </div>
+
+        <div class="col-md-3">
+          <div class="p-2 rounded bg-light">
+            <small>Weight</small>
+            <div class="fw-bold text-purple"><%= record.weight %></div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  <% end %>
+<% else %>
+  <div class="alert alert-info">No medical records found.</div>
+<% end %>

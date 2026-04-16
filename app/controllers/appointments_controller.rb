@@ -24,7 +24,7 @@ class AppointmentsController < ApplicationController
     @appointment.status ||= :pending
 
     if @appointment.save
-      redirect_to appointments_path, notice: "Appointment created successfully!"
+      redirect_to dashboard_index_path, notice: "Appointment created successfully!"
     else
       Rails.logger.error(@appointment.errors.full_messages)
       flash.now[:alert] = @appointment.errors.full_messages.to_sentence

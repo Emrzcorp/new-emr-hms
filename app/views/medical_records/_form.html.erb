@@ -1,4 +1,4 @@
-<%= form_with model: @medical_record, local: true do |f| %>
+<%= form_with model: @medical_record, scope: :medical_record, local: true do |f| %>
   <h5>Visit Information</h5>
   <div class="row mb-3">
     <div class="col-md-6">

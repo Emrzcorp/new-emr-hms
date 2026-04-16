@@ -48,6 +48,13 @@ class PatientsController < ApplicationController
     end
   end
 
+  def show
+    @patient = @doctor.patients.find(params[:id])
+
+    @medical_records = @patient.medical_records.includes(:doctor).order(visit_date: :desc)
+    @appointments = @patient.appointments.order(date: :desc)
+  end
+
   private
 
   def set_doctor
