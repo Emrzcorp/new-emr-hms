@@ -3,9 +3,39 @@ class MedicalRecordsController < ApplicationController
   before_action :set_medical_record, only: [:show, :edit, :update, :destroy]
 
   def index
-    @medical_records = MedicalRecord.includes(:patient, :doctor).order(visit_date: :desc)
-    @patients = Patient.all
-    @doctors = Doctor.all
+    if current_user.doctor.present?
+      @medical_records = MedicalRecord
+                          .where(doctor_id: current_user.doctor.id)
+                          .includes(:patient, :doctor)
+                          .order(visit_date: :desc)
+
+    elsif current_user.patient.present?
+      @medical_records = MedicalRecord
+                          .where(patient_id: current_user.patient.id)
+                          .includes(:patient, :doctor)
+                          .order(visit_date: :desc)
+    else
+      @medical_records = MedicalRecord.none
+    end
+
+    @total_records = @medical_records.count
+
+    @this_week_records = @medical_records.where(
+      visit_date: Date.current.beginning_of_week..Date.current.end_of_week
+    ).count
+
+    @follow_ups_due = @medical_records.where(
+      follow_up_date: Date.current..Date.current + 10.days
+    ).count
+
+    @active_cases = @medical_records.where(
+      follow_up_date: Date.current..
+    ).count
+
+    if current_user.doctor.present?
+      @patients = current_user.doctor.patients
+      @doctors = [current_user.doctor]
+    end
   end
 
   def new
@@ -16,11 +46,14 @@ class MedicalRecordsController < ApplicationController
 
   def create
     @medical_record = MedicalRecord.new(medical_record_params)
+
+    @medical_record.doctor = current_user.doctor
+
     if @medical_record.save
       redirect_to medical_records_path, notice: "Medical record created successfully."
     else
-      @patients = Patient.all
-      @doctors = Doctor.all
+      @patients = current_user.doctor.patients
+      @doctors = [current_user.doctor]
       render :new, status: :unprocessable_entity
     end
   end
@@ -48,7 +81,13 @@ class MedicalRecordsController < ApplicationController
   private
 
   def set_medical_record
-    @medical_record = MedicalRecord.find(params[:id])
+    if current_user.doctor.present?
+      @medical_record = MedicalRecord.where(doctor_id: current_user.doctor.id).find(params[:id])
+    elsif current_user.patient.present?
+      @medical_record = MedicalRecord.where(patient_id: current_user.patient.id).find(params[:id])
+    else
+      redirect_to root_path, alert: "Access denied"
+    end
   end
 
   def medical_record_params

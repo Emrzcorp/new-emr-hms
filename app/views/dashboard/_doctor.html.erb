@@ -71,4 +71,57 @@
 	      </div>
 	    </div>
 	</div>
+
+	<div class="card shadow-sm mt-4">
+	  <div class="card-body">
+
+	    <!-- Header -->
+	    <div class="d-flex justify-content-between align-items-center mb-3">
+	      <div>
+	        <h5 class="mb-0">
+	          <i class="bi bi-calendar-event me-2"></i>
+	          Today's Schedule
+	        </h5>
+	        <small class="text-muted">
+	          Your appointments for <%= Date.current.strftime("%m/%d/%Y") %>
+	        </small>
+	      </div>
+	    </div>
+
+	    <!-- Appointment List -->
+	    <% if @today_appointments.any? %>
+	      <% @today_appointments.each do |appt| %>
+	        <div class="appointment-card mb-3 p-3 d-flex justify-content-between align-items-center
+	                    <%= appointment_status_class(appt.status) %>">
+
+	          <!-- Left -->
+	          <div class="d-flex align-items-center">
+	            <div class="me-3 text-primary fw-bold">
+	              <%= appt.time.strftime("%I:%M %p") %>
+	              <div class="small text-muted">
+	                <%= appt.duration %> min
+	              </div>
+	            </div>
+
+	            <div>
+	              <strong><%= appt.patient&.full_name %></strong>
+	              <div class="text-muted small">
+	                <%= appt.appointment_type %>
+	              </div>
+	            </div>
+	          </div>
+
+	          <!-- Right Status -->
+	          <span class="badge <%= status_badge_class(appt.status) %>">
+	            <%= appt.status.titleize %>
+	          </span>
+
+	        </div>
+	      <% end %>
+	    <% else %>
+	      <p class="text-muted">No appointments today</p>
+	    <% end %>
+
+	  </div>
+	</div>
 </div>
