@@ -19,6 +19,8 @@ Rails.application.routes.draw do
   resources :patients
   resources :appointments
   resources :medical_records
+  resources :diagnoses
+  resources :treatments
 
   resources :patient_appointments, only: [:new, :create]
 end

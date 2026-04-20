@@ -1,6 +1,7 @@
 class MedicalRecord < ApplicationRecord
   belongs_to :patient
   belongs_to :doctor
+  has_many :diagnoses
 
 
   VISIT_TYPES = [

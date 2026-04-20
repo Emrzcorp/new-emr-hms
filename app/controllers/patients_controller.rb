@@ -4,7 +4,23 @@ class PatientsController < ApplicationController
   before_action :set_patient, only: [:show, :edit, :update]  # ✅ add update here
 
   def index
-    @patients = @doctor.patients
+    @patients = @doctor.patients.includes(:medical_records, :appointments)
+
+    @active_patients_count = @doctor.patients
+                                  .joins(:appointments)
+                                  .where("appointments.date >= ?", Date.current)
+                                  .distinct
+                                  .count
+
+    @high_priority_count = Appointment.joins(:patient)
+                                      .where(patients: { doctor_id: @doctor.id })
+                                      .where(priority: "high")
+                                      .distinct
+                                      .count(:patient_id)
+
+    @today_appointments_count = @doctor.appointments
+                                       .where(date: Date.current)
+                                       .count
   end
 
   def new
@@ -53,6 +69,10 @@ class PatientsController < ApplicationController
 
     @medical_records = @patient.medical_records.includes(:doctor).order(visit_date: :desc)
     @appointments = @patient.appointments.order(date: :desc)
+
+    @is_active = @patient.appointments.where("date >= ?", Date.current).exists?
+
+    @latest_priority = @patient.appointments.order(created_at: :desc).first&.priority
   end
 
   private

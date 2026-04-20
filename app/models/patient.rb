@@ -4,6 +4,7 @@ class Patient < ApplicationRecord
   has_many :appointments, dependent: :destroy
   has_many :medical_records, dependent: :destroy
   has_one_attached :profile_picture
+  has_many :diagnoses
 
   validates :first_name, :last_name, :date_of_birth, :email_address, presence: true
 

@@ -15,6 +15,10 @@ class DashboardController < ApplicationController
                                 .where(date: Date.current)
                                 .includes(:patient)
                                 .order(:time)
+      @pending_tests = MedicalRecord
+                      .where(doctor_id: @doctor.id)
+                      .where("follow_up_date >= ?", Date.current)
+                      .count
 
     elsif current_user.patient?
       @patient = current_user.patient

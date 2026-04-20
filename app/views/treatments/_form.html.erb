@@ -1,0 +1,94 @@
+<div class="container my-5 mt-3">
+
+  <%= form_with model: treatment, scope: :treatment, local: true do |f| %>
+
+    <h5>Patient Information</h5>
+    <div class="row">
+      <div class="col-md-6">
+        <%= f.label :patient_id, "Patient" %>
+        <%= f.collection_select :patient_id, @patients, :id, :full_name,
+              { prompt: "Select patient" }, class: "form-select" %>
+      </div>
+
+      <div class="col-md-6">
+        <%= f.label :treatment_start_date, "Treatment Date" %>
+        <%= f.date_field :treatment_start_date, class: "form-control" %>
+      </div>
+    </div>
+
+    <h5 class="mt-3">Treatment Details</h5>
+    <div class="row">
+      <div class="col-md-6">
+        <%= f.label :treatment_type, "Treatment Type" %>
+        <%= f.select :treatment_type, Treatment::TREATMENT_TYPE, { prompt: "Select type" }, class: "form-control" %>
+      </div>
+      <div class="col-md-6">
+        <%= f.label :treatment_name, "Treatment Name" %>
+        <%= f.text_field :treatment_name, placeholder: "Name", class: "form-control" %>
+      </div>
+    </div>
+
+    <div class="row mt-2">
+      <div class="col-md-6">
+        <%= f.label :diagnoses, "Related Diagnosis" %>
+        <%= f.collection_select :diagnosis_id, @diagnoses, :id, :primary_diagnosis,
+              { prompt: "Related diagnosis" }, class: "form-select" %>
+      </div>
+      <div class="col-md-6">
+        <%= f.label :priority, "Priority" %>
+        <%= f.select :priority, ["Low", "Medium", "High"], { prompt: true }, class: "form-select" %>
+      </div>
+    </div>
+
+    <div class="mt-2">
+      <%= f.label :description, "Treatment Description" %>
+      <%= f.text_area :description, placeholder: "Treatment description", class: "form-control" %>
+    </div>
+
+    <h5 class="mt-3">Medication Details</h5>
+    <div class="row">
+      <div class="col-md-6">
+        <%= f.label :medication, "Medication" %>
+        <%= f.text_field :medication, class: "form-control", placeholder: "Medication" %>
+      </div>
+      <div class="col-md-6">
+        <%= f.label :dosage, "Dosage" %>
+        <%= f.text_field :dosage, class: "form-control", placeholder: "Dosage" %>
+      </div>
+    </div>
+
+    <div class="row mt-2">
+      <div class="col-md-6">
+        <%= f.label :frequency, "Frequency" %>
+        <%= f.text_field :frequency, class: "form-control", placeholder: "Frequency" %>
+      </div>
+      <div class="col-md-6">
+        <%= f.label :duration, "Duration" %>
+        <%= f.text_field :duration, class: "form-control", placeholder: "Duration" %>
+      </div>
+    </div>
+
+    <h5 class="mt-3">Instructions & Notes</h5>
+    <%= f.label :patient_instructions, "Patient Instructions" %>
+    <%= f.text_area :patient_instructions, class: "form-control", placeholder: "Patient instructions" %>
+
+    <%= f.label :clinical_notes, "Clinical Notes" %>
+    <%= f.text_area :clinical_notes, class: "form-control mt-2", placeholder: "Clinical notes" %>
+
+    <div class="row mt-2">
+      <div class="col-md-6">
+        <%= f.label :status, "Status" %>
+        <%= f.select :status, ["Active", "Completed"], { prompt: true }, class: "form-select" %>
+      </div>
+      <div class="col-md-6">
+        <%= f.label :next_review_date, "Next Review Date" %>
+        <%= f.date_field :next_review_date, class: "form-control" %>
+      </div>
+    </div>
+
+    <div class="mt-3">
+      <%= f.submit "Save Treatment", class: "btn btn-primary" %>
+      <%= link_to "Cancel", treatments_path, class: "btn btn-secondary mt-2 mb-2" %>
+    </div>
+  <% end %>
+</div>

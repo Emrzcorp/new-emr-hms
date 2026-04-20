@@ -1,0 +1,171 @@
+<div class="container py-4">
+
+  <!-- HEADER -->
+  <div class="row align-items-center mb-3">
+    <!-- Back button -->
+    <div class="col-12 col-md-2 col-lg-1 mb-2 mb-md-0">
+      <%= link_to "← Back", medical_records_path, class: "btn btn-light w-100 w-md-auto"  %>
+    </div>
+
+    <!-- Title + subtitle -->
+    <div class="col-12 col-md-7 col-lg-9 text-center text-md-start mb-2 mb-md-0">
+      <h4 class="fw-bold mb-1">Medical Record Details</h4>
+      <p class="text-muted small mb-0">
+        Comprehensive medical record for 
+        <b><%= @medical_record.patient.full_name %></b> -
+        <%= @medical_record.visit_type %> on 
+        <%= @medical_record.visit_date&.strftime("%d %b %Y") %>
+      </p>
+    </div>
+
+    <div class="col-12 col-md-3 col-lg-2 text-md-end">
+      <button class="btn btn-outline-secondary btn-sm me-2">Print</button>
+      <button class="btn btn-outline-primary btn-sm">Export</button>
+    </div>
+  </div>
+
+  <!-- PATIENT INFO -->
+  <div class="card p-3 mb-3 shadow-sm">
+    <h6 class="fw-bold mb-3">Patient Information</h6>
+
+    <div class="row">
+      <div class="col-md-3">
+        <strong><%= @medical_record.patient.full_name %></strong>
+        <p class="text-muted mb-0">
+          Patient ID: <%= @medical_record.patient.id %>
+        </p>
+      </div>
+
+      <div class="col-md-3">
+        <small class="text-muted">Age</small>
+        <div><%= @medical_record.patient.age %> years</div>
+      </div>
+
+      <div class="col-md-3">
+        <small class="text-muted">Gender</small>
+        <div><%= @medical_record.patient.gender %></div>
+      </div>
+
+      <div class="col-md-3">
+        <small class="text-muted">DOB</small>
+        <div><%= @medical_record.patient.date_of_birth %></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- VISIT DETAILS -->
+  <div class="card p-3 mb-3 shadow-sm">
+    <h6 class="fw-bold mb-3">Visit Details</h6>
+
+    <div class="row">
+      <div class="col-md-3">
+        <small class="text-muted">Type</small>
+        <div class="mt-1">
+          <span><%= @medical_record.visit_type %></span>
+        </div>
+      </div>
+
+      <div class="col-md-3">
+        <small class="text-muted">Date</small>
+        <div><%= @medical_record.visit_date %></div>
+      </div>
+
+      <div class="col-md-3">
+        <small class="text-muted">Provider</small>
+        <div>Dr. <%= @medical_record.doctor.full_name %></div>
+      </div>
+
+      <div class="col-md-3">
+        <small class="text-muted">Follow-up</small>
+        <div><%= @medical_record.follow_up_date || "NA" %></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SYMPTOMS -->
+  <div class="card p-3 mb-3 shadow-sm">
+    <h6 class="fw-bold mb-3">Chief Complaint & Symptoms</h6>
+
+    <p><strong>Primary Complaint:</strong> <%= @medical_record.diagnosis.humanize.presence || "NA" %></p>
+
+    <p><strong>Symptoms:</strong></p>
+    <% if @medical_record.symptoms.present? %>
+      <% @medical_record.symptoms.split(',').each do |symptom| %>
+        <div class="bg-light p-2 rounded"><%= symptom.strip.humanize %></div>
+      <% end %>
+    <% else %>
+      <span>NA</span>
+    <% end %>
+  </div>
+
+  <!-- VITALS -->
+  <div class="card p-3 mb-3 shadow-sm">
+    <h6 class="fw-bold mb-3">Vital Signs & Measurements</h6>
+
+    <div class="row text-center">
+      <div class="col-md-3">
+        <div class="p-2 bg-light rounded">
+          <small>Blood Pressure</small>
+          <div class="fw-bold text-danger"><%= @medical_record.blood_pressure || "NA" %></div>
+        </div>
+      </div>
+
+      <div class="col-md-3">
+        <div class="p-2 bg-light rounded">
+          <small>Heart Rate</small>
+          <div class="fw-bold text-primary"><%= @medical_record.heart_rate || "NA" %></div>
+        </div>
+      </div>
+
+      <div class="col-md-3">
+        <div class="p-2 bg-light rounded">
+          <small>Temperature</small>
+          <div class="fw-bold text-success"><%= @medical_record.temperature || "NA" %></div>
+        </div>
+      </div>
+
+      <div class="col-md-3">
+        <div class="p-2 bg-light rounded">
+          <small>Weight</small>
+          <div class="fw-bold text-purple"><%= @medical_record.weight || "NA" %></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- DIAGNOSIS -->
+  <div class="card p-3 mb-3 shadow-sm">
+    <h6 class="fw-bold mb-3">Diagnosis & Assessment</h6>
+
+    <p><strong>Diagnosis:</strong> <%= @medical_record.diagnosis.humanize.presence || "NA" %></p>
+
+    <p><strong>Notes:</strong></p>
+    <div class="bg-light p-2 rounded">
+      <%= @medical_record.clinical_notes.humanize.presence || "No notes available" %>
+    </div>
+  </div>
+
+  <!-- TREATMENT -->
+  <div class="card p-3 mb-3 shadow-sm">
+    <h6 class="fw-bold mb-3">Treatment Plan</h6>
+
+    <p><strong>Treatment:</strong> <%= @medical_record.treatment_provided.humanize.presence || "NA" %></p>
+  </div>
+
+  <!-- FOLLOW-UP -->
+  <div class="card p-3 shadow-sm">
+    <h6 class="fw-bold mb-3">Follow-up Instructions</h6>
+
+    <p>
+      Next Visit:
+      <span class="text-primary">
+        <%= @medical_record.follow_up_date || "Not scheduled" %>
+      </span>
+    </p>
+
+    <div class="bg-light p-2 rounded">
+      <%= @medical_record.clinical_notes.humanize.presence || "No instructions provided" %>
+    </div>
+  </div>
+
+</div>

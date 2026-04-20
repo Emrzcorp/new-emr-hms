@@ -9,6 +9,8 @@ class Appointment < ApplicationRecord
 
   enum status: { pending: 0, confirmed: 1, completed: 2, cancelled: 3 }
 
+  enum priority: { normal: "Normal", high: "High", urgent: "Urgent" }
+
   scope :today, -> { where(date: Date.current) }
   scope :upcoming, -> { where("date > ?", Date.current) }
   scope :pending, -> { where(status: :pending) }
