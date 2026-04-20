@@ -42,9 +42,25 @@
       </div>
       <!-- Right Side -->
       <div class="profile-header-right">
-        <span class="badge badge-active me-1 bg-success">Active</span>
-        <span class="badge badge-priority me-1 bg-secondary">Normal Priority</span>
-      </div>
+
+			  <% if @is_active %>
+			    <span class="badge badge-active me-1 bg-success">Active</span>
+			  <% else %>
+			    <span class="badge badge-active me-1 bg-secondary">Inactive</span>
+			  <% end %>
+
+			  <% case @latest_priority %>
+			  <% when "high" %>
+			    <span class="badge badge-priority me-1 bg-danger">High</span>
+			  <% when "medium" %>
+          <span class="badge bg-warning text-dark">Medium</span>
+			  <% when "low" %>
+			    <span class="badge badge-priority me-1 bg-dark">Low</span>
+			  <% else %>
+			    <span class="badge badge-priority me-1 bg-secondary">Normal</span>
+			  <% end %>
+
+			</div>
     </div>
 
     <!-- Contact Info -->
@@ -88,6 +104,11 @@
 	      Appointments
 	    </button>
 	  </li>
+	  <li class="nav-item">
+		  <button class="nav-link" data-bs-toggle="tab" data-bs-target="#diagnoses">
+		    Diagnoses
+		  </button>
+		</li>
 	</ul>
 
 	<div class="tab-content">
@@ -100,6 +121,11 @@
 	  <!-- Appointments -->
 	  <div class="tab-pane fade" id="appointments">
 	    <%= render 'appointments', patient: @patient, appointments: @appointments %>
+	  </div>
+
+	  <!-- Diagnoses -->
+	  <div class="tab-pane fade" id="diagnoses">
+	    <%= render 'diagnoses', patient: @patient, appointments: @appointments %>
 	  </div>
 
 	</div>

@@ -1,0 +1,86 @@
+<div class="container my-5 mt-3">
+	<%= form_with model: diagnosis, scope: :diagnosis, local: true do |f| %>
+
+		<h5>Patient Information</h5>
+	  <div class="form-group row">
+	    <div class="col-md-6">
+	      <%= f.label :patient_id, "Select Patient" %>
+			  <%= f.collection_select :patient_id, @patients || [], :id, :full_name,
+			      { prompt: "Select patient" },
+			      class: "form-select" %>
+	    </div>
+	    <div class="col-md-6">
+	      <%= f.label :diagnoses_start_date, "Select date" %>
+	  		<%= f.date_field :diagnoses_start_date, class: "form-control" %>
+	    </div>
+	  </div>
+
+	  <h5 class="mt-3">Diagnosis Details</h5>
+	  <div class="form-group row mt-2">
+	    <div class="col-md-6">
+	    <%= f.label :primary_diagnosis, "Primary Diagnosis" %>
+	     <%= f.text_field :primary_diagnosis,
+	        placeholder: "Enter primary diagnosis",
+	        class: "form-control" %>
+	    </div>
+	    <div class="col-md-6">
+	      <%= f.label :secondary_diagnosis, "Secondary Diagnosis" %>
+	      <%= f.text_field :secondary_diagnosis,
+	        placeholder: "Enter secondary diagnosis (optional)",
+	        class: "form-control" %>
+	    </div>
+	  </div>
+
+	  <div class="form-group row mt-2">
+	    <div class="col-md-6">
+	      <%= f.label :icd_code, "ICD-10 Code" %>
+	      <%= f.text_field :icd_code,
+	        placeholder: "e.g., I10 (Hypertension)",
+	        class: "form-control" %>
+	    </div>
+	    <div class="col-md-6">
+	      <%= f.label :severity, "Severity" %>
+	      <%= f.select :severity,
+	          ["Mild", "Moderate", "Severe"],
+	          { prompt: "Select severity" },
+	          class: "form-select" %>
+	    </div>
+	  </div>
+
+	  <div class="form-group row mt-2">
+	    <div class="col-md-12">
+	      <%= f.label :status, "Status" %>
+	      <%= f.select :status,
+	          ["Active", "Resolved"],
+	          { prompt: "Select Status" },
+	          class: "form-select" %>
+	    </div>
+	  </div>
+
+	  <h5 class="mt-3">Clinical Information</h5>
+    <div >
+      <%= f.label :symptoms, "Associated Symptoms" %>
+      <%= f.text_field :symptoms,
+        placeholder: "Comma separated symptoms (e.g., Chest pain, Shortness of breath)",
+        class: "form-control" %>
+    </div>
+
+    <div>
+      <%= f.label :notes, "Clinical Notes" %>
+      <%= f.text_area :notes,
+	        placeholder: "Additional clinical notes and observations",
+	        class: "form-control" %>
+    </div>
+
+    <div>
+		  <%= f.label :follow_up_date, "Follow-up" %>
+		  <%= f.date_field :follow_up_date, class: "form-control" %>
+		</div>
+
+	  <div class="mt-4">
+	    <%= f.submit "Save Diagnosis", class: "btn btn-primary" %>
+	    <%= link_to "Cancel", diagnoses_path, class: "btn btn-secondary mt-2 mb-2" %>
+	  </div>
+	<% end %>
+
+</div>

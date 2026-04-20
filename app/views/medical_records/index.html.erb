@@ -2,7 +2,7 @@
   <!-- Header -->
   <div class="row align-items-center mb-4">
     <div class="col-md-8">
-      <h3 class="mb-0"><i class="bi bi-file-earmark-text text-primary"></i> Medical History</h3>
+      <h3 class="mb-0"><i class="bi bi-file-earmark-text"></i> Medical History</h3>
       <small class="text-muted">Comprehensive medical records and patient history</small>
     </div>
     <div class="col-md-4 text-md-end mt-3 mt-md-0">
@@ -117,7 +117,7 @@
               </div>
 
               <div>
-                <span class="badge bg-success"><%= record.visit_type %></span>
+                <span class="badge bg-success"><%= record.visit_type.presence || "NA"  %></span>
               </div>
             </div>
 
@@ -126,24 +126,24 @@
             <div class="row mt-3">
               <div class="col-sm-6">
                 <h6 class="mb-3">Diagnosis & Treatment</h6>
-                <p><strong>Diagnosis:</strong> <%= record.diagnosis.titleize %></p>
-                <p><strong>Treatment:</strong> <%= record.treatment_provided.titleize %></p>
-                <p><strong>Doctor:</strong> Dr. <%= record.doctor.full_name %></p>
-                <p><strong>Symptoms:</strong> <%= record.symptoms.titleize %></p>
+                <p><strong>Diagnosis:</strong> <%= record.diagnosis.titleize.presence || "NA" %></p>
+                <p><strong>Treatment:</strong> <%= record.treatment_provided.titleize.presence || "NA" %></p>
+                <p><strong>Doctor:</strong> Dr. <%= record.doctor.full_name.presence || "NA" %></p>
+                <p><strong>Symptoms:</strong> <%= record.symptoms.titleize.presence || "NA" %></p>
               </div>
               <div class="col-sm-6">
                 <h6 class="mb-3">Vital Signs</h6>
-                <p><strong>BP:</strong> <%= record.blood_pressure %></p>
-                <p><strong>Temp:</strong> <%= record.temperature %></p>
-                <p><strong>HR:</strong> <%= record.heart_rate %></p>
-                <p><strong>Weight:</strong> <%= record.weight %></p>
+                <p><strong>BP:</strong> <%= record.blood_pressure.presence || "NA"  %></p>
+                <p><strong>Temp:</strong> <%= record.temperature.presence || "NA"  %></p>
+                <p><strong>HR:</strong> <%= record.heart_rate.presence || "NA"  %></p>
+                <p><strong>Weight:</strong> <%= record.weight.presence || "NA"  %></p>
               </div>
             </div>
 
             <div class="mt-1">
               <strong>Clinical Notes:</strong>
               <div class="border rounded bg-light p-2 mt-1" style="min-height: 50px;">
-                <%= record.clinical_notes %>
+                <%= record.clinical_notes.titleize.presence || "NA" %>
               </div>
             </div>
 

@@ -4,6 +4,7 @@ class Doctor < ApplicationRecord
 	has_many :patients, dependent: :destroy
   has_many :appointments, dependent: :destroy
   has_many :medical_records, dependent: :destroy
+  has_many :diagnoses
 
   has_one_attached :profile_picture
 

@@ -3,7 +3,7 @@
   <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center mb-4">
     <div class="mb-3 mb-md-0">
       <h3 class="mb-0">
-        <i class="bi bi-calendar text-primary"></i> Appointments
+        <i class="bi bi-calendar"></i> Appointments
       </h3>
       <small class="text-muted">Manage patient appointments and scheduling</small>
     </div>
@@ -119,8 +119,8 @@
               </div>
 
               <div class="text-end">
-                <span class="badge bg-light text-dark"><%= appt.appointment_type %></span>
-                <span class="badge bg-success text-white"><%= appt.priority %></span>
+                <span class="badge bg-light text-dark"><%= appt.appointment_type.humanize %></span>
+                <span class="badge bg-success text-white"><%= appt.priority.humanize %></span>
               </div>
             </div>
 
@@ -128,14 +128,14 @@
             <div class="row mb-3">
               <div class="col-12 col-sm-6">
                 <div class="section-title fw-bold mb-1">Appointment Details</div>
-                <p class="mb-1"><i class="fa-solid fa-stethoscope me-2"></i><%= appt.appointment_type %></p>
-                <p class="mb-1"><i class="bi bi-exclamation-circle me-2"></i><%= appt.reason_for_visit %></p>
-                <p class="mb-1"><i class="bi bi-stopwatch me-2"></i><%= appt.duration %> Minutes</p>
+                <p class="mb-1"><i class="fa-solid fa-stethoscope me-2"></i><strong>Type:</strong> <%= appt.appointment_type.humanize %></p>
+                <p class="mb-1"><i class="bi bi-exclamation-circle me-2"></i><strong>Reason:</strong> <%= appt.reason_for_visit.humanize %></p>
+                <p class="mb-1"><i class="bi bi-stopwatch me-2"></i><strong>Duration:</strong> <%= appt.duration %> Minutes</p>
               </div>
               <div class="col-12 col-sm-6">
                 <div class="section-title fw-bold mb-1">Patient Info</div>
-                <p class="mb-1"><i class="bi bi-person me-2"></i>ID: <%= appt.patient.id %></p>
-                <p class="mb-1"><i class="bi bi-calendar me-2"></i>Scheduled: <%= appt.date %></p>
+                <p class="mb-1"><i class="bi bi-person me-2"></i><strong>Patient ID:</strong> <%= appt.patient.id %></p>
+                <p class="mb-1"><i class="bi bi-calendar me-2"></i><strong>Scheduled:</strong> <%= appt.date %></p>
               </div>
             </div>
 
@@ -150,8 +150,8 @@
             <!-- Footer -->
             <div class="d-flex justify-content-between align-items-center mt-auto pt-2 border-top">
               <div class="small">
-                Status: <span class="text-primary fw-semibold"><%= appt.status.capitalize %></span> • 
-                Priority: <span class="text-secondary fw-semibold"><%= appt.priority %></span>
+                <strong>Status:</strong> <span class="text-primary fw-semibold"><%= appt.status.capitalize %></span> • 
+                <strong> Priority:</strong> <span class="text-secondary fw-semibold"><%= appt.priority.capitalize %></span>
               </div>
               <div class="d-flex gap-2">
                 <%= link_to edit_appointment_path(appt), class: "btn btn-outline-primary btn-sm" do %>

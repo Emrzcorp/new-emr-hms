@@ -1,0 +1,206 @@
+<div class="container my-4">
+
+  <!-- Header -->
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    <div>
+      <h4 class="fw-bold"><i class="bi bi-activity me-2 fs-6"></i> Treatment Details</h4>
+      <small>Complete treatment information and monitoring data</small>
+    </div>
+
+    <div>
+      <%= link_to treatments_path, class: "btn btn-light btn-sm" do %>
+        ← Back
+      <% end %>
+
+      <%= link_to edit_treatment_path(@treatment), class: "btn btn-outline-primary btn-sm" do %>
+        <i class="bi bi-pencil"></i> Edit
+      <% end %>
+    </div>
+  </div>
+
+  <div class="card border mt-4 p-3">
+    <div class="row">
+      <div class="col-md-6">
+        <h5><strong><%= @treatment.treatment_name.humanize %></strong></h5>
+
+        <p><strong>Indication:</strong>
+          <%= @treatment.diagnosis&.primary_diagnosis || "NA" %>
+        </p>
+        <p><strong>Frequency:</strong>
+          <%= @treatment.frequency.presence || "NA" %>
+        </p>
+      </div>
+
+      <div class="col-md-6">
+        <div class="text-end">
+          <span class="badge bg-light text-primary me-1"><%= @treatment.treatment_type.humanize %></span>
+
+          <span class="badge <%= @treatment.status == 'Active' ? 'bg-success' : 'bg-secondary' %>">
+            <%= @treatment.status.humanize %>
+          </span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ================= PATIENT INFO ================= -->
+  <div class="card border mt-4 mb-4 p-3">
+
+    <div class="d-flex align-items-center mb-3">
+      <div class="rounded-circle bg-light d-flex align-items-center justify-content-center me-2"
+           style="width: 35px; height: 35px;">
+        <i class="bi bi-person text-primary"></i>
+      </div>
+      <h5 class="mb-0 fw-bold">Patient Information</h5>
+    </div>
+
+    <div class="row">
+      <div class="col-md-4">
+        <small class="text-muted">Patient Name</small>
+        <p class="fw-semibold mb-2">
+          <%= @treatment.patient.full_name %>
+        </p>
+      </div>
+
+      <div class="col-md-4">
+        <small class="text-muted">Patient ID</small>
+        <p class="fw-semibold mb-0">
+          P<%= @treatment.patient.id.to_s.rjust(3, "0") %>
+        </p>
+      </div>
+
+      <div class="col-md-4">
+        <small class="text-muted">Prescribed By</small>
+        <p class="fw-semibold mb-0">
+          Dr. <%= @treatment.doctor.full_name %>
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <div class="row g-3">
+
+    <!-- Prescription Details -->
+    <div class="col-md-6">
+      <div class="card p-3 border rounded">
+        <h6 class="fw-bold mb-3">💊 Prescription Details</h6>
+        <p><strong>Dosage:</strong> <%= @treatment.dosage || "NA" %></p>
+        <p><strong>Frequency:</strong> <%= @treatment.frequency || "NA" %></p>
+        <p><strong>Route:</strong> Oral</p>
+        <p><strong>Status:</strong>
+          <span class="badge <%= @treatment.status == 'Active' ? 'bg-success' : 'bg-secondary' %>"><%= @treatment.status %></span>
+        </p>
+      </div>
+    </div>
+
+    <!-- Timeline -->
+    <div class="col-md-6">
+      <div class="card p-3 border rounded">
+        <h6 class="fw-bold mb-3">📅 Treatment Timeline</h6>
+        <p><strong>Start Date:</strong> <%= @treatment.treatment_start_date %></p>
+        <p><strong>End Date:</strong> Ongoing</p>
+        <p>
+          <span class="badge bg-warning text-dark">
+            ⏳ Next Review: <%= @treatment.next_review_date %>
+          </span>
+        </p>
+      </div>
+    </div>
+
+    <!-- Adherence Tracking -->
+    <div class="col-md-12">
+      <div class="card p-3 border rounded" style="background-color:#eafaf1;">
+        <div class="d-flex justify-content-between align-items-center">
+          <h6 class="fw-bold">📊 Adherence Tracking</h6>
+          <span class="badge bg-success">Excellent</span>
+        </div>
+
+        <p class="mb-1 mt-2"><strong>Adherence Rate:</strong> 95%</p>
+
+        <div class="progress">
+          <div class="progress-bar bg-success" style="width: 95%"></div>
+        </div>
+
+        <small class="text-muted mt-2 d-block">
+          Patient compliance with prescribed treatment schedule
+        </small>
+      </div>
+    </div>
+
+    <!-- Side Effects -->
+    <div class="col-md-12">
+      <div class="card p-3 border rounded" style="background-color:#fdeaea;">
+        <h6 class="fw-bold text-danger">⚠️ Reported Side Effects</h6>
+
+        <% if @treatment.description.present? %>
+          <span class="badge bg-danger"><%= @treatment.description %></span>
+        <% else %>
+          <p class="text-muted">No side effects reported</p>
+        <% end %>
+
+        <small class="text-muted d-block mt-2">
+          Monitor patient for side effects. Contact physician if symptoms worsen.
+        </small>
+      </div>
+    </div>
+
+    <!-- Clinical Notes -->
+    <div class="col-md-12">
+      <div class="card p-3 border rounded">
+        <h6 class="fw-bold">📝 Clinical Notes</h6>
+        <div class="bg-light p-2 rounded mt-2">
+          <%= @treatment.clinical_notes || "No notes available" %>
+        </div>
+      </div>
+    </div>
+
+    <!-- Active Treatment -->
+    <div class="col-md-12">
+      <div class="card p-3 border rounded" style="background-color:#e8f0fe;">
+        <h6 class="fw-bold text-primary">🚀 Active Treatment</h6>
+        <p class="mb-0">
+          This treatment is currently active and ongoing. Patient is being monitored regularly.
+        </p>
+      </div>
+    </div>
+
+    <!-- Safety & Monitoring -->
+    <div class="col-md-12">
+      <div class="card p-3 border rounded">
+        <h6 class="fw-bold">🛡️ Safety & Monitoring</h6>
+
+        <div class="row mt-2">
+          <div class="col-md-6">
+            <div class="border rounded p-2 bg-light">
+              <small class="text-muted">Monitoring Schedule</small>
+              <p class="mb-0"><%= @treatment.next_review_date %></p>
+            </div>
+          </div>
+
+          <div class="col-md-6">
+            <div class="border rounded p-2 bg-light">
+              <small class="text-muted">Treatment Duration</small>
+              <p class="mb-0"><%= @treatment.duration || "Ongoing" %></p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ACTION BUTTONS -->
+  <div class="mt-4 d-flex justify-content-end gap-2">
+    <%= link_to "← Back", treatments_path, class: "btn btn-outline-secondary btn-sm" %>
+
+    <%= link_to "Edit Treatment", edit_treatment_path(@treatment),
+          class: "btn btn-primary btn-sm" %>
+
+    <%= link_to "Update Adherence", "#",
+          class: "btn btn-success btn-sm" %>
+
+    <%= link_to "Print Report", "#",
+          class: "btn btn-dark btn-sm" %>
+  </div>
+</div>

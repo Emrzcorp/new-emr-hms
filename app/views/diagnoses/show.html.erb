@@ -1,0 +1,226 @@
+<div class="container my-4">
+
+  <!-- Header -->
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    <div>
+      <h4 class="fw-bold"><i class="fa-solid fa-stethoscope me-2 fs-6"></i> Diagnosis Details</h4>
+      <small>Complete clinical information and treatment overview</small>
+    </div>
+
+    <div>
+      <%= link_to diagnoses_path, class: "btn btn-light btn-sm" do %>
+        ← Back
+      <% end %>
+
+      <%= link_to edit_diagnosis_path(@diagnosis), class: "btn btn-outline-primary btn-sm" do %>
+        <i class="bi bi-pencil"></i> Edit
+      <% end %>
+    </div>
+  </div>
+
+    <!-- ================= DIAGNOSIS DETAILS ================= -->
+  <div class="card border mt-4 p-3">
+    <div class="row">
+      <div class="col-md-6">
+        <h5><strong><%= @diagnosis.primary_diagnosis.humanize %></strong></h5>
+
+        <p><strong>ICD Code:</strong>
+          <%= @diagnosis.icd_code.presence || "NA" %>
+        </p>
+      </div>
+
+      <div class="col-md-6">
+        <div class="text-end">
+          <% case @diagnosis.severity %>
+          <% when "Severe" %>
+            <span class="badge bg-danger">Severe</span>
+          <% when "Moderate" %>
+            <span class="badge bg-warning text-dark">Moderate</span>
+          <% else %>
+            <span class="badge bg-success">Mild</span>
+          <% end %>
+
+          <% if @diagnosis.status == "Active" %>
+            <span class="badge bg-primary">Active</span>
+          <% else %>
+            <span class="badge bg-secondary">Resolved</span>
+          <% end %>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ================= PATIENT INFO ================= -->
+  <div class="card border mt-4 mb-4 p-3">
+
+    <div class="d-flex align-items-center mb-3">
+      <div class="rounded-circle bg-light d-flex align-items-center justify-content-center me-2"
+           style="width: 35px; height: 35px;">
+        <i class="bi bi-person text-primary"></i>
+      </div>
+      <h5 class="mb-0 fw-bold">Patient Information</h5>
+    </div>
+
+    <div class="row">
+      <div class="col-md-6">
+        <small class="text-muted">Patient Name</small>
+        <p class="fw-semibold mb-2">
+          <%= @diagnosis.patient.full_name %>
+        </p>
+
+        <small class="text-muted">Treating Physician</small>
+        <p class="fw-semibold mb-0">
+          Dr. <%= @diagnosis.doctor.full_name %>
+        </p>
+      </div>
+
+      <div class="col-md-6">
+        <small class="text-muted">Patient ID</small>
+        <p class="fw-semibold mb-0">
+          P<%= @diagnosis.patient.id.to_s.rjust(3, "0") %>
+        </p>
+      </div>
+    </div>
+
+  </div>
+
+
+  <!-- ================= TIMELINE ================= -->
+  <div class="card border p-3">
+
+    <div class="d-flex align-items-center mb-3">
+      <div class="rounded-circle bg-light d-flex align-items-center justify-content-center me-2"
+           style="width: 35px; height: 35px;">
+        <i class="bi bi-calendar text-primary"></i>
+      </div>
+      <h5 class="mb-0 fw-bold">Timeline & Dates</h5>
+    </div>
+
+    <div class="row g-3">
+
+      <!-- First Diagnosed -->
+      <div class="col-md-4">
+        <div class="p-3 rounded border"
+             style="background-color: #eef2ff;">
+          <small class="text-primary fw-semibold">First Diagnosed</small>
+          <h6 class="fw-bold mt-1">
+            <%= @diagnosis.diagnoses_start_date || "NA" %>
+          </h6>
+          <small class="text-muted">Initial diagnosis date</small>
+        </div>
+      </div>
+
+      <!-- Last Updated -->
+      <div class="col-md-4">
+        <div class="p-3 rounded border"
+             style="background-color: #eafaf1;">
+          <small class="text-success fw-semibold">Last Updated</small>
+          <h6 class="fw-bold mt-1">
+            <%= @diagnosis.updated_at.strftime("%Y-%m-%d") %>
+          </h6>
+          <small class="text-muted">Most recent update</small>
+        </div>
+      </div>
+
+      <!-- Next Review -->
+      <div class="col-md-4">
+        <div class="p-3 rounded border"
+             style="background-color: #fff4e5;">
+          <small class="text-warning fw-semibold">Next Review</small>
+          <h6 class="fw-bold mt-1">
+            <%= @diagnosis.follow_up_date || "NA" %>
+          </h6>
+          <small class="text-muted">Scheduled follow-up</small>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+
+  <!-- ================= SYMPTOMS ================= -->
+  <div class="card border mt-4 p-3">
+
+    <!-- Header -->
+    <div class="d-flex align-items-center mb-3">
+      <div class="rounded-circle bg-light d-flex align-items-center justify-content-center me-2"
+           style="width: 35px; height: 35px;">
+        <i class="bi bi-activity text-danger"></i>
+      </div>
+      <h5 class="fw-bold mb-0">Presenting Symptoms</h5>
+    </div>
+
+    <!-- Symptoms Pills -->
+    <div class="d-flex flex-wrap gap-2">
+      <% if @diagnosis.symptoms.present? %>
+        <% @diagnosis.symptoms.split(",").each do |symptom| %>
+          <div class="px-3 py-1 rounded-pill d-flex align-items-center"
+               style="background-color: #f1f3f5; font-size: 0.85rem;">
+            
+            <i class="bi bi-exclamation-triangle text-muted me-2" style="font-size: 0.75rem;"></i>
+            
+            <span><%= symptom.strip.humanize %></span>
+          </div>
+        <% end %>
+      <% else %>
+        <p class="text-muted">No symptoms recorded</p>
+      <% end %>
+    </div>
+
+  </div>
+
+  <!-- ================= TREATMENT ================= -->
+
+  <div class="card border-0 shadow-sm p-3 mt-4" style="background-color: #eaf7ef; border-radius: 12px;">
+  
+    <!-- Header -->
+    <div class="d-flex align-items-center mb-3">
+      <div class="rounded-circle bg-light d-flex align-items-center justify-content-center me-2"
+           style="width: 35px; height: 35px;">
+        <i class="bi bi-capsule-pill text-success"></i>
+      </div>
+      <h5 class="fw-bold mb-0">Treatment Overview</h5>
+    </div>
+
+    <p class="text-muted small mb-3">
+      Current treatment plan and interventions prescribed for this diagnosis 
+    </p>
+
+    <!-- Treatments List -->
+    <% if @diagnosis.treatments.any? %>
+      <% @diagnosis.treatments.each do |t| %>
+        
+        <div class="d-flex align-items-center justify-content-between border rounded p-2 mb-2"
+             style="background: #f6fffa; border-color: #b7ebc6;">
+          
+          <!-- Left -->
+          <div class="d-flex align-items-center">
+            <i class="bi bi-check-circle-fill text-success me-2"></i>
+            <span class="fw-medium">
+              <%= t.treatment_name %>
+              <% if t.dosage.present? %>
+                <small class="text-muted"><%= t.dosage %></small>
+              <% end %>
+            </span>
+          </div>
+        </div>
+      <% end %>
+    <% else %>
+      <div class="text-muted small">
+        No treatments added for this diagnosis
+      </div>
+    <% end %>
+
+  </div>
+
+
+  <!-- ================= NOTES ================= -->
+  <div class="card border mt-4 p-3">
+    <h5 class="fw-bold mb-2">Clinical Notes</h5>
+
+    <div class="bg-light p-2 rounded" style="min-height: 80px;">
+      <%= @diagnosis.notes.humanize.presence || "No notes available" %>
+    </div>
+  </div>
+</div>
