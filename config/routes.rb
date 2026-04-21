@@ -21,6 +21,7 @@ Rails.application.routes.draw do
   resources :medical_records
   resources :diagnoses
   resources :treatments
+  resources :laboratory_results
 
   resources :patient_appointments, only: [:new, :create]
 end

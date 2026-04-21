@@ -1,0 +1,230 @@
+<div class="container my-4">
+
+  <!-- ================= HEADER ================= -->
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    <div>
+      <h4 class="fw-bold">
+        <i class="fa-solid fa-flask me-2 fs-6"></i> Laboratory Result
+      </h4>
+      <small>Detailed test report and clinical insights</small>
+    </div>
+
+    <div>
+      <%= link_to laboratory_results_path, class: "btn btn-light btn-sm" do %>
+        ← Back
+      <% end %>
+
+      <%= link_to edit_laboratory_result_path(@result), class: "btn btn-outline-primary btn-sm" do %>
+        <i class="bi bi-pencil"></i> Edit
+      <% end %>
+    </div>
+  </div>
+
+  <!-- ================= TEST SUMMARY ================= -->
+  <div class="card border mt-4 p-3">
+    <div class="row">
+      <div class="col-md-6">
+        <h5><strong><%= @result.test_name %></strong></h5>
+
+        <p>
+          <strong>Type:</strong>
+          <%= @result.test_type %>
+        </p>
+
+        <p>
+          <strong>Facility:</strong>
+          <%= @result.facility.presence || "NA" %>
+        </p>
+      </div>
+
+      <div class="col-md-6 text-end">
+
+        <!-- Status -->
+        <% case @result.status %>
+        <% when "Completed" %>
+          <span class="badge bg-success">Completed</span>
+        <% when "Pending" %>
+          <span class="badge bg-warning text-dark">Pending</span>
+        <% when "In Progress" %>
+          <span class="badge bg-info text-dark">In Progress</span>
+        <% else %>
+          <span class="badge bg-secondary"><%= @result.status %></span>
+        <% end %>
+
+        <!-- Priority -->
+        <% case @result.priority %>
+        <% when "Stat" %>
+          <span class="badge bg-danger">Stat</span>
+        <% when "Urgent" %>
+          <span class="badge bg-warning text-dark">Urgent</span>
+        <% else %>
+          <span class="badge bg-secondary">Routine</span>
+        <% end %>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= PATIENT INFO ================= -->
+  <div class="card border mt-4 p-3">
+
+    <div class="d-flex align-items-center mb-3">
+      <div class="rounded-circle bg-light d-flex align-items-center justify-content-center me-2"
+           style="width: 35px; height: 35px;">
+        <i class="bi bi-person text-primary"></i>
+      </div>
+      <h5 class="mb-0 fw-bold">Patient Information</h5>
+    </div>
+
+    <div class="row">
+      <div class="col-md-6">
+        <small class="text-muted">Patient Name</small>
+        <p class="fw-semibold">
+          <%= @result.patient.full_name %>
+        </p>
+
+        <small class="text-muted">Physician</small>
+        <p class="fw-semibold">
+          Dr. <%= @result.doctor.full_name %>
+        </p>
+      </div>
+
+      <div class="col-md-6">
+        <small class="text-muted">Patient ID</small>
+        <p class="fw-semibold">
+          P<%= @result.patient.id.to_s.rjust(3, "0") %>
+        </p>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ================= TIMELINE ================= -->
+  <div class="card border mt-4 p-3">
+
+    <div class="d-flex align-items-center mb-3">
+      <div class="rounded-circle bg-light d-flex align-items-center justify-content-center me-2"
+           style="width: 35px; height: 35px;">
+        <i class="bi bi-calendar text-primary"></i>
+      </div>
+      <h5 class="mb-0 fw-bold">Timeline</h5>
+    </div>
+
+    <div class="row g-3">
+
+      <div class="col-md-6">
+        <div class="p-3 rounded border" style="background:#eef2ff;">
+          <small class="text-primary fw-semibold">Test Date</small>
+          <h6 class="fw-bold mt-1">
+            <%= @result.test_date || "NA" %>
+          </h6>
+        </div>
+      </div>
+
+      <div class="col-md-6">
+        <div class="p-3 rounded border" style="background:#eafaf1;">
+          <small class="text-success fw-semibold">Last Updated</small>
+          <h6 class="fw-bold mt-1">
+            <%= @result.updated_at.strftime("%Y-%m-%d") %>
+          </h6>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ================= TEST RESULTS ================= -->
+   <div class="card border mt-4 p-3">
+
+    <h5 class="fw-bold mb-3">Test Results</h5>
+
+    <% if @result.results.present? %>
+
+      <% rows = @result.results.split("\n") %>
+
+      <% rows.each_with_index do |row, index| %>
+        <% name, value, range = row.split("|") %>
+
+        <div class="d-flex justify-content-between align-items-center p-2 mb-2 rounded"
+             style="background-color: #f8f9fa;">
+
+          <!-- LEFT -->
+          <div class="d-flex align-items-center">
+            <i class="bi bi-check-circle-fill text-success me-2"></i>
+            <span class="fw-medium">
+              <%= name %>
+            </span>
+          </div>
+
+          <!-- RIGHT -->
+          <div class="text-end">
+            <%
+              is_abnormal = false
+              if value && range
+                v = value.to_f
+                min, max = range.split("-").map(&:to_f)
+                is_abnormal = v < min || v > max
+              end
+            %>
+
+            <div class="fw-semibold <%= is_abnormal ? 'text-danger' : 'text-success' %>">
+              <%= value %>
+            </div>
+            <%# <small class="text-muted"> %>
+              <%# Ref: <%#= range %>
+            <%# </small> %>
+          </div>
+
+        </div>
+      <% end %>
+
+      <!-- + more indicator -->
+      <% if rows.size > 3 %>
+        <small class="text-muted">+ <%= rows.size - 3 %> more parameters</small>
+      <% end %>
+
+    <% else %>
+      <p class="text-muted">No results available</p>
+    <% end %>
+
+  </div>
+
+  <!-- ================= FLAGS ================= -->
+  <div class="card border mt-4 p-3">
+
+    <h5 class="fw-bold mb-3">Flags & Follow-up</h5>
+
+    <div class="d-flex gap-2 flex-wrap">
+
+      <% if @result.abnormal %>
+        <span class="badge bg-danger">Abnormal</span>
+      <% end %>
+
+      <% if @result.critical %>
+        <span class="badge bg-dark">Critical</span>
+      <% end %>
+
+      <% if @result.follow_up_required %>
+        <span class="badge bg-warning text-dark">Follow-up Required</span>
+      <% end %>
+
+      <% if !@result.abnormal && !@result.critical && !@result.follow_up_required %>
+        <span class="text-muted">No flags</span>
+      <% end %>
+
+    </div>
+
+  </div>
+
+  <!-- ================= NOTES ================= -->
+  <div class="card border mt-4 p-3">
+
+    <h5 class="fw-bold mb-2">Additional Notes</h5>
+
+    <div class="bg-light p-2 rounded" style="min-height: 80px;">
+      <%= @result.additional_notes.presence || "No notes available" %>
+    </div>
+
+  </div>
+
+</div>

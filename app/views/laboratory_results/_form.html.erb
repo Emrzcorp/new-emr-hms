@@ -1,0 +1,73 @@
+<div class="container my-5 mt-3">
+	<%= form_with model: @result, scope: :laboratory_result, local: true do |f| %>
+
+		<h5>Patient Information</h5>
+		<div class="row">
+		  <div class="col-md-6">
+		  	<%= f.label :patient_id, "Patient" %>
+		    <%= f.collection_select :patient_id, @patients, :id, :full_name,
+		      { prompt: "Select Patient" }, class: "form-select" %>
+		  </div>
+		  <div class="col-md-6">
+		  	<%= f.label :test_date, "Test Date" %>
+		    <%= f.date_field :test_date, class: "form-control" %>
+		  </div>
+		</div>
+
+		<h5 class="mt-3">Test Details</h5>
+		<div class="row">
+		  <div class="col-md-6">
+		  	<%= f.label :test_type, "Test Type" %>
+		    <%= f.select :test_type, LaboratoryResult::TEST_TYPES, {}, class: "form-select" %>
+		  </div>
+		  <div class="col-md-6">
+		  	<%= f.label :test_name, "Test Name" %>
+		    <%= f.text_field :test_name, placeholder: "Test Name", class: "form-control" %>
+		  </div>
+		</div>
+
+		<div class="row mt-2">
+		  <div class="col-md-6">
+		  	<%= f.label :facility, "Laboratory/Facility" %>
+		    <%= f.text_field :facility, placeholder: "Lab / Facility", class: "form-control" %>
+		  </div>
+		  <div class="col-md-3">
+		  	<%= f.label :status, "Status" %>
+		    <%= f.select :status, LaboratoryResult::STATUS, {}, class: "form-select" %>
+		  </div>
+		  <div class="col-md-3">
+		  	<%= f.label :priority, "Priority" %>
+		    <%= f.select :priority, LaboratoryResult::PRIORITY, {}, class: "form-select" %>
+		  </div>
+		</div>
+
+		<h5 class="mt-3">Test Results</h5>
+		<%= f.label :results, "Results", class: "mt-1 mb-1" %>
+		<%= f.text_area :results, class: "form-control mb-2", placeholder: "Results" %>
+
+		<%= f.label :reference_range, "Reference Range", class: "mt-1 mb-1" %>
+		<%= f.text_field :reference_range, class: "form-control mb-2", placeholder: "Reference Range" %>
+
+		<%= f.label :clinical_interpretation, "Clinical Interpretation", class: "mt-1 mb-1" %>
+		<%= f.text_area :clinical_interpretation, class: "form-control mb-2", placeholder: "Clinical Interpretation" %>
+
+		<%= f.label :additional_notes, "Additional Notes", class: "mt-1 mb-1" %>
+		<%= f.text_area :additional_notes, class: "form-control mb-2", placeholder: "Notes" %>
+
+		<h5 class="mt-3">Flags & Follow-up</h5>
+		<div class="form-check">
+		  <%= f.check_box :abnormal %> Abnormal
+		</div>
+		<div class="form-check">
+		  <%= f.check_box :critical %> Critical
+		</div>
+		<div class="form-check">
+		  <%= f.check_box :follow_up_required %> Follow-up Required
+		</div>
+
+		<div class="mt-3">
+		  <%= f.submit "Save", class: "btn btn-primary" %>
+		  <%= link_to "Cancel", laboratory_results_path, class: "btn btn-secondary" %>
+		</div>
+	<% end %>
+</div>

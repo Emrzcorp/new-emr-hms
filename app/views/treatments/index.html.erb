@@ -152,7 +152,7 @@
 
         <!-- Middle -->
         <div class="row mt-4">
-          <div class="col-md-4">
+          <div class="col-md-6">
             <h6 class="fw-bold">Treatment Details</h6>
             <p class="mb-1"><strong>Dosage:</strong> <%= t.dosage %></p>
             <p class="mb-1"><strong>Frequency:</strong> <%= t.frequency %></p>
@@ -160,21 +160,11 @@
             <p class="mb-1"><strong>Prescribed by:</strong> Dr. <%= t.doctor.full_name %></p>
           </div>
 
-          <div class="col-md-4">
+          <div class="col-md-6">
             <h6 class="fw-bold">Timeline</h6>
             <p class="mb-1"><strong>Start Date:</strong> <%= t.treatment_start_date %></p>
             <p class="mb-1"><strong>End Date:</strong> Ongoing</p>
             <p class="mb-1"><strong>Next Review:</strong> <%= t.next_review_date %></p>
-          </div>
-
-          <div class="col-md-4">
-            <h6 class="fw-bold">Adherence & Monitoring</h6>
-            <small>Adherence Rate</small>
-            <% adherence = 95 %>
-            <div class="progress mt-2" style="height:8px;">
-              <div class="progress-bar bg-success" style="width:<%= adherence %>%"></div>
-            </div>
-            <small class="text-success"><%= adherence %>%</small>
           </div>
 
           <div class="mt-2">
