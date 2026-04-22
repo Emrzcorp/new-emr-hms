@@ -6,11 +6,13 @@
       <small class="text-muted">Track and manage patient diagnoses and treatment progress</small>
     </div>
 
-      <button class="btn btn-primary btn-sm"
-        data-bs-toggle="modal"
-        data-bs-target="#diagnosesModal">
-        + New Diagnosis
-      </button>
+      <% if current_user.doctor? %>
+        <button class="btn btn-primary btn-sm rounded-3"
+          data-bs-toggle="modal"
+          data-bs-target="#diagnosesModal">
+          + New Diagnosis
+        </button>
+      <% end %>
 
       <!-- Modal -->
       <div class="modal fade" id="diagnosesModal" tabindex="-1" aria-labelledby="diagnosesModalLabel" aria-hidden="true">
@@ -196,8 +198,10 @@
 
               <div class="d-flex gap-2 mt-2 mt-md-0">
                 <!-- Edit -->
-                <%= link_to edit_diagnosis_path(d), class: "btn btn-outline-secondary btn-sm" do %>
-                  <i class="bi bi-pencil"></i> Edit
+                <% if current_user.doctor? %>
+                  <%= link_to edit_diagnosis_path(d), class: "btn btn-outline-secondary btn-sm" do %>
+                    <i class="bi bi-pencil"></i> Edit
+                  <% end %>
                 <% end %>
                 
                 <!-- View -->

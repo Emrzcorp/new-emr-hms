@@ -1,30 +1,38 @@
 class LaboratoryResultsController < ApplicationController
   before_action :authenticate_user!
-  before_action :set_doctor
+  # before_action :set_doctor
   before_action :set_result, only: [:show, :edit, :update, :destroy]
 
   def index
-    @results = LaboratoryResult
-                .where(doctor_id: @doctor.id)
-                .includes(:patient)
-                .order(created_at: :desc)
+	  if current_user.doctor.present?
+	    @doctor = current_user.doctor
 
-    @patients = @doctor.patients
+	    @results = LaboratoryResult
+	                .where(doctor_id: @doctor.id)
+	                .includes(:patient)
+	                .order(created_at: :desc)
 
-    # Stats
-    @total_tests = @results.count
-    @completed = @results.where(status: "Completed").count
-    @pending = @results.where(status: "Pending").count
-    @abnormal = @results.where(abnormal: true).count
+	    @patients = @doctor.patients
 
-    # Filters
-    if params[:query].present?
-      @results = @results.joins(:patient).where(
-        "patients.first_name ILIKE :q OR laboratory_results.test_name ILIKE :q",
-        q: "%#{params[:query]}%"
-      )
-    end
-  end
+	  elsif current_user.patient.present?
+	    @patient = current_user.patient
+
+	    @results = LaboratoryResult
+	                .where(patient_id: @patient.id)
+	                .includes(:doctor)
+	                .order(created_at: :desc)
+
+	    @patients = []
+	  else
+	    @results = LaboratoryResult.none
+	  end
+
+	  # Stats
+	  @total_tests = @results.count
+	  @completed   = @results.where(status: "Completed").count
+	  @pending     = @results.where(status: "Pending").count
+	  @abnormal    = @results.where(abnormal: true).count
+	end
 
   def new
     @result = LaboratoryResult.new
