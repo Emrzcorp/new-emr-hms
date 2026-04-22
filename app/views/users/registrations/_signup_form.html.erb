@@ -85,14 +85,31 @@
     const patientFields = document.getElementById("patient_fields");
 
     function toggleRoleFields() {
+      if (!roleSelect) return;
+
       const role = roleSelect.value;
+
       doctorFields.style.display = role === "doctor" ? "block" : "none";
       patientFields.style.display = role === "patient" ? "block" : "none";
     }
 
-    roleSelect.addEventListener("change", toggleRoleFields);
-    toggleRoleFields(); // initialize on page load
+    // Change event
+    if (roleSelect) {
+      roleSelect.addEventListener("change", toggleRoleFields);
+    }
+
+    // ✅ IMPORTANT: Run when Sign Up tab is shown
+    const signupTab = document.getElementById("signup-tab");
+
+    if (signupTab) {
+      signupTab.addEventListener("shown.bs.tab", function () {
+        toggleRoleFields();
+      });
+    }
+
+    // Initial load
+    toggleRoleFields();
   });
-</script>
+  </script>
 
 
