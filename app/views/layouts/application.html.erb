@@ -69,6 +69,31 @@
         <%= yield %>
       </main>
     <% end %>
+
+    <div aria-live="polite" aria-atomic="true"
+       class="position-fixed top-0 end-0 p-3"
+       style="z-index: 1080">
+
+      <div id="toast-container">
+        <% flash.each do |type, message| %>
+          <div class="toast align-items-center text-white border-0 mb-2
+               <%= type == "notice" ? "bg-success" : "bg-danger" %>"
+               role="alert" data-bs-delay="4000">
+
+            <div class="d-flex">
+              <div class="toast-body">
+                <i class="bi <%= type == "notice" ? "bi-check-circle" : "bi-exclamation-triangle" %> me-2"></i>
+                <%= message %>
+              </div>
+              <button type="button" class="btn-close btn-close-white me-2 m-auto"
+                      data-bs-dismiss="toast"></button>
+            </div>
+
+          </div>
+        <% end %>
+      </div>
+    </div>
+
   </body>
 </html>
 
@@ -77,3 +102,13 @@
     font-family: "Roboto", sans-serif;
   }
 </style>
+
+<script>
+  document.addEventListener("turbo:load", () => {
+    const toastElList = document.querySelectorAll(".toast");
+    toastElList.forEach((toastEl) => {
+      const toast = new bootstrap.Toast(toastEl);
+      toast.show();
+    });
+  });
+</script>

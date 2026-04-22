@@ -32,7 +32,10 @@
       <%#= f.label :appointment_type, class: "form-label" %>
       <%#= f.select :appointment_type, ["Consultation", "Follow-up", "Routine Checkup"], {prompt: 'Select Type'}, class: "form-select" %>
       <%= f.label :priority, class: "form-label" %>
-    	<%= f.select :priority, ["Normal", "High", "Urgent"], {}, class: "form-select" %>
+    	<%= f.select :priority,
+          Appointment.priorities.keys.map { |p| [p.titleize, p] },
+          {},
+          class: "form-select" %>
     </div>
   </div>
 
