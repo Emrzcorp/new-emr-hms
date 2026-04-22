@@ -1,7 +1,7 @@
 class PatientsController < ApplicationController
   before_action :authenticate_user!
   before_action :set_doctor
-  before_action :set_patient, only: [:show, :edit, :update]  # ✅ add update here
+  before_action :set_patient, only: [:show, :edit, :update] 
 
   def index
     @patients = @doctor.patients.includes(:medical_records, :appointments)
@@ -32,17 +32,24 @@ class PatientsController < ApplicationController
       user = User.find_or_initialize_by(email: patient_params[:email_address])
 
       if user.new_record?
-        user.password = SecureRandom.hex(8)
+        # user.password = SecureRandom.hex(8)
+        generated_password = SecureRandom.hex(8)
+        user.password = generated_password
+
+        Rails.logger.info "Patient password: #{generated_password}"
+
         user.role = :patient
         user.save!
-        user.send_reset_password_instructions
+        # user.send_reset_password_instructions
       end
 
       @patient = @doctor.patients.new(patient_params)
       @patient.user = user
 
       if @patient.save
-        redirect_to patients_path, notice: "Patient created successfully. Login instructions sent."
+        # redirect_to patients_path, notice: "Patient created successfully. Login instructions sent."
+        redirect_to patients_path,
+          notice: "Patient created. Temporary password: #{generated_password}"
       else
         raise ActiveRecord::Rollback
       end
@@ -54,7 +61,6 @@ class PatientsController < ApplicationController
     render :new, status: :unprocessable_entity
   end
 
-  # ✅ ADD THIS
   def update
     if @patient.update(patient_params)
       redirect_to patient_path(@patient), notice: "Patient updated successfully"
