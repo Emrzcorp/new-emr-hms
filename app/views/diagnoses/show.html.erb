@@ -12,8 +12,10 @@
         ← Back
       <% end %>
 
-      <%= link_to edit_diagnosis_path(@diagnosis), class: "btn btn-outline-primary btn-sm" do %>
-        <i class="bi bi-pencil"></i> Edit
+      <% if current_user.doctor? %>
+        <%= link_to edit_diagnosis_path(@diagnosis), class: "btn btn-outline-primary btn-sm" do %>
+          <i class="bi bi-pencil"></i> Edit
+        <% end %>
       <% end %>
     </div>
   </div>

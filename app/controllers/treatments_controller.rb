@@ -1,18 +1,35 @@
 class TreatmentsController < ApplicationController
   before_action :authenticate_user!
-  before_action :set_doctor
+  # before_action :set_doctor
   before_action :set_treatment, only: [:show, :edit, :update, :destroy]
 
   def index
-    @treatments = Treatment
-                    .where(doctor_id: @doctor.id)
-                    .includes(:patient, :diagnosis)
-                    .order(created_at: :desc)
+    if current_user.doctor.present?
+      @doctor = current_user.doctor
 
-    @patients = @doctor.patients
-    @diagnoses = Diagnosis.where(doctor_id: @doctor.id)
+      @treatments = Treatment
+                      .where(doctor_id: @doctor.id)
+                      .includes(:patient, :diagnosis)
+                      .order(created_at: :desc)
 
-    # Dashboard stats
+      @patients = @doctor.patients
+      @diagnoses = Diagnosis.where(doctor_id: @doctor.id)
+
+    elsif current_user.patient.present?
+      @patient = current_user.patient
+
+      @treatments = Treatment
+                      .where(patient_id: @patient.id)
+                      .includes(:doctor, :diagnosis)
+                      .order(created_at: :desc)
+
+      @patients = []   # not needed for patient
+      @diagnoses = @patient.diagnoses
+    else
+      @treatments = Treatment.none
+    end
+
+    # Stats (safe for both)
     @total_treatments = @treatments.count
     @active_treatments = @treatments.where(status: "Active").count
     @completed_treatments = @treatments.where(status: "Completed").count
@@ -80,8 +97,13 @@ class TreatmentsController < ApplicationController
   end
 
   def load_dropdowns
-    @patients = @doctor.patients
-    @diagnoses = Diagnosis.where(doctor_id: @doctor.id)
+    if current_user.doctor.present?
+      @patients = @doctor.patients
+      @diagnoses = Diagnosis.where(doctor_id: @doctor.id)
+    else
+      @patients = []
+      @diagnoses = []
+    end
   end
 
   def treatment_params

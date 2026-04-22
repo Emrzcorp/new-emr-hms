@@ -64,48 +64,50 @@
   </ul>
   <hr>
   <!-- Quick Stats -->
-  <div class="mt-4 px-2">
+  <% if current_user.doctor? %>
+    <div class="mt-4 px-2">
 
-    <h6 class="text-muted mb-3">Quick Stats</h6>
+      <h6 class="text-muted mb-3">Quick Stats</h6>
 
-    <div class="d-flex flex-column gap-2">
+      <div class="d-flex flex-column gap-2">
 
-      <!-- Total Patients -->
-      <div class="d-flex justify-content-between align-items-center p-2 rounded bg-light">
-        <div class="d-flex align-items-center">
-          <i class="bi bi-people text-primary me-2"></i>
-          <span>Total Patients</span>
+        <!-- Total Patients -->
+        <div class="d-flex justify-content-between align-items-center p-2 rounded bg-light">
+          <div class="d-flex align-items-center">
+            <i class="bi bi-people text-primary me-2"></i>
+            <span>Total Patients</span>
+          </div>
+          <span class="badge bg-light text-dark border">
+            <%= @total_patients || 0 %>
+          </span>
         </div>
-        <span class="badge bg-light text-dark border">
-          <%= @total_patients || 0 %>
-        </span>
-      </div>
 
-      <!-- Today's Visits -->
-      <div class="d-flex justify-content-between align-items-center p-2 rounded bg-light">
-        <div class="d-flex align-items-center">
-          <i class="bi bi-activity text-success me-2"></i>
-          <span>Today's Visits</span>
+        <!-- Today's Visits -->
+        <div class="d-flex justify-content-between align-items-center p-2 rounded bg-light">
+          <div class="d-flex align-items-center">
+            <i class="bi bi-activity text-success me-2"></i>
+            <span>Today's Visits</span>
+          </div>
+          <span class="badge bg-light text-dark border">
+            <%= @today_visits || 0 %>
+          </span>
         </div>
-        <span class="badge bg-light text-dark border">
-          <%= @today_visits || 0 %>
-        </span>
-      </div>
 
-      <!-- Pending Tests -->
-      <div class="d-flex justify-content-between align-items-center p-2 rounded bg-light">
-        <div class="d-flex align-items-center">
-          <i class="bi bi-exclamation-circle text-warning me-2"></i>
-          <span>Pending Tests</span>
+        <!-- Pending Tests -->
+        <div class="d-flex justify-content-between align-items-center p-2 rounded bg-light">
+          <div class="d-flex align-items-center">
+            <i class="bi bi-exclamation-circle text-warning me-2"></i>
+            <span>Pending Tests</span>
+          </div>
+          <span class="badge bg-light text-dark border">
+            <%= @pending_tests || 0 %>
+          </span>
         </div>
-        <span class="badge bg-light text-dark border">
-          <%= @pending_tests || 0 %>
-        </span>
-      </div>
 
+      </div>
     </div>
-  </div>
-  <hr>
+    <hr>
+  <% end %>
   <ul class="nav nav-pills flex-column mb-auto">
     <li class="nav-item">
       <%= link_to destroy_user_session_path, class:"btn btn-outline-danger w-100" do %>

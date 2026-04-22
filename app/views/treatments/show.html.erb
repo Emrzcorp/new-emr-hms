@@ -12,8 +12,10 @@
         ← Back
       <% end %>
 
-      <%= link_to edit_treatment_path(@treatment), class: "btn btn-outline-primary btn-sm" do %>
-        <i class="bi bi-pencil"></i> Edit
+      <% if current_user.doctor? %>
+        <%= link_to edit_treatment_path(@treatment), class: "btn btn-outline-primary btn-sm" do %>
+          <i class="bi bi-pencil"></i> Edit
+        <% end %>
       <% end %>
     </div>
   </div>
@@ -174,11 +176,10 @@
   <div class="mt-4 d-flex justify-content-end gap-2">
     <%= link_to "← Back", treatments_path, class: "btn btn-outline-secondary btn-sm" %>
 
-    <%= link_to "Edit Treatment", edit_treatment_path(@treatment),
+    <% if current_user.doctor? %>
+      <%= link_to "Edit Treatment", edit_treatment_path(@treatment),
           class: "btn btn-primary btn-sm" %>
-
-    <%= link_to "Update Adherence", "#",
-          class: "btn btn-success btn-sm" %>
+    <% end %>      
 
     <%= link_to "Print Report", "#",
           class: "btn btn-dark btn-sm" %>
