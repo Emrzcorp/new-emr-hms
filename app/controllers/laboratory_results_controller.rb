@@ -1,6 +1,6 @@
 class LaboratoryResultsController < ApplicationController
   before_action :authenticate_user!
-  # before_action :set_doctor
+  before_action :set_doctor, if: -> { current_user.doctor.present? }
   before_action :set_result, only: [:show, :edit, :update, :destroy]
 
   def index
@@ -35,13 +35,18 @@ class LaboratoryResultsController < ApplicationController
 	end
 
   def new
-    @result = LaboratoryResult.new
-    load_dropdowns
-  end
+	  unless current_user.doctor?
+	    redirect_to laboratory_results_path, alert: "Access denied"
+	    return
+	  end
+
+	  @result = LaboratoryResult.new
+	  load_dropdowns
+	end
 
   def create
     @result = LaboratoryResult.new(result_params)
-    @result.doctor = @doctor
+    @result.doctor = current_user.doctor
 
     if @result.save
       redirect_to laboratory_results_path, notice: "Test result created"
@@ -82,8 +87,13 @@ class LaboratoryResultsController < ApplicationController
   end
 
   def load_dropdowns
-    @patients = @doctor.patients
-  end
+	  if current_user.doctor.present?
+	    doctor = current_user.doctor
+	    @patients = doctor.patients
+	  else
+	    @patients = []
+	  end
+	end
 
   def result_params
     params.require(:laboratory_result).permit(

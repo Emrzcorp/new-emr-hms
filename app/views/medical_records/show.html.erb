@@ -25,7 +25,7 @@
   </div>
 
   <!-- PATIENT INFO -->
-  <div class="card p-3 mb-3 shadow-sm">
+  <div class="card p-3 mb-3">
     <h6 class="fw-bold mb-3">Patient Information</h6>
 
     <div class="row">
@@ -54,7 +54,7 @@
   </div>
 
   <!-- VISIT DETAILS -->
-  <div class="card p-3 mb-3 shadow-sm">
+  <div class="card p-3 mb-3">
     <h6 class="fw-bold mb-3">Visit Details</h6>
 
     <div class="row">
@@ -83,7 +83,7 @@
   </div>
 
   <!-- SYMPTOMS -->
-  <div class="card p-3 mb-3 shadow-sm">
+  <div class="card p-3 mb-3">
     <h6 class="fw-bold mb-3">Chief Complaint & Symptoms</h6>
 
     <p><strong>Primary Complaint:</strong> <%= @medical_record.diagnosis.humanize.presence || "NA" %></p>
@@ -99,7 +99,7 @@
   </div>
 
   <!-- VITALS -->
-  <div class="card p-3 mb-3 shadow-sm">
+  <div class="card p-3 mb-3">
     <h6 class="fw-bold mb-3">Vital Signs & Measurements</h6>
 
     <div class="row text-center">
@@ -134,7 +134,7 @@
   </div>
 
   <!-- DIAGNOSIS -->
-  <div class="card p-3 mb-3 shadow-sm">
+  <div class="card p-3 mb-3">
     <h6 class="fw-bold mb-3">Diagnosis & Assessment</h6>
 
     <p><strong>Diagnosis:</strong> <%= @medical_record.diagnosis.humanize.presence || "NA" %></p>
@@ -146,14 +146,14 @@
   </div>
 
   <!-- TREATMENT -->
-  <div class="card p-3 mb-3 shadow-sm">
+  <div class="card p-3 mb-3">
     <h6 class="fw-bold mb-3">Treatment Plan</h6>
 
     <p><strong>Treatment:</strong> <%= @medical_record.treatment_provided.humanize.presence || "NA" %></p>
   </div>
 
   <!-- FOLLOW-UP -->
-  <div class="card p-3 shadow-sm">
+  <div class="card p-3">
     <h6 class="fw-bold mb-3">Follow-up Instructions</h6>
 
     <p>
