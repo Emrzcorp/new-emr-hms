@@ -10,6 +10,8 @@ class Patient < ApplicationRecord
 
   # validates :active, inclusion: { in: [true, false] } 
 
+  STATUS = ["Pending", "Completed", "In Progress", "Cancelled"]
+
   def full_name
     "#{first_name} #{last_name}"
   end

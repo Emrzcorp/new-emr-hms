@@ -17,6 +17,10 @@
           <i class="bi bi-pencil"></i> Edit
         <% end %>
       <% end %>
+
+      <%= link_to "#", class: "btn btn-dark btn-sm" do %>
+        <i class="fa-solid fa-print"></i> Print Report
+      <% end %>
     </div>
   </div>
 
@@ -169,19 +173,5 @@
         </div>
       </div>
     </div>
-
-  </div>
-
-  <!-- ACTION BUTTONS -->
-  <div class="mt-4 d-flex justify-content-end gap-2">
-    <%= link_to "← Back", treatments_path, class: "btn btn-outline-secondary btn-sm" %>
-
-    <% if current_user.doctor? %>
-      <%= link_to "Edit Treatment", edit_treatment_path(@treatment),
-          class: "btn btn-primary btn-sm" %>
-    <% end %>      
-
-    <%= link_to "Print Report", "#",
-          class: "btn btn-dark btn-sm" %>
   </div>
 </div>

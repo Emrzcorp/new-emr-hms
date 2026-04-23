@@ -11,7 +11,7 @@
       <div class="d-flex justify-content-between">
         <div>
           <h6 class="fw-bold mb-1">
-            <%= record.diagnosis.presence || "General Checkup" %>
+            <%= record.diagnosis.humanize.presence || "General Checkup" %>
           </h6>
           <small class="text-muted">
             Dr. <%= record.doctor.full_name %> • 
@@ -20,12 +20,12 @@
         </div>
 
         <span class="badge bg-light text-dark">
-          <%= record.visit_type %>
+          <%= record.visit_type.humanize %>
         </span>
       </div>
 
       <p class="mt-2 mb-3">
-        <%= record.clinical_notes.presence || "No notes available" %>
+        <%= record.clinical_notes.humanize.presence || "No notes available" %>
       </p>
 
       <!-- Vitals -->

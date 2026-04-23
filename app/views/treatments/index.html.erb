@@ -40,7 +40,7 @@
   <!-- Summary Cards -->
   <div class="row g-3 mb-4">
     <div class="col-md-3">
-      <div class="card-summary text-start border-0 shadow-sm p-3 rounded-4" style="background:#eaf3ff;">
+      <div class="card-summary text-start border-0 p-3 rounded-3" style="background:#eaf3ff;">
         <div class="d-flex justify-content-between">
           <div>
             <small>Total Treatments</small>
@@ -53,7 +53,7 @@
     </div>
 
     <div class="col-md-3">
-      <div class="card-summary text-start border-0 shadow-sm p-3 rounded-4" style="background:#eafbf1;">
+      <div class="card-summary text-start border-0 p-3 rounded-3" style="background:#eafbf1;">
         <div class="d-flex justify-content-between">
           <div>
             <small>Active Treatments</small>
@@ -66,7 +66,7 @@
     </div>
 
     <div class="col-md-3">
-      <div class="card-summary text-start border-0 shadow-sm p-3 rounded-4" style="background:#f6efff;">
+      <div class="card-summary text-start border-0 p-3 rounded-3" style="background:#f6efff;">
         <div class="d-flex justify-content-between">
           <div>
             <small>Medications</small>
@@ -79,7 +79,7 @@
     </div>
 
     <div class="col-md-3">
-      <div class="card-summary text-start border-0 shadow-sm p-3 rounded-4" style="background:#fff5eb;">
+      <div class="card-summary text-start border-0 p-3 rounded-3" style="background:#fff5eb;">
         <div class="d-flex justify-content-between">
           <div>
             <small>Completed</small>
@@ -100,7 +100,7 @@
   </div>
 
   <!-- Search Filters -->
-  <div class="card border-0 shadow-sm rounded-4 p-3 mb-4">
+  <div class="card border rounded-3 p-3 mb-4">
     <h6 class="fw-bold">Search & Filter Treatments</h6>
     <small class="text-muted">Find specific treatments using search and filter options</small>
 
@@ -130,7 +130,7 @@
   <!-- Treatment Cards -->
   <% if @treatments.present? %>
     <% @treatments.each do |t| %>
-      <div class="card border-0 shadow-sm rounded-4 p-4 mb-4">
+      <div class="card border rounded-3 p-4 mb-4">
         
         <!-- Top -->
         <div class="d-flex justify-content-between align-items-start">

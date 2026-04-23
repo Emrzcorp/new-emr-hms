@@ -1,6 +1,6 @@
 class TreatmentsController < ApplicationController
   before_action :authenticate_user!
-  # before_action :set_doctor
+  before_action :set_doctor
   before_action :set_treatment, only: [:show, :edit, :update, :destroy]
 
   def index
@@ -55,7 +55,7 @@ class TreatmentsController < ApplicationController
 
   def create
     @treatment = Treatment.new(treatment_params)
-    @treatment.doctor = @doctor
+    @treatment.doctor = current_user.doctor
 
     if @treatment.save
       redirect_to treatments_path, notice: "Treatment created successfully"
@@ -98,8 +98,11 @@ class TreatmentsController < ApplicationController
 
   def load_dropdowns
     if current_user.doctor.present?
-      @patients = @doctor.patients
-      @diagnoses = Diagnosis.where(doctor_id: @doctor.id)
+      doctor = current_user.doctor
+
+      @patients = doctor.patients
+      @diagnoses = Diagnosis.where(doctor_id: doctor.id)
+
     else
       @patients = []
       @diagnoses = []
