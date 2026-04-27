@@ -1,0 +1,52 @@
+<%= form_with url: patient_appointments_path, method: :get, local: true do %>
+  <div class="card p-3 mb-4">
+    <h5>Search Appointments</h5>
+    <p class="text-muted">Find and filter your appointments</p>
+
+    <div class="row g-2">
+      <!-- 🔍 Search -->
+      <div class="col-12 col-md-4">
+        <%= text_field_tag :query, params[:query],
+          class: "form-control",
+          placeholder: "Search by doctor, reason...",
+          autocomplete: "off" %>
+      </div>
+
+      <!-- 📌 Status -->
+      <div class="col-6 col-md-2">
+        <%= select_tag :status,
+          options_for_select(
+            [["All Status", ""], ["Pending", "pending"], ["Confirmed", "confirmed"], ["Completed", "completed"], ["Cancelled", "cancelled"]],
+            params[:status]
+          ),
+          class: "form-select",
+          onchange: "this.form.submit();" %>
+      </div>
+
+      <!-- 📌 Type -->
+      <div class="col-6 col-md-2">
+        <%= select_tag :appointment_type,
+          options_for_select(
+            [["All Types", ""]] +
+            Appointment.appointment_type_ints.keys.map { |k| [k.humanize, k] },
+            params[:appointment_type]
+          ),
+          class: "form-select",
+          onchange: "this.form.submit();" %>
+      </div>
+
+      <!-- 📅 Date -->
+      <div class="col-6 col-md-2">
+        <%= date_field_tag :date, params[:date], class: "form-control mb-1" %>
+      </div>
+
+      <div class="col-12 col-md-2">
+        <%= submit_tag "Search", class: "btn btn-primary btn-md" %>
+
+        <%= link_to "Reset",
+              patient_appointments_path,
+              class: "btn btn-outline-secondary btn-md" %>
+      </div>
+    </div>
+  </div>
+<% end %>

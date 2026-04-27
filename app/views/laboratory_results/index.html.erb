@@ -1,19 +1,14 @@
 <div class="container my-4">
 
   <!-- Header -->
-  <div class="d-flex justify-content-between align-items-center mb-4">
-    <div>
-      <h3 class="fw-bold mb-0">
-        <i class="fa-solid fa-vial"></i>
-        Laboratory Results
-      </h3>
-      <small class="text-muted">
-        View and manage patient test results and lab reports
-      </small>
+  <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center mb-4">
+    <div class="mb-3 mb-md-0">
+      <h3 class="mb-0"><i class="fa-solid fa-vial"></i> Laboratory Results</h3>
+      <small class="text-muted">View and manage patient test results and lab reports</small>
     </div>
 
       <% if current_user.doctor? %>
-        <%= link_to new_laboratory_result_path, class: 'btn btn-primary btn-sm rounded-3 mb-2', data: { bs_toggle: 'modal', bs_target: "#treatmentModal" }  do %>
+        <%= link_to new_laboratory_result_path, class: 'btn btn-primary btn-sm mb-2 rounded-3', data: { bs_toggle: 'modal', bs_target: "#treatmentModal" }  do %>
           <i class="fa-solid fa-plus me-2"></i> Order New Test
         <% end %>
       <% end %>
@@ -93,40 +88,15 @@
   </div>
 
   <!-- Search Filters -->
-  <div class="card border rounded-3 p-3 mb-4">
-    <h6 class="fw-bold">Search & Filter Test Results</h6>
-    <small class="text-muted">Find specific test results using search and filter options</small>
-
-    <div class="row mt-3">
-      <div class="col-md-8">
-        <%#= form_with url: laboratory_results_path, method: :get, local: true do %>
-          <%#= text_field_tag :query, params[:query],
-                class: "form-control",
-                placeholder: "Search by patient name..." %>
-      </div>
-
-      <div class="col-md-2">
-          <%#= select_tag :treatment_type,
-                options_for_select(["All Types","Medication","Therapy"], params[:treatment_type]),
-                class: "form-select" %>
-      </div>
-
-      <div class="col-md-2">
-          <%#= select_tag :status,
-                options_for_select(["All Statuses","Active","Completed"], params[:status]),
-                class: "form-select" %>
-        <%# end %>
-      </div>
-    </div>
-  </div>
+  <%= render 'laboratory_results/search' %>
 
   <!-- Treatment Cards -->
   <% if @results.present? %>
     <% @results.each do |t| %>
-      <div class="card border rounded-3 p-4 mb-4">
+      <div class="card border rounded-3 p-4 mb-2 shadow-none">
         
         <!-- Top -->
-        <div class="d-flex justify-content-between align-items-start">
+        <div class="d-flex flex-column flex-md-row justify-content-between align-items-start gap-2">
           <div>
             <h5 class="fw-bold mb-1">
               <i class="fa-solid fa-vial text-primary me-2"></i>
@@ -137,7 +107,7 @@
             </small>
           </div>
 
-          <div>
+          <div class="d-flex flex-wrap gap-1">
             <% case t.status %>
             <% when "Completed" %>
               <span class="badge bg-success">Completed</span>
@@ -161,10 +131,12 @@
           </div>
         </div>
 
+        <hr>
+
         <!-- Middle -->
-        <div class="row mt-4">
+        <div class="row g-3">
           <div class="col-md-6">
-            <h6 class="fw-bold">Test Information</h6>
+            <h6 class="section-title fw-bold mb-1">Test Information</h6>
             <p class="mb-1"><strong>Ordered:</strong> <%= t.test_date %></p>
             <p class="mb-1"><strong>Sample Date:</strong> <%#= t.test_date %></p>
             <p class="mb-1"><strong>Result Date:</strong> </p>
@@ -172,7 +144,7 @@
           </div>
 
           <div class="col-md-6">
-            <h6 class="fw-bold">Test Results</h6>
+            <h6 class="section-title fw-bold mb-1">Test Results</h6>
 
             <% if t.results.present? %>
 
@@ -181,7 +153,7 @@
               <% rows.first(3).each do |row| %>
                 <% name, value, range = row.split("|") %>
 
-                <div class="d-flex justify-content-between align-items-center p-2 mb-2 rounded"
+                <div class="d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center p-2 mb-2 rounded gap-1"
                      style="background-color: #f8f9fa; font-size: 0.85rem;">
 
                   <!-- LEFT -->
@@ -208,21 +180,23 @@
               <% end %>
 
             <% else %>
-              <p class="text-muted">No results</p>
+              <small class="text-muted">No results</small>
             <% end %>
 
           </div>
 
           <div class="mt-2">
             <strong>Clinical Notes:</strong>
-            <div class="border rounded bg-light p-2 mt-1" style="min-height: 50px;">
+            <div class="bg-light p-2 rounded small mb-3">
               <%= t.additional_notes.titleize.presence || "NA" %>
             </div>
           </div>
         </div>
 
+        <hr>
+
         <!-- Bottom -->
-        <div class="d-flex justify-content-between align-items-center mt-4">
+        <div class="d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center gap-2">
           <div>
             <small class="text-muted me-3">
               <i class="fa-solid fa-user"></i>
@@ -237,12 +211,12 @@
           <div>
             <% if current_user.doctor? %>
               <%= link_to edit_laboratory_result_path(t), class: "btn btn-outline-secondary btn-sm" do %>
-                <i class="bi bi-pencil"></i> Edit
+                <i class="bi bi-pencil"></i>
               <% end %>
             <% end %>
 
             <%= link_to laboratory_result_path(t), class: "btn btn-primary btn-sm" do %>
-              <i class="bi bi-eye"></i> View
+              <i class="bi bi-eye"></i>
             <% end %>
           </div>
         </div>
@@ -250,5 +224,20 @@
     <% end %>
   <% else %>
     <div class="alert alert-info mt-4 text-center">No Treatment detail found.</div>
+  <% end %>
+
+  <% if @results %>
+    <div class="col-lg-12 mt-3 mb-3">
+      <div class="d-flex justify-content-between bg-light rounded align-items-center py-3">
+        <div class="page_info ms-3 text-black">
+          <%= page_entries_info @results %>
+        </div>
+        <% if params[:per_page ].present? %>
+          <%= will_paginate @results, :params =>  {per_page: @per_page }, renderer: WillPaginate::ActionView::BootstrapLinkRenderer %>
+        <% else %>
+          <%= will_paginate @results, renderer: WillPaginate::ActionView::BootstrapLinkRenderer %>
+        <% end %>
+      </div>
+    </div>
   <% end %>
 </div>

@@ -23,5 +23,5 @@ Rails.application.routes.draw do
   resources :treatments
   resources :laboratory_results
 
-  resources :patient_appointments, only: [:new, :create]
+  resources :patient_appointments, only: [:index, :new, :create]
 end

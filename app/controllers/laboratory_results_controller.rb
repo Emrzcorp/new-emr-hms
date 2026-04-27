@@ -11,6 +11,7 @@ class LaboratoryResultsController < ApplicationController
 	                .where(doctor_id: @doctor.id)
 	                .includes(:patient)
 	                .order(created_at: :desc)
+                  .paginate(page: params[:page], per_page: 10)
 
 	    @patients = @doctor.patients
 
@@ -21,13 +22,32 @@ class LaboratoryResultsController < ApplicationController
 	                .where(patient_id: @patient.id)
 	                .includes(:doctor)
 	                .order(created_at: :desc)
+                  .paginate(page: params[:page], per_page: 10)
 
 	    @patients = []
 	  else
 	    @results = LaboratoryResult.none
 	  end
 
-	  # Stats
+    if params[:query].present?
+      @results = @results.joins(:patient).where(
+        "patients.first_name ILIKE :q OR patients.last_name ILIKE :q OR laboratory_results.test_name ILIKE :q OR laboratory_results.test_type ILIKE :q",
+        q: "%#{params[:query]}%"
+      )
+    end
+
+    if params[:test_type].present? && params[:test_type] != "All Types"
+      @results = @results.where(test_type: params[:test_type])
+    end
+
+    if params[:status].present? && params[:status] != "All Statuses"
+      @results = @results.where(status: params[:status])
+    end
+
+    if params[:test_date].present?
+      @results = @results.where(test_date: params[:test_date])
+    end
+
 	  @total_tests = @results.count
 	  @completed   = @results.where(status: "Completed").count
 	  @pending     = @results.where(status: "Pending").count

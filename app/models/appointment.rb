@@ -11,6 +11,13 @@ class Appointment < ApplicationRecord
 
   enum priority: { normal: "Normal", high: "High", urgent: "Urgent" }
 
+  enum appointment_type_int: {
+    consultation: 0,
+    follow_up: 1,
+    emergency: 2,
+    routine_checkup: 3
+  }
+
   scope :today, -> { where(date: Date.current) }
   scope :upcoming, -> { where("date > ?", Date.current) }
   scope :pending, -> { where(status: :pending) }
@@ -20,10 +27,10 @@ class Appointment < ApplicationRecord
   def patient_belongs_to_doctor
     return unless doctor.present? && patient.present?
 
-    # Only enforce if patient already assigned to a doctor
-    if patient.doctor_id.present? && patient.doctor_id != doctor.id
-      errors.add(:patient_id, "must belong to the same doctor as the appointment")
-    end
+    # # Only enforce if patient already assigned to a doctor
+    # if patient.doctor_id.present? && patient.doctor_id != doctor.id
+    #   errors.add(:patient_id, "must belong to the same doctor as the appointment")
+    # end
   end
 end
 

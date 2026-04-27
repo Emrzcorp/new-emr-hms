@@ -1,40 +1,35 @@
 <div class="container my-4">
 
   <!-- Header -->
-  <div class="d-flex justify-content-between align-items-center mb-4">
-    <div>
-      <h3 class="fw-bold mb-0">
-        <i class="bi bi-activity"></i>
-        Treatment Management
-      </h3>
-      <small class="text-muted">
-        Monitor and manage patient treatments and medications
-      </small>
+  <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center mb-4">
+    <div class="mb-3 mb-md-0">
+      <h3 class="mb-0"><i class="bi bi-activity me-1"></i>Treatment Management</h3>
+      <small class="text-muted">Monitor and manage patient treatments and medications</small>
     </div>
 
-      <% if current_user.doctor? %>
-        <%= link_to new_treatment_path, class: 'btn btn-primary btn-sm rounded-3 mb-2', data: { bs_toggle: 'modal', bs_target: "#treatmentModal" }  do %>
-          <i class="fa-solid fa-plus me-2"></i> New Treament
-        <% end %>
+    <% if current_user.doctor? %>
+      <%= link_to new_treatment_path, class: 'btn btn-primary btn-sm mb-2 rounded-3', data: { bs_toggle: 'modal', bs_target: "#treatmentModal" }  do %>
+          <i class="fa-solid fa-plus me-2"></i> Add New Patients
       <% end %>
+    <% end %>
 
-      <!-- Modal -->
-      <div class="modal fade" id="treatmentModal" tabindex="-1" aria-labelledby="treatmentModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-lg">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h1 class="modal-title fs-5" id="treatmentModalLabel"><i class="bi bi-activity me-1"></i> Add New Treament
-                <br>
-                <p class="text-muted fs-6">Create a new treatment plan for a patient.</p>
-              </h1>
-              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-              <%= render 'treatments/form', treatment: @treatment %>
-            </div>
+    <!-- Modal -->
+    <div class="modal fade" id="treatmentModal" tabindex="-1" aria-labelledby="treatmentModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h1 class="modal-title fs-5" id="treatmentModalLabel"><i class="bi bi-activity me-1"></i> Add New Treament
+              <br>
+              <p class="text-muted fs-6">Create a new treatment plan for a patient.</p>
+            </h1>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <%= render 'treatments/form', treatment: @treatment %>
           </div>
         </div>
       </div>
+    </div>
   </div>
 
   <!-- Summary Cards -->
@@ -94,117 +89,124 @@
 
   <!-- Filter Tabs -->
   <div class="mb-3">
-    <button class="btn btn-light btn-sm rounded-pill px-3">All Treatments</button>
-    <button class="btn btn-light btn-sm rounded-pill px-3">By Type</button>
-    <button class="btn btn-light btn-sm rounded-pill px-3">Adherence Tracking</button>
+    <button class="btn btn-light btn-sm rounded-pill px-3 mb-1">All Treatments</button>
+    <button class="btn btn-light btn-sm rounded-pill px-3 mb-1">By Type</button>
+    <button class="btn btn-light btn-sm rounded-pill px-3 mb-1">Adherence Tracking</button>
   </div>
 
   <!-- Search Filters -->
-  <div class="card border rounded-3 p-3 mb-4">
-    <h6 class="fw-bold">Search & Filter Treatments</h6>
-    <small class="text-muted">Find specific treatments using search and filter options</small>
-
-    <div class="row mt-3">
-      <div class="col-md-8">
-        <%= form_with url: treatments_path, method: :get, local: true do %>
-          <%= text_field_tag :query, params[:query],
-                class: "form-control",
-                placeholder: "Search by patient name, treatment, or indication..." %>
-      </div>
-
-      <div class="col-md-2">
-          <%= select_tag :treatment_type,
-                options_for_select(["All Types","Medication","Therapy"], params[:treatment_type]),
-                class: "form-select" %>
-      </div>
-
-      <div class="col-md-2">
-          <%= select_tag :status,
-                options_for_select(["All Statuses","Active","Completed"], params[:status]),
-                class: "form-select" %>
-        <% end %>
-      </div>
-    </div>
-  </div>
+  <%= render 'treatments/search' %>
 
   <!-- Treatment Cards -->
   <% if @treatments.present? %>
-    <% @treatments.each do |t| %>
-      <div class="card border rounded-3 p-4 mb-4">
-        
-        <!-- Top -->
-        <div class="d-flex justify-content-between align-items-start">
-          <div>
-            <h5 class="fw-bold mb-1">
-              <i class="fa-solid fa-link text-primary me-2"></i>
-              <%= t.treatment_name.humanize %>
-            </h5>
-            <small class="text-muted">
-              <%= t.patient&.full_name || "N/A" %> • <%= t.diagnosis&.primary_diagnosis || "No Diagnosis" %>
-            </small>
-          </div>
+    <div class="row g-3">
+      <% @treatments.each do |t| %>
+        <div class="col-12">
+          <div class="card border rounded-3 p-3 h-100 shadow-none">
 
-          <div>
-            <span class="badge bg-light text-primary me-1"><%= t.treatment_type.humanize %></span>
-            <span class="badge <%= t.status == 'Active' ? 'bg-success' : 'bg-secondary' %>">
-              <%= t.status.humanize %>
-            </span>
-          </div>
-        </div>
+            <!-- HEADER -->
+            <div class="d-flex justify-content-between align-items-start flex-wrap mb-2">
+              
+              <!-- LEFT -->
+              <div class="d-flex align-items-center mb-2">
+                <div>
+                  <h5 class="mb-0"><i class="fa-solid fa-link text-primary me-2"></i>
+                    <%= t.treatment_name.humanize %></h5>
 
-        <!-- Middle -->
-        <div class="row mt-4">
-          <div class="col-md-6">
-            <h6 class="fw-bold">Treatment Details</h6>
-            <p class="mb-1"><strong>Dosage:</strong> <%= t.dosage %></p>
-            <p class="mb-1"><strong>Frequency:</strong> <%= t.frequency %></p>
-            <p class="mb-1"><strong>Route:</strong> Oral</p>
-            <p class="mb-1"><strong>Prescribed by:</strong> Dr. <%= t.doctor&.full_name || "N/A" %></p>
-          </div>
+                  <small class="text-muted">
+                    <%= t.patient&.full_name || "N/A" %> • 
+                    <%= t.diagnosis&.primary_diagnosis || "No Diagnosis" %>
+                  </small>
+                </div>
+              </div>
 
-          <div class="col-md-6">
-            <h6 class="fw-bold">Timeline</h6>
-            <p class="mb-1"><strong>Start Date:</strong> <%= t.treatment_start_date %></p>
-            <p class="mb-1"><strong>End Date:</strong> Ongoing</p>
-            <p class="mb-1"><strong>Next Review:</strong> <%= t.next_review_date %></p>
-          </div>
+              <!-- RIGHT BADGES -->
+              <div class="text-end">
+                <span class="badge bg-light text-dark mb-1">
+                  <%= t.treatment_type.humanize %>
+                </span>
 
-          <div class="mt-2">
-            <strong>Clinical Notes:</strong>
-            <div class="border rounded bg-light p-2 mt-1" style="min-height: 50px;">
-              <%= t.clinical_notes&.titleize.presence || "NA" %>
+                <span class="badge <%= t.status == 'Active' ? 'bg-success' : 'bg-secondary' %>">
+                  <%= t.status.humanize %>
+                </span>
+              </div>
             </div>
-          </div>
-        </div>
 
-        <!-- Bottom -->
-        <div class="d-flex justify-content-between align-items-center mt-4">
-          <div>
-            <small class="text-muted me-3">
-              <i class="fa-solid fa-user"></i>
-              <%= t.patient.id.to_s.rjust(3, "0") || "NA" %>
-            </small>
-            <small class="text-muted">
-              <i class="fa-solid fa-calendar"></i>
-              Review: <%= t.next_review_date %>
-            </small>
-          </div>
+            <hr>
 
-          <div>
-            <% if current_user.doctor? %>
-              <%= link_to edit_treatment_path(t), class: "btn btn-outline-secondary btn-sm" do %>
-                <i class="bi bi-pencil"></i> Edit
-              <% end %>
+            <!-- DETAILS -->
+            <div class="row mb-3">
+              <div class="col-12 col-sm-6">
+                <div class="section-title fw-bold mb-1">Treatment Details</div>
+                <p class="mb-1"><strong>Dosage:</strong> <%= t.dosage.presence || "NA" %></p>
+                <p class="mb-1"><strong>Frequency:</strong> <%= t.frequency.presence || "NA" %></p>
+                <p class="mb-1"><strong>Route:</strong> Oral</p>
+                <p class="mb-1"><strong>Doctor:</strong> Dr. <%= t.doctor&.full_name || "N/A" %></p>
+              </div>
+
+              <div class="col-12 col-sm-6">
+                <div class="section-title fw-bold mb-1">Timeline</div>
+                <p class="mb-1"><strong>Start:</strong> <%= t.treatment_start_date %></p>
+                <p class="mb-1"><strong>Next Review:</strong> <%= t.next_review_date || "NA" %></p>
+              </div>
+            </div>
+
+            <!-- NOTES -->
+            <% if t.clinical_notes.present? %>
+              <div class="fw-bold mb-1">Notes</div>
+              <div class="bg-light p-2 rounded small mb-3">
+                <%= t.clinical_notes.humanize %>
+              </div>
             <% end %>
 
-            <%= link_to treatment_path(t), class: "btn btn-primary btn-sm" do %>
-              <i class="bi bi-eye"></i> View
-            <% end %>
+            <!-- FOOTER -->
+            <div class="d-flex justify-content-between align-items-center flex-wrap gap-2 pt-2 border-top">
+
+              <div class="small">
+                <strong>ID:</strong> 
+                <span class="text-primary fw-semibold">
+                  <%= t.patient&.id.to_s.rjust(3, "0") rescue "NA" %>
+                </span> •
+                <strong>Review:</strong> 
+                <span class="text-primary fw-semibold">
+                  <%= t.next_review_date || "NA" %>
+                </span>
+              </div>
+
+              <div class="d-flex gap-2">
+                <% if current_user.doctor? %>
+                  <%= link_to edit_treatment_path(t), class: "btn btn-outline-primary btn-sm" do %>
+                    <i class="bi bi-pencil"></i>
+                  <% end %>
+                <% end %>
+
+                <%= link_to treatment_path(t), class: "btn btn-primary btn-sm" do %>
+                  <i class="bi bi-eye"></i>
+                <% end %>
+              </div>
+
+            </div>
+
           </div>
         </div>
-      </div>
-    <% end %>
+      <% end %>
+    </div>
   <% else %>
     <div class="alert alert-info mt-4 text-center">No Treatment detail found.</div>
+  <% end %>
+
+  <% if @treatments %>
+    <div class="col-lg-12 mt-3 mb-3">
+      <div class="d-flex justify-content-between bg-light rounded align-items-center py-3">
+        <div class="page_info ms-3 text-black">
+          <%= page_entries_info @treatments %>
+        </div>
+        <% if params[:per_page ].present? %>
+          <%= will_paginate @treatments, :params =>  {per_page: @per_page }, renderer: WillPaginate::ActionView::BootstrapLinkRenderer %>
+        <% else %>
+          <%= will_paginate @treatments, renderer: WillPaginate::ActionView::BootstrapLinkRenderer %>
+        <% end %>
+      </div>
+    </div>
   <% end %>
 </div>

@@ -36,27 +36,9 @@
   		Search and filter through your patient database
   	</p>
   <!-- Filters -->
-  <div class="row g-2 mb-3">
-    <div class="col-12 col-md-6">
-      <input type="text" class="form-control" placeholder="Search patients by name, condition, or email...">
-    </div>
-    <div class="col-6 col-md-3">
-      <select class="form-select">
-        <option>All Status</option>
-        <option>Active</option>
-        <option>Inactive</option>
-      </select>
-    </div>
-    <div class="col-6 col-md-3">
-      <select class="form-select">
-        <option>All Priority</option>
-        <option>Normal</option>
-        <option>High</option>
-      </select>
-    </div>
-  </div>
+  <%= render 'patients/search' %>
 
-    <!-- Summary Cards -->
+  <!-- Summary Cards -->
   <div class="row g-3 mb-4 mt-2">
     <div class="col-6 col-md-3">
       <div class="card-summary bg-light">
@@ -186,5 +168,20 @@
         </tbody>
       </table>
     </div>
+
   </div>
+  <% if @patients %>
+    <div class="col-lg-12 mt-3 mb-3">
+      <div class="d-flex justify-content-between bg-light rounded align-items-center py-3">
+        <div class="page_info ms-3 text-black">
+          <%= page_entries_info @patients %>
+        </div>
+        <% if params[:per_page ].present? %>
+          <%= will_paginate @patients, :params =>  {per_page: @per_page }, renderer: WillPaginate::ActionView::BootstrapLinkRenderer %>
+        <% else %>
+          <%= will_paginate @patients, renderer: WillPaginate::ActionView::BootstrapLinkRenderer %>
+        <% end %>
+      </div>
+    </div>
+  <% end %>
 </div>

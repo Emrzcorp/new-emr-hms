@@ -20,8 +20,36 @@ class DashboardController < ApplicationController
                       .where("follow_up_date >= ?", Date.current)
                       .count
 
-    elsif current_user.patient?
+      @recent_activities = []
+
+      # Lab Results
+      LaboratoryResult.where(doctor_id: @doctor.id).order(created_at: :desc).limit(5).each do |lab|
+        @recent_activities << {
+          type: "lab",
+          title: "Lab results for #{lab.patient&.full_name}",
+          subtitle: lab.test_name,
+          time: lab.created_at,
+          status: lab.status
+        }
+      end
+
+      # Treatments
+      Treatment.where(doctor_id: @doctor.id).order(created_at: :desc).limit(5).each do |t|
+        @recent_activities << {
+          type: "treatment",
+          title: "Treatment for #{t.patient&.full_name}",
+          subtitle: t.treatment_name,
+          time: t.created_at,
+          status: t.status
+        }
+      end
+
+      # Sort all activities by latest
+      @recent_activities = @recent_activities.sort_by { |a| a[:time] }.reverse.first(5)
+
+    elsif current_user.patient.present?
       @patient = current_user.patient
+
       @appointments = @patient.appointments.includes(:doctor)
 
       @upcoming_appointments = @appointments.upcoming

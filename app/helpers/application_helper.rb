@@ -26,4 +26,20 @@ module ApplicationHelper
     end
   end
 
+  def activity_color(type)
+    case type
+    when "lab" then "bg-success-subtle"
+    when "treatment" then "bg-warning-subtle"
+    else "bg-light"
+    end
+  end
+
+  def activity_icon(type)
+    case type
+    when "lab" then "fa-vial"
+    when "treatment" then "bi bi-activity"
+    else "fa-info-circle"
+    end
+  end
+
 end
