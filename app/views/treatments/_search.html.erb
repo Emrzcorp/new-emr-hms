@@ -1,0 +1,46 @@
+<%= form_with url: treatments_path, method: :get, local: true do %>
+  <div class="card border rounded-3 p-3 mb-4">
+    <h5 class="fw-bold">Search & Filter Treatments</h5>
+    <small class="text-muted">Find specific treatments using search and filter options</small>
+
+    <div class="row mt-3 g-2">
+
+      <!-- 🔍 Search -->
+      <div class="col-6 col-md-6">
+        <%= text_field_tag :query, params[:query],
+              class: "form-control",
+              placeholder: "Search by patient, treatment, indication...",
+              autocomplete: "off" %>
+      </div>
+
+      <!-- 📌 Treatment Type -->
+      <div class="col-6 col-md-2">
+        <%= select_tag :treatment_type,
+            options_for_select(
+              [["All Types", ""]] +
+              Treatment::TREATMENT_TYPE.map { |v| [v, v] },
+              params[:treatment_type]
+            ),
+            class: "form-select",
+            onchange: "this.form.submit();" %>
+      </div>
+
+      <!-- 📌 Status -->
+      <div class="col-6 col-md-2">
+        <%= select_tag :status,
+              options_for_select(
+                ["All Statuses", "Active", "Completed"],
+                params[:status]
+              ),
+              class: "form-select",
+              onchange: "this.form.submit();" %>
+      </div>
+
+      <!-- 🔄 Reset -->
+      <div class="col-12 col-md-2">
+        <%= submit_tag "Search", class: "btn btn-primary btn-md" %>
+        <%= link_to "Reset", treatments_path, class: "btn btn-outline-secondary btn-md" %>
+      </div>
+    </div>
+  </div>
+<% end %>

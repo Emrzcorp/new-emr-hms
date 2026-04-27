@@ -1,0 +1,45 @@
+<div class="container">
+  <%= form_with(model: @appointment, url: patient_appointments_path) do |f| %>
+
+    <h5>Appointment Details</h5>
+    <div class="row">
+      <div class="col-lg-6 mb-3">
+        <%= f.label :appointment_type %>
+        <%= f.select :appointment_type_int,
+              Appointment.appointment_type_ints.keys.map { |k| [k.humanize, k] },
+              { prompt: "Select Type" },
+              class: "form-select" %>
+      </div>
+
+      <div class="col-lg-6 mb-3">
+        <%= f.label :doctor_id, "Select Doctor" %>
+        <%= f.collection_select :doctor_id, @doctors, :id, :full_name, { prompt: true }, class: "form-select" %>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-lg-6 mb-3">
+        <%= f.label :date, "Preferred Date" %>
+        <%= f.date_field :date, class: "form-control" %>
+      </div>
+
+      <div class="col-lg-6 mb-3">
+        <%= f.label :time, "Preferred Time" %>
+        <%= f.time_field :time, class: "form-control" %>
+      </div>
+    </div>
+
+    <div class="mb-3">
+      <%= f.label :reason_for_visit, "Reason for visit" %>
+      <%= f.text_area :reason_for_visit, class: "form-control" %>
+    </div>
+
+    <div class="mb-3">
+      <%= f.label :additional_notes, "Additional Notes" %>
+      <%= f.text_area :additional_notes, class: "form-control" %>
+    </div>
+
+    <%= f.submit "Request Appointment", class: "btn btn-primary btn-sm" %>
+    <%= link_to "Cancel", patient_appointments_path, class: "btn btn-secondary btn-sm" %>
+  <% end %>
+</div>

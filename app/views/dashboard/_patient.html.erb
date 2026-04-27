@@ -1,77 +1,165 @@
-<div class="container mt-4">
+<div class="container py-4">
 
-  <!-- Header -->
-  <div class="d-flex justify-content-between align-items-center mb-4">
-    <h2>Welcome <%= @patient.full_name %></h2>
-    <%= link_to "Book Appointment", new_patient_appointment_path, class: "btn btn-primary" %>
+  <!-- 🔵 HEADER -->
+  <div class="p-4 rounded-4 mb-4 text-white"
+       style="background: linear-gradient(90deg, #2563eb, #1d4ed8);">
+    <h3 class="fw-bold mb-1">
+      Welcome, <%= @patient&.full_name %>!
+    </h3>
+    <small>Here's an overview of your health information</small>
   </div>
 
-  <!-- Stats Cards -->
+  <!-- 🟩 STATS CARDS -->
   <div class="row g-3 mb-4">
-    <div class="col-6 col-md-4">
-      <div class="card-summary bg-light text-center p-3 rounded-3 shadow-sm" style="min-height: 110px;">
-        <span><i class="fa-solid fa-calendar fs-6 me-2"></i> <b>Total Appointments</b></span>
-        <h5 class="mt-2"><%= @appointments.count %></h5>
+
+    <!-- Next Appointment -->
+    <div class="col-12 col-md-6 col-lg-3">
+      <div class="card-summary text-start p-3 rounded-4 h-100" style="background:#eef2ff;">
+        <div class="d-flex justify-content-between">
+          <small class="fw-semibold">Next Appointment</small>
+          <i class="bi bi-calendar text-primary"></i>
+        </div>
+
+        <% next_appt = @upcoming_appointments&.first %>
+
+        <h5 class="fw-bold mt-3">
+          <%= next_appt&.date || "N/A" %>
+        </h5>
+
+        <small class="text-primary">
+          <% if next_appt %>
+            With Dr. <%= next_appt.doctor&.full_name %>
+          <% else %>
+            No upcoming visit
+          <% end %>
+        </small>
       </div>
     </div>
 
-    <div class="col-6 col-md-4">
-      <div class="card-summary text-center p-3 rounded-3 shadow-sm" style="background-color: #e6f9e8; min-height: 110px;">
-        <span><i class="fa-solid fa-clock fs-6 me-2"></i> <b>Upcoming</b></span>
-        <h5 class="mt-2"><%= @upcoming_appointments.count %></h5>
+    <!-- Active Treatments -->
+    <div class="col-12 col-md-6 col-lg-3">
+      <div class="card-summary text-start p-3 rounded-4 h-100" style="background:#e6f9e8;">
+        <div class="d-flex justify-content-between">
+          <small class="fw-semibold">Active Treatments</small>
+          <i class="bi bi-capsule text-success"></i>
+        </div>
+
+        <h4 class="fw-bold mt-3">
+          <%= @patient.treatments.where(status: "Active").count rescue 0 %>
+        </h4>
+
+        <small class="text-success">Current medications</small>
       </div>
     </div>
 
-    <div class="col-6 col-md-4">
-      <div class="card-summary text-center p-3 rounded-3 shadow-sm" style="background-color: #fff4e5; min-height: 110px;">
-        <span><i class="fa-solid fa-circle-check fs-6 me-2"></i> <b>Medical Records</b></span>
-        <h5 class="mt-2"><%= @medical_records.count %></h5>
+    <!-- Active Diagnoses -->
+    <div class="col-12 col-md-6 col-lg-3">
+      <div class="card-summary text-start p-3 rounded-4 h-100" style="background:#fff4e5;">
+        <div class="d-flex justify-content-between">
+          <small class="fw-semibold">Active Diagnoses</small>
+          <i class="bi bi-heart-pulse text-warning"></i>
+        </div>
+
+        <h4 class="fw-bold mt-3">
+          <%= @patient.diagnoses.where(status: "Active").count rescue 0 %>
+        </h4>
+
+        <small class="text-warning">Being monitored</small>
+      </div>
+    </div>
+
+    <!-- Last Visit -->
+    <div class="col-12 col-md-6 col-lg-3">
+      <div class="card-summary text-start p-3 rounded-4 h-100" style="background:#f3e8ff;">
+        <div class="d-flex justify-content-between">
+          <small class="fw-semibold">Last Visit</small>
+          <i class="bi bi-clock text-purple"></i>
+        </div>
+
+        <% last_record = @medical_records.first %>
+
+        <h5 class="fw-bold mt-3">
+          <%= last_record&.visit_date || "N/A" %>
+        </h5>
+
+        <small class="text-purple">Recent check-up</small>
       </div>
     </div>
   </div>
 
-  <!-- Upcoming Appointments -->
-  <div class="card mb-4">
-    <div class="card-header">
-      <strong>Upcoming Appointments</strong>
-    </div>
-    <div class="card-body">
-      <% if @upcoming_appointments.any? %>
-        <% @upcoming_appointments.each do |appt| %>
-          <div class="border-bottom py-2">
-            <strong><%= appt.date %> at <%= appt.time.strftime("%I:%M %p") %></strong>
-            <p class="mb-0">
-              Doctor: <%= appt.doctor&.full_name %>
-            </p>
-            <small class="text-muted"><%= appt.appointment_type %></small>
-          </div>
-        <% end %>
-      <% else %>
-        <p>No upcoming appointments</p>
-      <% end %>
-    </div>
-  </div>
+  <!-- 🧾 MAIN CONTENT -->
+  <div class="row g-4">
 
-  <!-- Medical Records -->
-  <div class="card">
-    <div class="card-header">
-      <strong>Medical History</strong>
-    </div>
-    <div class="card-body">
-      <% if @medical_records.any? %>
-        <% @medical_records.each do |record| %>
-          <div class="border-bottom py-2">
-            <strong><%= record.visit_date %></strong>
-            <p class="mb-0"><%= record.diagnosis %></p>
-            <small class="text-muted">
-              Doctor: <%= record.doctor&.full_name %>
-            </small>
-          </div>
-        <% end %>
-      <% else %>
-        <p>No medical records available</p>
-      <% end %>
-    </div>
-  </div>
+    <!-- 🧍 PERSONAL INFO -->
+    <div class="col-12 col-lg-6">
+      <div class="card p-3 rounded-4 h-100">
+        <h6 class="fw-bold mb-3">
+          <i class="bi bi-person me-2"></i> Personal Information
+        </h6>
 
+        <div class="d-flex justify-content-between py-2 border-bottom">
+          <span class="text-muted">Patient ID</span>
+          <strong>P<%= @patient.id.to_s.rjust(3, "0") %></strong>
+        </div>
+
+        <div class="d-flex justify-content-between py-2 border-bottom">
+          <span class="text-muted">Age</span>
+          <strong><%= @patient.age %> years</strong>
+        </div>
+
+        <div class="d-flex justify-content-between py-2 border-bottom">
+          <span class="text-muted">Gender</span>
+          <strong><%= @patient.gender %></strong>
+        </div>
+
+        <div class="d-flex justify-content-between py-2 border-bottom">
+          <span class="text-muted">Blood Type</span>
+          <span class="badge bg-danger">N/A</span>
+        </div>
+
+        <div class="d-flex justify-content-between py-2">
+          <span class="text-muted">Primary Physician</span>
+          <strong>
+            Dr. <%= @upcoming_appointments&.first&.doctor&.full_name || "N/A" %>
+          </strong>
+        </div>
+      </div>
+    </div>
+
+    <!-- ⚠️ IMPORTANT INFO -->
+    <div class="col-12 col-lg-6">
+      <div class="card p-3 rounded-4 h-100 border-warning">
+
+        <h6 class="fw-bold text-danger mb-3">
+          <i class="bi bi-exclamation-triangle me-2"></i>
+          Important Health Information
+        </h6>
+
+        <!-- Allergies -->
+        <p class="mb-1 fw-semibold">Allergies</p>
+        <div class="mb-2">
+          <span class="badge bg-danger-subtle text-danger">N/A</span>
+          <span class="badge bg-danger-subtle text-danger">N/A</span>
+        </div>
+
+        <!-- Chronic -->
+        <p class="mb-1 fw-semibold">Chronic Conditions</p>
+        <div class="mb-3">
+          <span class="badge bg-warning-subtle text-dark">N/A</span>
+          <span class="badge bg-warning-subtle text-dark">N/A</span>
+        </div>
+
+        <!-- Emergency -->
+        <div class="p-3 rounded-3" style="background:#eef2f7;">
+          <strong>Emergency Contact</strong>
+          <p class="mb-0 small mt-1">
+            <%= @patient.emergency_contact_person_name.humanize || "N/A" %> <br>
+            (<%= @patient.emergency_contact_number || "N/A" %>)
+          </p>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
 </div>

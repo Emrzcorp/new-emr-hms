@@ -71,3 +71,5 @@ end
 
 gem 'devise', '~> 4.9', '>= 4.9.4'
 gem "letter_opener"
+gem 'will_paginate', '~> 3.3'
+gem 'bootstrap-will_paginate'

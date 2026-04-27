@@ -5,6 +5,39 @@ class PatientsController < ApplicationController
 
   def index
     @patients = @doctor.patients.includes(:medical_records, :appointments)
+                .order(created_at: :desc)
+                .paginate(page: params[:page], per_page: 10)
+
+    # 🔍 Search
+    if params[:query].present?
+      q = "%#{params[:query]}%"
+
+      @patients = @patients.where(
+        "first_name ILIKE :q OR last_name ILIKE :q OR email_address ILIKE :q OR phone_number ILIKE :q",
+        q: q
+      )
+    end
+
+    # 📌 Status filter (Active / Inactive)
+    if params[:status].present?
+      case params[:status]
+      when "active"
+        @patients = @patients.joins(:appointments)
+                             .where("appointments.date >= ?", Date.current)
+                             .distinct
+      when "inactive"
+        @patients = @patients.where.not(
+          id: Appointment.where("date >= ?", Date.current).select(:patient_id)
+        )
+      end
+    end
+
+    # 📌 Priority filter (based on latest appointment)
+    if params[:priority].present?
+      @patients = @patients.joins(:appointments)
+                           .where(appointments: { priority: params[:priority] })
+                           .distinct
+    end
 
     @active_patients_count = @doctor.patients
                                   .joins(:appointments)

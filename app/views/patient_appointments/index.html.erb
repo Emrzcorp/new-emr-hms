@@ -1,0 +1,113 @@
+<div class="my-5 mt-3 container">
+  <!-- Header -->
+  <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center mb-4">
+    <div class="mb-3 mb-md-0">
+      <h3 class="mb-0">
+        <i class="bi bi-calendar"></i> My Appointments
+      </h3>
+      <small class="text-muted">View and manage your appointments</small>
+    </div>
+
+    <%= link_to new_patient_appointment_path, class: 'btn btn-primary btn-sm rounded-3', data: { bs_toggle: 'modal', bs_target: "#patientAppointmentModal" }  do %>
+      <i class="fa-solid fa-plus me-2"></i> Request Appointment
+    <% end %>
+
+    <!-- Modal -->
+    <div class="modal fade" id="patientAppointmentModal" tabindex="-1" aria-labelledby="patientAppointmentModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-md modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header">
+            <div>
+              <h1 class="modal-title fs-5 mb-0" id="patientAppointmentModalLabel">
+                <i class="bi bi-calendar me-1"></i> Request Appointment
+              </h1>
+              <p class="text-muted fs-6 mb-0">Fill out the form below to request a new appointment. <br> Our staff will confirm your appointment shortly.</p>
+            </div>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <%= render 'patient_appointments/form', appointment: @appointment %>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Filters -->
+  <%= render 'patient_appointments/search' %>
+
+  <!-- Appointment Cards -->
+  <div class="row g-3">
+    <% @appointments.each do |appt| %>
+      <div class="col-12">
+        <div class="card border rounded-3 p-3">
+
+          <!-- Header -->
+          <div class="d-flex justify-content-between align-items-start flex-wrap mb-2">
+
+            <!-- Left -->
+            <div>
+              <h4 class="fw-bold mb-1">
+                <%= appt.appointment_type_int.humanize || "N/A" %>
+              </h4>
+
+              <small class="text-muted d-block mt-2">
+                <i class="bi bi-calendar me-1"></i>
+                <%= appt.date.strftime("%Y-%m-%d") if appt.date %> at 
+                <%= appt.time.strftime("%I:%M %p") if appt.time %>
+              </small>
+
+              <small class="text-muted d-block">
+                <i class="bi bi-person me-1"></i>
+                Dr. <%= appt.doctor&.full_name || "N/A" %>
+              </small>
+
+              <small class="text-muted d-block">
+                <i class="bi bi-geo-alt me-1"></i>
+                <%#= appt.location || "Main Clinic - Room 201" %>
+              </small>
+            </div>
+
+            <!-- Status Badge -->
+            <div class="mt-2 mt-md-0">
+              <span class="badge px-3 py-1 rounded-3 
+                <%= appt.status == "confirmed" ? "bg-success" : "bg-warning text-dark" %>">
+                <%= appt.status.capitalize %>
+              </span>
+            </div>
+          </div>
+
+          <!-- Important Note -->
+          <% if appt.additional_notes.present? %>
+            <div class="alert alert-warning border rounded-3 py-2 px-3 small mb-3">
+              <strong>Important:</strong>
+              <%= appt.additional_notes.capitalize %>
+            </div>
+          <% end %>
+
+          <!-- Actions -->
+          <div class="d-flex gap-2 flex-wrap">
+            <%= link_to "Reschedule", "#", class: "btn btn-light btn-sm border" %>
+            <%= link_to "Cancel", "#", class: "btn btn-outline-danger btn-sm" %>
+          </div>
+
+        </div>
+      </div>
+    <% end %>
+
+    <% if @appointments %>
+      <div class="col-lg-12 mt-3 mb-3">
+        <div class="d-flex justify-content-between bg-light rounded align-items-center py-3">
+          <div class="page_info ms-3 text-black">
+            <%= page_entries_info @appointments %>
+          </div>
+          <% if params[:per_page ].present? %>
+            <%= will_paginate @appointments, :params =>  {per_page: @per_page }, renderer: WillPaginate::ActionView::BootstrapLinkRenderer %>
+          <% else %>
+            <%= will_paginate @appointments, renderer: WillPaginate::ActionView::BootstrapLinkRenderer %>
+          <% end %>
+        </div>
+      </div>
+    <% end %>
+  </div>
+</div>

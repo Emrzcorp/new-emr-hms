@@ -69,38 +69,15 @@
     </div>
   </div>
 
-   <!-- Filters Section -->
-    <div class="card p-4 mb-4 border rounded-3">
-      <h5 class="fw-semibold mb-2">Search Medical Records</h5>
-      <p class="text-muted mb-3">Find specific medical records using filters and search</p>
-
-      <div class="row g-2">
-        <div class="col-12 col-md-8">
-          <input type="text" class="form-control" placeholder="Search by patient name, diagnosis, or doctor...">
-        </div>
-        <div class="col-6 col-md-2">
-          <select class="form-select">
-            <option>All Types</option>
-            <option>Annual Physical</option>
-            <option>Follow-up</option>
-            <option>Consultation</option>
-            <option>Emergency</option>
-            <option>Preventive Care</option>
-            <option>Post-Surgery</option>
-          </select>
-        </div>
-        <div class="col-6 col-md-2">
-          <input type="date" class="form-control">
-        </div>
-      </div>
-    </div>
+  <!-- Filters Section -->
+  <%= render 'medical_records/search' %>
 
   <!-- Medical Records -->
   <% if @medical_records.present? %>
     <div class="row g-4">
       <% @medical_records.each do |record| %>
         <div class="col-12 col-lg-12 mb-1">
-          <div class="appointment-card border rounded-3 p-3">
+          <div class="appointment-card shadow-none border rounded-3 p-3">
             <div class="d-flex justify-content-between align-items-start flex-wrap">
               <div class="d-flex align-items-center mb-3 mb-md-0">
                 <div class="rounded-circle bg-secondary text-white fw-bold d-flex align-items-center justify-content-center me-3"
@@ -125,32 +102,32 @@
 
             <div class="row mt-3">
               <div class="col-sm-6">
-                <h6 class="mb-3">Diagnosis & Treatment</h6>
-                <p><strong>Diagnosis:</strong> <%= record.diagnosis.titleize.presence || "NA" %></p>
-                <p><strong>Treatment:</strong> <%= record.treatment_provided.titleize.presence || "NA" %></p>
-                <p><strong>Doctor:</strong> Dr. <%= record.doctor.full_name.presence || "NA" %></p>
-                <p><strong>Symptoms:</strong> <%= record.symptoms.titleize.presence || "NA" %></p>
+                <h6 class="section-title fw-bold mb-1">Diagnosis & Treatment</h6>
+                <p class="mb-1"><strong>Diagnosis:</strong> <%= record.diagnosis.titleize.presence || "NA" %></p>
+                <p class="mb-1"><strong>Treatment:</strong> <%= record.treatment_provided.titleize.presence || "NA" %></p>
+                <p class="mb-1"><strong>Doctor:</strong> Dr. <%= record.doctor.full_name.presence || "NA" %></p>
+                <p class="mb-1"><strong>Symptoms:</strong> <%= record.symptoms.titleize.presence || "NA" %></p>
               </div>
               <div class="col-sm-6">
-                <h6 class="mb-3">Vital Signs</h6>
-                <p><strong>BP:</strong> <%= record.blood_pressure.presence || "NA"  %></p>
-                <p><strong>Temp:</strong> <%= record.temperature.presence || "NA"  %></p>
-                <p><strong>HR:</strong> <%= record.heart_rate.presence || "NA"  %></p>
-                <p><strong>Weight:</strong> <%= record.weight.presence || "NA"  %></p>
+                <h6 class="section-title fw-bold mb-1">Vital Signs</h6>
+                <p class="mb-1"><strong>BP:</strong> <%= record.blood_pressure.presence || "NA"  %></p>
+                <p class="mb-1"><strong>Temp:</strong> <%= record.temperature.presence || "NA"  %></p>
+                <p class="mb-1"><strong>HR:</strong> <%= record.heart_rate.presence || "NA"  %></p>
+                <p class="mb-1"><strong>Weight:</strong> <%= record.weight.presence || "NA"  %></p>
               </div>
             </div>
 
             <div class="mt-1">
               <strong>Clinical Notes:</strong>
-              <div class="border rounded bg-light p-2 mt-1" style="min-height: 50px;">
+              <div class="bg-light p-2 rounded small mb-3">
                 <%= record.clinical_notes.titleize.presence || "NA" %>
               </div>
             </div>
 
             <div class="d-flex justify-content-between align-items-center mt-3 flex-wrap">
               <small>Next Follow-up: <span class="text-primary"><%= record.follow_up_date %></span></small>
-              <%= link_to medical_record_path(record), class: "btn btn-outline-primary btn-sm mt-2 mt-md-0" do %>
-                <i class="bi bi-eye"></i> View Details
+              <%= link_to medical_record_path(record), class: "btn btn-primary btn-sm mt-2 mt-md-0" do %>
+                <i class="bi bi-eye"></i>
               <% end %>
             </div>
           </div>
@@ -159,5 +136,20 @@
     </div>
   <% else %>
     <div class="alert alert-info mt-4 text-center">No medical records found.</div>
+  <% end %>
+
+  <% if @medical_records %>
+    <div class="col-lg-12 mt-3 mb-3">
+      <div class="d-flex justify-content-between bg-light rounded align-items-center py-3">
+        <div class="page_info ms-3 text-black">
+          <%= page_entries_info @medical_records %>
+        </div>
+        <% if params[:per_page ].present? %>
+          <%= will_paginate @medical_records, :params =>  {per_page: @per_page }, renderer: WillPaginate::ActionView::BootstrapLinkRenderer %>
+        <% else %>
+          <%= will_paginate @medical_records, renderer: WillPaginate::ActionView::BootstrapLinkRenderer %>
+        <% end %>
+      </div>
+    </div>
   <% end %>
 </div>

@@ -65,44 +65,14 @@
   </div>
 
   <!-- Filters -->
-  <div class="card p-3 mb-4">
-    <h5>Search Appointments</h5>
-    <p class="text-muted">Find and filter appointments by patient, date, or status</p>
-
-    <div class="row g-2">
-      <div class="col-12 col-md-6">
-        <input type="text" class="form-control" placeholder="Search by patient's name, reason, or type...">
-      </div>
-      <div class="col-6 col-md-2">
-        <select class="form-select">
-          <option>All Status</option>
-          <option>Scheduled</option>
-          <option>Confirmed</option>
-          <option>Completed</option>
-          <option>Cancelled</option>
-        </select>
-      </div>
-      <div class="col-6 col-md-2">
-        <select class="form-select">
-          <option>All Types</option>
-          <option>Consultation</option>
-          <option>Follow-up</option>
-          <option>Annual Physical</option>
-          <option>Emergency</option>
-        </select>
-      </div>
-      <div class="col-12 col-md-2">
-        <input type="date" id="appointment_date" name="appointment_date" class="form-control">
-      </div>
-    </div>
-  </div>
+  <%= render 'appointments/search' %>
 
   <!-- Appointment Cards -->
   <% if @appointments.present? %>
     <div class="row g-3">
       <% @appointments.each do |appt| %>
         <div class="col-12 col-md-6 col-lg-12">
-          <div class="appointment-card border rounded-3 p-3">
+          <div class="appointment-card shadow-none border rounded-3 p-3">
             <!-- Header -->
             <div class="d-flex justify-content-between align-items-start flex-wrap mb-2">
               <div class="d-flex align-items-center mb-2">
@@ -119,22 +89,24 @@
               </div>
 
               <div class="text-end">
-                <span class="badge bg-light text-dark"><%= appt.appointment_type.humanize %></span>
+                <span class="badge bg-light text-dark"><%= appt.appointment_type_int.humanize || "N/A" %></span>
                 <span class="badge bg-success text-white"><%= appt.priority.humanize %></span>
               </div>
             </div>
+
+            <hr>
 
             <!-- Details -->
             <div class="row mb-3">
               <div class="col-12 col-sm-6">
                 <div class="section-title fw-bold mb-1">Appointment Details</div>
-                <p class="mb-1"><i class="fa-solid fa-stethoscope me-2"></i><strong>Type:</strong> <%= appt.appointment_type.humanize %></p>
-                <p class="mb-1"><i class="bi bi-exclamation-circle me-2"></i><strong>Reason:</strong> <%= appt.reason_for_visit.humanize %></p>
+                <p class="mb-1"><i class="fa-solid fa-stethoscope me-2"></i><strong>Type:</strong> <%= appt.appointment_type || "N/A" %></p>
+                <p class="mb-1"><i class="bi bi-exclamation-circle me-2"></i><strong>Reason:</strong> <%= appt.reason_for_visit.humanize || "N/A" %></p>
                 <p class="mb-1"><i class="bi bi-stopwatch me-2"></i><strong>Duration:</strong> <%= appt.duration %> Minutes</p>
               </div>
               <div class="col-12 col-sm-6">
                 <div class="section-title fw-bold mb-1">Patient Info</div>
-                <p class="mb-1"><i class="bi bi-person me-2"></i><strong>Patient ID:</strong> <%= appt.patient.id %></p>
+                <p class="mb-1"><i class="bi bi-person me-2"></i><strong>Patient ID:</strong> <%= appt.patient.id.to_s.rjust(3, "0") || "NA" %></p>
                 <p class="mb-1"><i class="bi bi-calendar me-2"></i><strong>Scheduled:</strong> <%= appt.date %></p>
               </div>
             </div>
@@ -174,6 +146,21 @@
       <%= link_to new_appointment_path, class: 'btn btn-dark btn-sm rounded-3', data: { bs_toggle: 'modal', bs_target: "#appointmentModal" }  do %>
         <i class="fa-solid fa-plus me-2"></i> Schedule Appointment
       <% end %>
+    </div>
+  <% end %>
+
+  <% if @appointments %>
+    <div class="col-lg-12 mt-3 mb-3">
+      <div class="d-flex justify-content-between bg-light rounded align-items-center py-3">
+        <div class="page_info ms-3 text-black">
+          <%= page_entries_info @appointments %>
+        </div>
+        <% if params[:per_page ].present? %>
+          <%= will_paginate @appointments, :params =>  {per_page: @per_page }, renderer: WillPaginate::ActionView::BootstrapLinkRenderer %>
+        <% else %>
+          <%= will_paginate @appointments, renderer: WillPaginate::ActionView::BootstrapLinkRenderer %>
+        <% end %>
+      </div>
     </div>
   <% end %>
 </div>

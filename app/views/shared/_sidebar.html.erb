@@ -1,126 +1,260 @@
-<div class="d-flex flex-column flex-shrink-0 p-3" style="width: 280px;">
-  <a href="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto link-dark text-decoration-none">
-    <i class="bi bi-heart rounded-3 px-3 py-2 me-2 text-white fw-bold" style="background-color: #3333FF;"></i>
-    <span class="fs-4">EMR-HMS</span>
-  </a>
-  <hr>
-  <ul class="nav nav-pills flex-column mb-auto">
-    <%# <li class="nav-item">
-      <a href="/" class="nav-link link-dark" aria-current="page">
-        <i class="bi bi-house me-2 fs-6"></i>
-        Home
-      </a>
-    </li> %>
-    <li>
-      <a href="<%= dashboard_index_path %>" class="nav-link link-dark">
-        <i class="bi bi-speedometer2 me-2 fs-6"></i>
-        Dashboard
-      </a>
-    </li>
-    <li>
-      <%= link_to appointments_path, class: "nav-link link-dark" do %>
-        <i class="bi bi-calendar me-2 fs-6"></i>
-        Appointments
-        <% end %>
-    </li>
-    <% if current_user.doctor? %>
-      <li>
-        <a href="<%= patients_path %>" class="nav-link link-dark">
-          <i class="bi bi-people me-2 fs-6"></i>
-          Patients
-        </a>
-      </li>
-    <% end %>
-    <li>
-      <a href="<%= medical_records_path %>" class="nav-link link-dark">
-        <i class="bi bi-file-earmark-text me-2 fs-6"></i>
-        Medical History
-      </a>
-    </li>
-    <li>
-      <a href="<%= diagnoses_path %>" class="nav-link link-dark">
-        <i class="fa-solid fa-stethoscope me-2 fs-6"></i>
-        Diagnoses
-      </a>
-    </li>
-    <li>
-      <a href="<%= treatments_path %>" class="nav-link link-dark">
-        <i class="bi bi-activity me-2 fs-6"></i>
-        Treatments
-      </a>
-    </li>
-    <li>
-      <a href="<%= laboratory_results_path %>" class="nav-link link-dark">
-        <i class="fa-solid fa-vial me-2 fs-6"></i>
-        Test Results
-      </a>
-    </li>
-    <li>
-      <%= link_to profile_path, class: 'nav-link link-dark' do %>
-        <i class="bi bi-gear me-2 fs-6"></i>
-        Setting
-      <% end %>
-    </li>
-  </ul>
-  <hr>
-  <!-- Quick Stats -->
-  <% if current_user.doctor? %>
-    <div class="mt-4 px-2">
+<% if current_user.patient? %>
 
-      <h6 class="text-muted mb-3">Quick Stats</h6>
+  <!-- ================= PATIENT SIDEBAR ================= -->
+  <div class="patient-sidebar d-flex flex-column">
 
-      <div class="d-flex flex-column gap-2">
-
-        <!-- Total Patients -->
-        <div class="d-flex justify-content-between align-items-center p-2 rounded bg-light">
-          <div class="d-flex align-items-center">
-            <i class="bi bi-people text-primary me-2"></i>
-            <span>Total Patients</span>
-          </div>
-          <span class="badge bg-light text-dark border">
-            <%= @total_patients || 0 %>
-          </span>
-        </div>
-
-        <!-- Today's Visits -->
-        <div class="d-flex justify-content-between align-items-center p-2 rounded bg-light">
-          <div class="d-flex align-items-center">
-            <i class="bi bi-activity text-success me-2"></i>
-            <span>Today's Visits</span>
-          </div>
-          <span class="badge bg-light text-dark border">
-            <%= @today_visits || 0 %>
-          </span>
-        </div>
-
-        <!-- Pending Tests -->
-        <div class="d-flex justify-content-between align-items-center p-2 rounded bg-light">
-          <div class="d-flex align-items-center">
-            <i class="bi bi-exclamation-circle text-warning me-2"></i>
-            <span>Pending Tests</span>
-          </div>
-          <span class="badge bg-light text-dark border">
-            <%= @pending_tests || 0 %>
-          </span>
-        </div>
-
+    <!-- Header -->
+    <div class="p-3 d-flex align-items-center">
+      <div class="logo-box me-2"></div>
+      <div>
+        <h6 class="mb-0 text-white fw-bold">
+          Patient Portal
+        </h6>
+        <small class="text-light">EMR System</small>
       </div>
     </div>
-    <hr>
-  <% end %>
-  <ul class="nav nav-pills flex-column mb-auto">
-    <li class="nav-item">
-      <%= link_to destroy_user_session_path, class:"btn btn-outline-danger w-100" do %>
-        <i class="bi bi-box-arrow-right me-2 fs-6"></i>
-        Sign Out
+
+    <!-- Welcome -->
+    <div class="welcome-box mx-3 mb-3">
+      <small>Welcome back,</small>
+      <div class="fw-semibold">
+        <%= current_user.patient&.full_name %>
+      </div>
+    </div>
+
+    <!-- Menu -->
+    <ul class="nav flex-column px-2">
+
+      <li>
+        <%= link_to dashboard_index_path,
+          class: "nav-item-custom #{current_page?(dashboard_index_path) ? 'active' : ''}" do %>
+          <i class="bi bi-house"></i> Overview
+        <% end %>
+      </li>
+
+      <li>
+        <%= link_to medical_records_path,
+          class: "nav-item-custom #{current_page?(medical_records_path) ? 'active' : ''}" do %>
+          <i class="bi bi-file-earmark-text"></i> Medical History
+        <% end %>
+      </li>
+
+      <li>
+        <%= link_to diagnoses_path,
+          class: "nav-item-custom #{current_page?(diagnoses_path) ? 'active' : ''}" do %>
+          <i class="bi bi-heart-pulse"></i> My Diagnoses
+        <% end %>
+      </li>
+
+      <li>
+        <%= link_to treatments_path,
+          class: "nav-item-custom #{current_page?(treatments_path) ? 'active' : ''}" do %>
+          <i class="bi bi-capsule"></i> My Treatments
+        <% end %>
+      </li>
+
+      <li>
+        <%= link_to laboratory_results_path,
+          class: "nav-item-custom #{current_page?(laboratory_results_path) ? 'active' : ''}" do %>
+          <i class="bi bi-eyedropper"></i> Test Results
+        <% end %>
+      </li>
+
+      <li>
+        <%= link_to patient_appointments_path,
+          class: "nav-item-custom #{current_page?(patient_appointments_path) ? 'active' : ''}" do %>
+          <i class="bi bi-calendar"></i> Appointments
+        <% end %>
+      </li>
+
+      <li>
+        <%= link_to profile_path,
+          class: "nav-item-custom #{current_page?(profile_path) ? 'active' : ''}" do %>
+          <i class="bi bi-person"></i> My Profile
+        <% end %>
+      </li>
+
+    </ul>
+
+    <!-- Logout -->
+    <div class="mt-auto p-3">
+      <%= link_to destroy_user_session_path, class: "btn btn-outline-light w-100" do %>
+        <i class="bi bi-box-arrow-right"></i> Logout
       <% end %>
-    </li>
-  </ul>
-</div>
+    </div>
+
+  </div>
+
+<% else %>
+  <div class="d-flex flex-column flex-shrink-0 p-3" style="width: 280px;">
+    <a href="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto link-dark text-decoration-none">
+      <i class="bi bi-heart rounded-3 px-3 py-2 me-2 text-white fw-bold" style="background-color: #3333FF;"></i>
+      <span class="fs-4">EMR-HMS</span>
+    </a>
+    <hr>
+    <ul class="nav nav-pills flex-column mb-auto">
+      <li>
+        <%= link_to dashboard_index_path, class: "nav-link link-dark nav-item-custom #{current_page?(dashboard_index_path) ? 'active' : ''}" do %>
+          <i class="bi bi-speedometer2 me-2 fs-6"></i>
+          Dashboard
+        <% end %>
+      </li>
+      <li>
+        <%= link_to appointments_path, class: "nav-link link-dark nav-item-custom #{current_page?(appointments_path) ? 'active' : ''}" do %>
+          <i class="bi bi-calendar me-2 fs-6"></i>
+          Appointments
+        <% end %>
+      </li>
+      <% if current_user.doctor? %>
+        <li>
+          <%= link_to patients_path, class: "nav-link link-dark nav-item-custom #{current_page?(patients_path) ? 'active' : ''}" do %>
+            <i class="bi bi-people me-2 fs-6"></i>
+            Patients
+          <% end %>
+        </li>
+      <% end %>
+      <li>
+        <%= link_to medical_records_path, class: "nav-link link-dark nav-item-custom #{current_page?(medical_records_path) ? 'active' : ''}" do %>
+          <i class="bi bi-file-earmark-text me-2 fs-6"></i>
+          Medical History
+        <% end %>
+      </li>
+      <li>
+        <%= link_to diagnoses_path, class: "nav-link link-dark nav-item-custom #{current_page?(diagnoses_path) ? 'active' : ''}" do %>
+          <i class="fa-solid fa-stethoscope me-2 fs-6"></i>
+          Diagnoses
+        <% end %>
+      </li>
+      <li>
+        <%= link_to treatments_path, class: "nav-link link-dark nav-item-custom #{current_page?(treatments_path) ? 'active' : ''}" do %>
+          <i class="bi bi-activity me-2 fs-6"></i>
+          Treatments
+        <% end %>
+      </li>
+      <li>
+        <%= link_to laboratory_results_path, class: "nav-link link-dark nav-item-custom #{current_page?(laboratory_results_path) ? 'active' : ''}" do %>
+          <i class="fa-solid fa-vial me-2 fs-6"></i>
+          Test Results
+        <% end %>
+      </li>
+      <li>
+        <%= link_to profile_path, class: "nav-link link-dark nav-item-custom #{current_page?(profile_path) ? 'active' : ''}" do %>
+          <i class="bi bi-gear me-2 fs-6"></i>
+          Setting
+        <% end %>
+      </li>
+    </ul>
+    <hr>
+    <!-- Quick Stats -->
+    <% if current_user.doctor? %>
+      <div class="mt-4 px-2">
+
+        <h6 class="text-muted mb-3">Quick Stats</h6>
+
+        <div class="d-flex flex-column gap-2">
+
+          <!-- Total Patients -->
+          <div class="d-flex justify-content-between align-items-center p-2 rounded bg-light">
+            <div class="d-flex align-items-center">
+              <i class="bi bi-people text-primary me-2"></i>
+              <span>Total Patients</span>
+            </div>
+            <span class="badge bg-light text-dark border">
+              <%= @total_patients || 0 %>
+            </span>
+          </div>
+
+          <!-- Today's Visits -->
+          <div class="d-flex justify-content-between align-items-center p-2 rounded bg-light">
+            <div class="d-flex align-items-center">
+              <i class="bi bi-activity text-success me-2"></i>
+              <span>Today's Visits</span>
+            </div>
+            <span class="badge bg-light text-dark border">
+              <%= @today_visits || 0 %>
+            </span>
+          </div>
+
+          <!-- Pending Tests -->
+          <div class="d-flex justify-content-between align-items-center p-2 rounded bg-light">
+            <div class="d-flex align-items-center">
+              <i class="bi bi-exclamation-circle text-warning me-2"></i>
+              <span>Pending Tests</span>
+            </div>
+            <span class="badge bg-light text-dark border">
+              <%= @pending_tests || 0 %>
+            </span>
+          </div>
+
+        </div>
+      </div>
+      <hr>
+    <% end %>
+    <ul class="nav nav-pills flex-column mb-auto">
+      <li class="nav-item">
+        <%= link_to destroy_user_session_path, class:"btn btn-outline-danger w-100" do %>
+          <i class="bi bi-box-arrow-right me-2 fs-6"></i>
+          Sign Out
+        <% end %>
+      </li>
+    </ul>
+  </div>
+<% end %>
 
 <style>
   .nav-link.link-dark:hover {
     background-color: #3333FF;
     color: #000; /* keep text dark */
   }
+
+  .patient-sidebar {
+    width: 281px;
+    min-height: 100vh;
+    background: linear-gradient(180deg, #2d6cdf, #1e3fa3);
+  }
+
+  .logo-box {
+    width: 40px;
+    height: 40px;
+    background: #fff;
+    border-radius: 10px;
+  }
+
+  .welcome-box {
+    background: rgba(255,255,255,0.2);
+    padding: 12px;
+    border-radius: 10px;
+    color: white;
+  }
+
+  .nav-item-custom {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 12px;
+    margin-bottom: 8px;
+    border-radius: 10px;
+    color: #e0e6ff;
+    text-decoration: none;
+    font-size: 16px;
+  }
+
+  .nav-item-custom:hover {
+    background: rgba(255,255,255,0.2);
+    color: #fff;
+  }
+
+  .nav-item-custom.active {
+    background: #fff;
+    color: #2d6cdf;
+    font-weight: 600;
+  }
+
+  <%# .logout-btn {
+    border: 1px solid rgba(255,255,255,0.4);
+    color: white;
+    padding: 8px;
+    border-radius: 8px;
+    text-align: center;
+  } %>
 </style>

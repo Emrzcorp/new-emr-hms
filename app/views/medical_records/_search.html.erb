@@ -1,0 +1,37 @@
+<%= form_with url: medical_records_path, method: :get, local: true do %>
+  <div class="card p-4 mb-4 border rounded-3">
+    <h5 class="fw-semibold mb-2">Search Medical Records</h5>
+    <p class="text-muted mb-3">Find specific medical records using filters and search</p>
+
+    <div class="row g-2">
+      
+      <div class="col-12 col-md-6">
+        <%= text_field_tag :query, params[:query],
+          class: "form-control",
+          placeholder: "Search by patient name, diagnosis, or doctor...", autocomplete: "off" %>
+      </div>
+
+      <div class="col-6 col-md-2">
+        <%= select_tag :visit_type,
+          options_for_select(
+            [["All Types", ""]] +
+            MedicalRecord::VISIT_TYPES.map { |v| [v, v] },
+            params[:visit_type]
+          ),
+          class: "form-select",
+          onchange: "this.form.submit();" %>
+      </div>
+
+      <div class="col-6 col-md-2">
+        <%= date_field_tag :visit_date, params[:visit_date],
+          class: "form-control",
+          onchange: "this.form.submit();" %>
+      </div>
+
+      <div class="col-12 col-md-2">
+        <%= submit_tag "Search", class: "btn btn-primary btn-md" %>
+        <%= link_to "Reset", medical_records_path, class: "btn btn-outline-secondary btn-md" %>
+      </div>
+    </div>
+  </div>
+<% end %>

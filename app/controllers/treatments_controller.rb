@@ -11,6 +11,7 @@ class TreatmentsController < ApplicationController
                       .where(doctor_id: @doctor.id)
                       .includes(:patient, :diagnosis)
                       .order(created_at: :desc)
+                      .paginate(page: params[:page], per_page: 10)
 
       @patients = @doctor.patients
       @diagnoses = Diagnosis.where(doctor_id: @doctor.id)
@@ -22,30 +23,35 @@ class TreatmentsController < ApplicationController
                       .where(patient_id: @patient.id)
                       .includes(:doctor, :diagnosis)
                       .order(created_at: :desc)
+                      .paginate(page: params[:page], per_page: 10)
 
-      @patients = []   # not needed for patient
+      @patients = []
       @diagnoses = @patient.diagnoses
     else
       @treatments = Treatment.none
     end
 
-    # Stats (safe for both)
-    @total_treatments = @treatments.count
-    @active_treatments = @treatments.where(status: "Active").count
-    @completed_treatments = @treatments.where(status: "Completed").count
-    @medications_count = @treatments.where.not(medication: nil).count
-
-    # Filters
     if params[:query].present?
+      query = params[:query].strip
+
       @treatments = @treatments.joins(:patient).where(
-        "patients.first_name ILIKE :q OR treatments.treatment_name ILIKE :q",
-        q: "%#{params[:query]}%"
+        "patients.first_name ILIKE :q OR patients.last_name ILIKE :q OR treatments.treatment_name ILIKE :q OR treatments.description ILIKE :q",
+        q: "%#{query}%"
       )
     end
 
-    if params[:status].present?
+    if params[:status].present? && params[:status] != "All Statuses"
       @treatments = @treatments.where(status: params[:status])
     end
+
+    if params[:treatment_type].present? && params[:treatment_type] != "All Types"
+      @treatments = @treatments.where(treatment_type: params[:treatment_type])
+    end
+
+    @total_treatments     = @treatments.count
+    @active_treatments    = @treatments.where(status: "Active").count
+    @completed_treatments = @treatments.where(status: "Completed").count
+    @medications_count    = @treatments.where.not(medication: nil).count
   end
 
   def new

@@ -6,7 +6,10 @@
     </div>
     <div class="col-md-6">
     	<%= f.label :appointment_type, class: "form-label" %>
-      <%= f.select :appointment_type, ["Consultation", "Follow-up", "Routine Checkup"], {prompt: 'Select Type'}, class: "form-select" %>
+      <%= f.select :appointment_type_int,
+            Appointment.appointment_type_ints.keys.map { |k| [k.humanize, k] },
+            { prompt: "Select Type" },
+            class: "form-select" %>
     	<%#= f.label :new_patient_name, "Or Enter New Patient Name", class: "form-label" %>
     	<%#= f.text_field :new_patient_name, class: "form-control", placeholder: "Enter New Patient Name" %>
     </div>

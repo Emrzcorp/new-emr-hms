@@ -1,0 +1,41 @@
+<%= form_with url: diagnoses_path, method: :get, local: true do %>
+  <div class="card rounded-3 p-3">
+    <h5>Search & Filter Diagnoses</h5>
+    <p class="text-muted">
+      Find specific diagnoses using search and filter options
+    </p>
+
+    <div class="row g-2 mb-3">
+      
+      <!-- 🔍 Search -->
+      <div class="col-12 col-md-6">
+        <%= text_field_tag :query, params[:query],
+            placeholder: "Search by patient name, diagnosis, or ICD...",
+            class: "form-control", autocomplete: "off" %>
+      </div>
+
+      <!-- Severity -->
+     <div class="col-6 col-md-2">
+        <%= select_tag :severity,
+            options_for_select(["All Severities","Mild","Moderate","Severe"], params[:severity]),
+            class: "form-select",
+            onchange: "this.form.submit();" %>
+      </div>
+
+      <!-- Status -->
+     <div class="col-6 col-md-2">
+        <%= select_tag :status,
+            options_for_select(["All Statuses","Active","Resolved"], params[:status]),
+            class: "form-select",
+            onchange: "this.form.submit();" %>
+      </div>
+
+      <!-- Reset -->
+      <div class="col-12 col-md-2">
+        <%= submit_tag "Search", class: "btn btn-primary btn-md" %>
+        <%= link_to "Reset", diagnoses_path, class: "btn btn-outline-secondary btn-md" %>
+      </div>
+
+    </div>
+  </div>
+<% end %>

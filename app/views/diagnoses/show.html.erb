@@ -1,26 +1,35 @@
 <div class="container my-4">
 
   <!-- Header -->
-  <div class="d-flex justify-content-between align-items-center mb-3">
-    <div>
-      <h4 class="fw-bold"><i class="fa-solid fa-stethoscope me-2 fs-6"></i> Diagnosis Details</h4>
-      <small>Complete clinical information and treatment overview</small>
+  <div class="row align-items-center mb-3">
+
+    <!-- Title + subtitle -->
+    <div class="col-12 col-md-8 col-lg-9 mb-2 mb-md-0">
+      <h4 class="fw-bold mb-1"><i class="fa-solid fa-stethoscope me-2 fs-6"></i> Diagnosis Details</h4>
+      <p class="text-muted small mb-0">
+        Complete clinical information and treatment overview
+      </p>
     </div>
 
-    <div>
-      <%= link_to diagnoses_path, class: "btn btn-light btn-sm" do %>
-        ← Back
-      <% end %>
+    <!-- Buttons -->
+    <div class="col-12 col-md-4 col-lg-3">
+      <div class="d-flex flex-wrap gap-2 justify-content-md-end">
 
-      <% if current_user.doctor? %>
-        <%= link_to edit_diagnosis_path(@diagnosis), class: "btn btn-outline-primary btn-sm" do %>
-          <i class="bi bi-pencil"></i> Edit
+        <%= link_to diagnoses_path, class: "btn btn-light btn-sm w-md-auto" do %>
+          ← Back
         <% end %>
-      <% end %>
+
+        <% if current_user.doctor? %>
+          <%= link_to edit_diagnosis_path(@diagnosis), class: "btn btn-outline-primary btn-sm w-md-auto" do %>
+            <i class="bi bi-pencil"></i> Edit
+          <% end %>
+        <% end %>
+
+      </div>
     </div>
   </div>
 
-    <!-- ================= DIAGNOSIS DETAILS ================= -->
+  <!-- ================= DIAGNOSIS DETAILS ================= -->
   <div class="card border mt-4 p-3">
     <div class="row">
       <div class="col-md-6">
@@ -200,9 +209,9 @@
           <div class="d-flex align-items-center">
             <i class="bi bi-check-circle-fill text-success me-2"></i>
             <span class="fw-medium">
-              <%= t.treatment_name %>
+              <%= t.treatment_name.humanize %>
               <% if t.dosage.present? %>
-                <small class="text-muted"><%= t.dosage %></small>
+                <small class="text-muted"><%= t.dosage.humanize %></small>
               <% end %>
             </span>
           </div>

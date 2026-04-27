@@ -11,6 +11,7 @@ class DiagnosesController < ApplicationController
 	                  .where(doctor_id: @doctor.id)
 	                  .includes(:patient)
 	                  .order(created_at: :desc)
+	                  .paginate(page: params[:page], per_page: 10)
 
 	    @patients = @doctor.patients
 
@@ -21,6 +22,7 @@ class DiagnosesController < ApplicationController
 	                  .where(patient_id: @patient.id)
 	                  .includes(:doctor)
 	                  .order(created_at: :desc)
+	                  .paginate(page: params[:page], per_page: 10)
 
 	    @patients = [] # not needed for patient
 	  else
@@ -44,11 +46,11 @@ class DiagnosesController < ApplicationController
 	  end
 
 	  if params[:query].present?
-	    @diagnoses = @diagnoses.joins(:patient).where(
-	      "patients.first_name ILIKE :q OR diagnoses.primary_diagnosis ILIKE :q OR diagnoses.icd_code ILIKE :q",
-	      q: "%#{params[:query]}%"
-	    )
-	  end
+		  @diagnoses = @diagnoses.joins(:patient).where(
+		    "patients.first_name ILIKE :q OR patients.last_name ILIKE :q OR diagnoses.primary_diagnosis ILIKE :q OR diagnoses.icd_code ILIKE :q",
+		    q: "%#{params[:query]}%"
+		  )
+		end
 	end
 
   def new

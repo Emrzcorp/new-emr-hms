@@ -8,15 +8,37 @@ class MedicalRecordsController < ApplicationController
                           .where(doctor_id: current_user.doctor.id)
                           .includes(:patient, :doctor)
                           .order(visit_date: :desc)
+                          .paginate(page: params[:page], per_page: 10)
 
     elsif current_user.patient.present?
       @medical_records = MedicalRecord
                           .where(patient_id: current_user.patient.id)
                           .includes(:patient, :doctor)
                           .order(visit_date: :desc)
+                          .paginate(page: params[:page], per_page: 10)
     else
       @medical_records = MedicalRecord.none
     end
+
+    # 🔍 Search (text)
+    if params[:query].present?
+      @medical_records = @medical_records.joins(:patient, :doctor).where(
+        "patients.first_name ILIKE :q OR patients.last_name ILIKE :q OR medical_records.diagnosis ILIKE :q OR doctors.first_name ILIKE :q OR doctors.last_name ILIKE :q",
+        q: "%#{params[:query]}%"
+      )
+    end
+
+    # 📌 Visit type filter
+    if params[:visit_type].present?
+      @medical_records = @medical_records.where(visit_type: params[:visit_type])
+    end
+
+    # 📅 Date filter
+    if params[:visit_date].present?
+      @medical_records = @medical_records.where(visit_date: params[:visit_date])
+    end
+
+    @medical_records = @medical_records.order(visit_date: :desc)
 
     @total_records = @medical_records.count
 
