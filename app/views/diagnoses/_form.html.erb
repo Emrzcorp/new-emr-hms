@@ -1,17 +1,34 @@
-<div class="container my-5 mt-3">
-	<%= form_with model: diagnosis, scope: :diagnosis, local: true do |f| %>
+<div class="container">
+	<%= form_with model: diagnosis, scope: :diagnosis do |f| %>
 
 		<h5>Patient Information</h5>
 	  <div class="form-group row">
 	    <div class="col-md-6">
 	      <%= f.label :patient_id, "Select Patient" %>
-			  <%= f.collection_select :patient_id, @patients || [], :id, :full_name,
-			      { prompt: "Select patient" },
-			      class: "form-select" %>
+			  <%= f.collection_select :patient_id,
+            @patients || [],
+            :id,
+            :full_name,
+            { prompt: "Select patient" },
+            class: "form-select #{'is-invalid' if diagnosis.errors[:patient_id].present?}" %>
+
+        <% if diagnosis.errors[:patient_id].present? %>
+          <div class="invalid-feedback d-block">
+            <%= diagnosis.errors.full_messages_for(:patient_id).first %>
+          </div>
+        <% end %>
 	    </div>
+
 	    <div class="col-md-6">
 	      <%= f.label :diagnoses_start_date, "Select date" %>
-	  		<%= f.date_field :diagnoses_start_date, class: "form-control" %>
+	  		<%= f.date_field :diagnoses_start_date,
+            class: "form-control #{'is-invalid' if diagnosis.errors[:diagnoses_start_date].present?}" %>
+
+        <% if diagnosis.errors[:diagnoses_start_date].present? %>
+          <div class="invalid-feedback d-block">
+            <%= diagnosis.errors.full_messages_for(:diagnoses_start_date).first %>
+          </div>
+        <% end %>
 	    </div>
 	  </div>
 
@@ -20,14 +37,27 @@
 	    <div class="col-md-6">
 	    <%= f.label :primary_diagnosis, "Primary Diagnosis" %>
 	     <%= f.text_field :primary_diagnosis,
-	        placeholder: "Enter primary diagnosis",
-	        class: "form-control" %>
+            placeholder: "Enter primary diagnosis",
+            class: "form-control #{'is-invalid' if diagnosis.errors[:primary_diagnosis].present?}" %>
+
+        <% if diagnosis.errors[:primary_diagnosis].present? %>
+          <div class="invalid-feedback d-block">
+            <%= diagnosis.errors.full_messages_for(:primary_diagnosis).first %>
+          </div>
+        <% end %>
 	    </div>
+
 	    <div class="col-md-6">
 	      <%= f.label :secondary_diagnosis, "Secondary Diagnosis" %>
 	      <%= f.text_field :secondary_diagnosis,
-	        placeholder: "Enter secondary diagnosis (optional)",
-	        class: "form-control" %>
+            placeholder: "Enter secondary diagnosis (optional)",
+            class: "form-control #{'is-invalid' if diagnosis.errors[:secondary_diagnosis].present?}" %>
+
+        <% if diagnosis.errors[:secondary_diagnosis].present? %>
+          <div class="invalid-feedback d-block">
+            <%= diagnosis.errors.full_messages_for(:secondary_diagnosis).first %>
+          </div>
+        <% end %>
 	    </div>
 	  </div>
 
@@ -35,15 +65,27 @@
 	    <div class="col-md-6">
 	      <%= f.label :icd_code, "ICD-10 Code" %>
 	      <%= f.text_field :icd_code,
-	        placeholder: "e.g., I10 (Hypertension)",
-	        class: "form-control" %>
+            placeholder: "e.g., I10 (Hypertension)",
+            class: "form-control #{'is-invalid' if diagnosis.errors[:icd_code].present?}" %>
+
+        <% if diagnosis.errors[:icd_code].present? %>
+          <div class="invalid-feedback d-block">
+            <%= diagnosis.errors.full_messages_for(:icd_code).first %>
+          </div>
+        <% end %>
 	    </div>
 	    <div class="col-md-6">
 	      <%= f.label :severity, "Severity" %>
 	      <%= f.select :severity,
-	          ["Mild", "Moderate", "Severe"],
-	          { prompt: "Select severity" },
-	          class: "form-select" %>
+            ["Mild", "Moderate", "Severe", "Critical"],
+            { prompt: "Select severity" },
+            class: "form-select #{'is-invalid' if diagnosis.errors[:severity].present?}" %>
+
+        <% if diagnosis.errors[:severity].present? %>
+          <div class="invalid-feedback d-block">
+            <%= diagnosis.errors.full_messages_for(:severity).first %>
+          </div>
+        <% end %>
 	    </div>
 	  </div>
 
@@ -51,9 +93,15 @@
 	    <div class="col-md-12">
 	      <%= f.label :status, "Status" %>
 	      <%= f.select :status,
-	          ["Active", "Resolved"],
-	          { prompt: "Select Status" },
-	          class: "form-select" %>
+            ["Active", "Resolved", "Chronic", "Under Investigation"],
+            { prompt: "Select Status" },
+            class: "form-select #{'is-invalid' if diagnosis.errors[:status].present?}" %>
+
+        <% if diagnosis.errors[:status].present? %>
+          <div class="invalid-feedback d-block">
+            <%= diagnosis.errors.full_messages_for(:status).first %>
+          </div>
+        <% end %>
 	    </div>
 	  </div>
 
@@ -61,20 +109,39 @@
     <div >
       <%= f.label :symptoms, "Associated Symptoms" %>
       <%= f.text_field :symptoms,
-        placeholder: "Comma separated symptoms (e.g., Chest pain, Shortness of breath)",
-        class: "form-control" %>
+          placeholder: "Comma separated symptoms (e.g., Chest pain, Shortness of breath)",
+          class: "form-control #{'is-invalid' if diagnosis.errors[:symptoms].present?}" %>
+
+      <% if diagnosis.errors[:symptoms].present? %>
+        <div class="invalid-feedback d-block">
+          <%= diagnosis.errors.full_messages_for(:symptoms).first %>
+        </div>
+      <% end %>
     </div>
 
     <div>
       <%= f.label :notes, "Clinical Notes" %>
       <%= f.text_area :notes,
-	        placeholder: "Additional clinical notes and observations",
-	        class: "form-control" %>
+          placeholder: "Additional clinical notes and observations",
+          class: "form-control #{'is-invalid' if diagnosis.errors[:notes].present?}" %>
+
+      <% if diagnosis.errors[:notes].present? %>
+        <div class="invalid-feedback d-block">
+          <%= diagnosis.errors.full_messages_for(:notes).first %>
+        </div>
+      <% end %>
     </div>
 
     <div>
 		  <%= f.label :follow_up_date, "Follow-up" %>
-		  <%= f.date_field :follow_up_date, class: "form-control" %>
+		  <%= f.date_field :follow_up_date,
+          class: "form-control #{'is-invalid' if diagnosis.errors[:follow_up_date].present?}" %>
+
+      <% if diagnosis.errors[:follow_up_date].present? %>
+        <div class="invalid-feedback d-block">
+          <%= diagnosis.errors.full_messages_for(:follow_up_date).first %>
+        </div>
+      <% end %>
 		</div>
 
 	  <div class="mt-4">

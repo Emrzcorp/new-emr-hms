@@ -14,6 +14,7 @@ class DiagnosesController < ApplicationController
 	                  .paginate(page: params[:page], per_page: 10)
 
 	    @patients = @doctor.patients
+	    @diagnosis = Diagnosis.new
 
 	  elsif current_user.patient.present?
 	    @patient = current_user.patient
@@ -65,9 +66,22 @@ class DiagnosesController < ApplicationController
 	  if @diagnosis.save
 	    redirect_to diagnoses_path, notice: "Diagnosis added successfully"
 	  else
-	    @patients = current_user.doctor.patients
-	    render :index, status: :unprocessable_entity
-	  end
+		  @patients = current_user.doctor.patients
+
+		  respond_to do |format|
+		    format.turbo_stream do
+		      render turbo_stream: turbo_stream.replace(
+		        "diagnosis_form",
+		        partial: "diagnoses/form",
+		        locals: { diagnosis: @diagnosis }
+		      ), status: :unprocessable_entity
+		    end
+
+		    format.html do
+		      render :index, status: :unprocessable_entity
+		    end
+		  end
+		end
 	end
 
   def edit

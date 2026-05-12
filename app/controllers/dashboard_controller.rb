@@ -4,6 +4,9 @@ class DashboardController < ApplicationController
   def index
     if current_user.doctor?
       @doctor = current_user.doctor
+      @patient = @doctor.patients.build
+      @appointment = @doctor.appointments.build
+      
       @patients = @doctor.patients
       @appointments = @doctor.appointments.includes(:patient)
 
@@ -56,6 +59,15 @@ class DashboardController < ApplicationController
       @past_appointments     = @appointments.completed
 
       @medical_records = @patient.medical_records.order(visit_date: :desc)
+
+      @active_treatments = @patient.treatments
+                             .where(status: "Active")
+                             .order(created_at: :desc)
+                             .limit(5)
+
+      @laboratory_results = @patient.laboratory_results
+                                    .order(created_at: :desc)
+                                    .limit(5)
     end
   end
 end

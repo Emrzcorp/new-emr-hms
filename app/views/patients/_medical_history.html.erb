@@ -8,23 +8,25 @@
     <div class="card mb-3 mt-3 shadow-sm border rounded-3 p-3">
 
       <!-- Header -->
-      <div class="d-flex justify-content-between">
+      <div class="d-flex justify-content-between mb-2">
         <div>
           <h6 class="fw-bold mb-1">
-            <%= record.diagnosis.humanize.presence || "General Checkup" %>
+            <%= record.diagnosis.humanize.presence || "NA" %>
           </h6>
           <small class="text-muted">
-            Dr. <%= record.doctor.full_name %> • 
-            <%= record.visit_date.strftime("%Y-%m-%d") if record.visit_date %>
+            Dr. <%= record.doctor.full_name.presence || "NA" %> • 
+            <%= record.visit_date.strftime("%Y-%m-%d") if record.visit_date.presence || "NA" %>
           </small>
         </div>
 
-        <span class="badge bg-light text-dark">
-          <%= record.visit_type.humanize %>
-        </span>
+        <div class="mt-2">
+          <span class="badge bg-light text-dark p-2">
+            <%= record.visit_type.humanize.presence || "NA" %>
+          </span>
+        </div>
       </div>
 
-      <p class="mt-2 mb-3">
+      <p class="mt-2 mb-3 bg-danger-subtle p-2 rounded">
         <%= record.clinical_notes.humanize.presence || "No notes available" %>
       </p>
 
@@ -34,28 +36,28 @@
         <div class="col-md-3 mb-2">
           <div class="p-2 rounded bg-light">
             <small>Blood Pressure</small>
-            <div class="fw-bold text-danger"><%= record.blood_pressure %></div>
+            <div class="fw-bold text-danger"><%= record.blood_pressure.presence || "NA" %></div>
           </div>
         </div>
 
         <div class="col-md-3 mb-2">
           <div class="p-2 rounded bg-light">
             <small>Heart Rate</small>
-            <div class="fw-bold text-primary"><%= record.heart_rate %></div>
+            <div class="fw-bold text-primary"><%= record.heart_rate.presence || "NA" %></div>
           </div>
         </div>
 
         <div class="col-md-3 mb-2">
           <div class="p-2 rounded bg-light">
             <small>Temperature</small>
-            <div class="fw-bold text-success"><%= record.temperature %></div>
+            <div class="fw-bold text-success"><%= record.temperature.presence || "NA" %></div>
           </div>
         </div>
 
         <div class="col-md-3 mb-2">
           <div class="p-2 rounded bg-light">
             <small>Weight</small>
-            <div class="fw-bold text-purple"><%= record.weight %></div>
+            <div class="fw-bold text-purple"><%= record.weight.presence || "NA" %></div>
           </div>
         </div>
 
@@ -63,5 +65,5 @@
     </div>
   <% end %>
 <% else %>
-  <div class="alert alert-info">No medical records found.</div>
+  <div class="alert alert-info mt-2">No medical records found.</div>
 <% end %>

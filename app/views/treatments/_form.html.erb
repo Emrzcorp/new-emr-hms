@@ -1,88 +1,215 @@
 <div class="container">
-
-  <%= form_with model: treatment, scope: :treatment, local: true do |f| %>
-
+  <%= form_with model: treatment, scope: :treatment do |f| %>
     <h5>Patient Information</h5>
+
     <div class="row">
       <div class="col-md-6">
-        <%= f.label :patient_id, "Patient" %>
+        <%= f.label :patient_id, "Patient *" %>
         <%= f.collection_select :patient_id, @patients, :id, :full_name,
-              { prompt: "Select patient" }, class: "form-select" %>
+          { prompt: "Select patient" },
+          class: "form-select #{'is-invalid' if treatment.errors[:patient_id].present?}" %>
+
+        <% if treatment.errors[:patient_id].present? %>
+          <div class="invalid-feedback d-block">
+            <%= treatment.errors.full_messages_for(:patient_id).first %>
+          </div>
+        <% end %>
       </div>
 
       <div class="col-md-6">
-        <%= f.label :treatment_start_date, "Treatment Date" %>
-        <%= f.date_field :treatment_start_date, class: "form-control" %>
+        <%= f.label :treatment_start_date, "Treatment Date *" %>
+        <%= f.date_field :treatment_start_date,
+          class: "form-control #{'is-invalid' if treatment.errors[:treatment_start_date].present?}" %>
+
+        <% if treatment.errors[:treatment_start_date].present? %>
+          <div class="invalid-feedback d-block">
+            <%= treatment.errors.full_messages_for(:treatment_start_date).first %>
+          </div>
+        <% end %>
       </div>
     </div>
 
     <h5 class="mt-3">Treatment Details</h5>
+
     <div class="row">
       <div class="col-md-6">
-        <%= f.label :treatment_type, "Treatment Type" %>
-        <%= f.select :treatment_type, Treatment::TREATMENT_TYPE, { prompt: "Select type" }, class: "form-control" %>
+        <%= f.label :treatment_type, "Treatment Type *" %>
+        <%= f.select :treatment_type, Treatment::TREATMENT_TYPE,
+          { prompt: "Select type" },
+          class: "form-select #{'is-invalid' if treatment.errors[:treatment_type].present?}" %>
+
+        <% if treatment.errors[:treatment_type].present? %>
+          <div class="invalid-feedback d-block">
+            <%= treatment.errors.full_messages_for(:treatment_type).first %>
+          </div>
+        <% end %>
       </div>
+
       <div class="col-md-6">
-        <%= f.label :treatment_name, "Treatment Name" %>
-        <%= f.text_field :treatment_name, placeholder: "Name", class: "form-control" %>
+        <%= f.label :treatment_name, "Treatment Name *" %>
+        <%= f.text_field :treatment_name,
+          placeholder: "Name",
+          class: "form-control #{'is-invalid' if treatment.errors[:treatment_name].present?}" %>
+
+        <% if treatment.errors[:treatment_name].present? %>
+          <div class="invalid-feedback d-block">
+            <%= treatment.errors.full_messages_for(:treatment_name).first %>
+          </div>
+        <% end %>
       </div>
     </div>
 
     <div class="row mt-2">
       <div class="col-md-6">
-        <%= f.label :diagnoses, "Related Diagnosis" %>
+        <%= f.label :diagnosis_id, "Related Diagnosis *" %>
         <%= f.collection_select :diagnosis_id, @diagnoses, :id, :primary_diagnosis,
-              { prompt: "Related diagnosis" }, class: "form-select" %>
+          { prompt: "Related diagnosis" },
+          class: "form-select #{'is-invalid' if treatment.errors[:diagnosis_id].present?}" %>
+
+        <% if treatment.errors[:diagnosis_id].present? %>
+          <div class="invalid-feedback d-block">
+            <%= treatment.errors.full_messages_for(:diagnosis_id).first %>
+          </div>
+        <% end %>
       </div>
+
       <div class="col-md-6">
-        <%= f.label :priority, "Priority" %>
-        <%= f.select :priority, ["Low", "Medium", "High"], { prompt: true }, class: "form-select" %>
+        <%= f.label :priority, "Priority *" %>
+        <%= f.select :priority, ["Low", "Medium", "High"],
+          { prompt: "Select priority" },
+          class: "form-select #{'is-invalid' if treatment.errors[:priority].present?}" %>
+
+        <% if treatment.errors[:priority].present? %>
+          <div class="invalid-feedback d-block">
+            <%= treatment.errors.full_messages_for(:priority).first %>
+          </div>
+        <% end %>
       </div>
     </div>
 
     <div class="mt-2">
-      <%= f.label :description, "Treatment Description" %>
-      <%= f.text_area :description, placeholder: "Treatment description", class: "form-control" %>
+      <%= f.label :description, "Treatment Description *" %>
+      <%= f.text_area :description,
+        placeholder: "Treatment description",
+        class: "form-control #{'is-invalid' if treatment.errors[:description].present?}" %>
+
+      <% if treatment.errors[:description].present? %>
+        <div class="invalid-feedback d-block">
+          <%= treatment.errors.full_messages_for(:description).first %>
+        </div>
+      <% end %>
     </div>
 
     <h5 class="mt-3">Medication Details</h5>
+
     <div class="row">
       <div class="col-md-6">
-        <%= f.label :medication, "Medication" %>
-        <%= f.text_field :medication, class: "form-control", placeholder: "Medication" %>
+        <%= f.label :medication, "Medication *" %>
+        <%= f.text_field :medication,
+          class: "form-control #{'is-invalid' if treatment.errors[:medication].present?}",
+          placeholder: "Medication" %>
+
+        <% if treatment.errors[:medication].present? %>
+          <div class="invalid-feedback d-block">
+            <%= treatment.errors.full_messages_for(:medication).first %>
+          </div>
+        <% end %>
       </div>
+
       <div class="col-md-6">
-        <%= f.label :dosage, "Dosage" %>
-        <%= f.text_field :dosage, class: "form-control", placeholder: "Dosage" %>
+        <%= f.label :dosage, "Dosage *" %>
+        <%= f.text_field :dosage,
+          class: "form-control #{'is-invalid' if treatment.errors[:dosage].present?}",
+          placeholder: "Dosage" %>
+
+        <% if treatment.errors[:dosage].present? %>
+          <div class="invalid-feedback d-block">
+            <%= treatment.errors.full_messages_for(:dosage).first %>
+          </div>
+        <% end %>
       </div>
     </div>
 
     <div class="row mt-2">
       <div class="col-md-6">
-        <%= f.label :frequency, "Frequency" %>
-        <%= f.text_field :frequency, class: "form-control", placeholder: "Frequency" %>
+        <%= f.label :frequency, "Frequency *" %>
+        <%= f.text_field :frequency,
+          class: "form-control #{'is-invalid' if treatment.errors[:frequency].present?}",
+          placeholder: "Frequency" %>
+
+        <% if treatment.errors[:frequency].present? %>
+          <div class="invalid-feedback d-block">
+            <%= treatment.errors.full_messages_for(:frequency).first %>
+          </div>
+        <% end %>
       </div>
+
       <div class="col-md-6">
-        <%= f.label :duration, "Duration" %>
-        <%= f.text_field :duration, class: "form-control", placeholder: "Duration" %>
+        <%= f.label :duration, "Duration *" %>
+        <%= f.text_field :duration,
+          class: "form-control #{'is-invalid' if treatment.errors[:duration].present?}",
+          placeholder: "Duration" %>
+
+        <% if treatment.errors[:duration].present? %>
+          <div class="invalid-feedback d-block">
+            <%= treatment.errors.full_messages_for(:duration).first %>
+          </div>
+        <% end %>
       </div>
     </div>
 
     <h5 class="mt-3">Instructions & Notes</h5>
-    <%= f.label :patient_instructions, "Patient Instructions" %>
-    <%= f.text_area :patient_instructions, class: "form-control", placeholder: "Patient instructions" %>
 
-    <%= f.label :clinical_notes, "Clinical Notes" %>
-    <%= f.text_area :clinical_notes, class: "form-control mt-2", placeholder: "Clinical notes" %>
+    <div class="mt-2">
+      <%= f.label :patient_instructions, "Patient Instructions *" %>
+      <%= f.text_area :patient_instructions,
+        class: "form-control #{'is-invalid' if treatment.errors[:patient_instructions].present?}",
+        placeholder: "Patient instructions" %>
+
+      <% if treatment.errors[:patient_instructions].present? %>
+        <div class="invalid-feedback d-block">
+          <%= treatment.errors.full_messages_for(:patient_instructions).first %>
+        </div>
+      <% end %>
+    </div>
+
+    <div class="mt-2">
+      <%= f.label :clinical_notes, "Clinical Notes *" %>
+      <%= f.text_area :clinical_notes,
+        class: "form-control #{'is-invalid' if treatment.errors[:clinical_notes].present?}",
+        placeholder: "Clinical notes" %>
+
+      <% if treatment.errors[:clinical_notes].present? %>
+        <div class="invalid-feedback d-block">
+          <%= treatment.errors.full_messages_for(:clinical_notes).first %>
+        </div>
+      <% end %>
+    </div>
 
     <div class="row mt-2">
       <div class="col-md-6">
-        <%= f.label :status, "Status" %>
-        <%= f.select :status, ["Active", "Completed"], { prompt: true }, class: "form-select" %>
+        <%= f.label :status, "Status *" %>
+        <%= f.select :status, ["Active", "Completed"],
+          { prompt: "Select status" },
+          class: "form-select #{'is-invalid' if treatment.errors[:status].present?}" %>
+
+        <% if treatment.errors[:status].present? %>
+          <div class="invalid-feedback d-block">
+            <%= treatment.errors.full_messages_for(:status).first %>
+          </div>
+        <% end %>
       </div>
+
       <div class="col-md-6">
-        <%= f.label :next_review_date, "Next Review Date" %>
-        <%= f.date_field :next_review_date, class: "form-control" %>
+        <%= f.label :next_review_date, "Next Review Date *" %>
+        <%= f.date_field :next_review_date,
+          class: "form-control #{'is-invalid' if treatment.errors[:next_review_date].present?}" %>
+
+        <% if treatment.errors[:next_review_date].present? %>
+          <div class="invalid-feedback d-block">
+            <%= treatment.errors.full_messages_for(:next_review_date).first %>
+          </div>
+        <% end %>
       </div>
     </div>
 
@@ -90,5 +217,6 @@
       <%= f.submit "Save Treatment", class: "btn btn-primary" %>
       <%= link_to "Cancel", treatments_path, class: "btn btn-secondary mt-2 mb-2" %>
     </div>
+
   <% end %>
 </div>

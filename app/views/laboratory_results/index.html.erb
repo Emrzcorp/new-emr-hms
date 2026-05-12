@@ -7,11 +7,11 @@
       <small class="text-muted">View and manage patient test results and lab reports</small>
     </div>
 
-      <% if current_user.doctor? %>
-        <%= link_to new_laboratory_result_path, class: 'btn btn-primary btn-sm mb-2 rounded-3', data: { bs_toggle: 'modal', bs_target: "#treatmentModal" }  do %>
-          <i class="fa-solid fa-plus me-2"></i> Order New Test
-        <% end %>
+    <% if current_user.doctor? %>
+      <%= link_to new_laboratory_result_path, class: 'btn btn-primary btn-sm mb-2 rounded-3', data: { bs_toggle: 'modal', bs_target: "#treatmentModal" }  do %>
+        <i class="fa-solid fa-plus me-2"></i> Order New Test
       <% end %>
+    
 
       <!-- Modal -->
       <div class="modal fade" id="treatmentModal" tabindex="-1" aria-labelledby="treatmentModalLabel" aria-hidden="true">
@@ -25,20 +25,23 @@
               <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-              <%= render 'laboratory_results/form', result: @result %>
+              <%= turbo_frame_tag "laboratory_result_form" do %>
+                <%= render "laboratory_results/form", result: @result %>
+              <% end %>
             </div>
           </div>
         </div>
       </div>
+    <% end %>
   </div>
 
   <!-- Summary Cards -->
   <div class="row g-3 mb-4">
     <div class="col-md-3">
-      <div class="card-summary text-start border-0 shadow-sm p-3 rounded-4" style="background:#eaf3ff;">
+      <div class="card-summary text-start border-0 p-3 rounded-4" style="background:#eaf3ff;">
         <div class="d-flex justify-content-between">
           <div>
-            <small>Total Tests</small>
+            <small class="fw-bold fs-6">Total Tests</small>
             <h4 class="fw-bold mt-2"><%= @total_tests %></h4>
             <small class="text-primary">All test orders</small>
           </div>
@@ -48,10 +51,10 @@
     </div>
 
     <div class="col-md-3">
-      <div class="card-summary text-start border-0 shadow-sm p-3 rounded-4" style="background:#eafbf1;">
+      <div class="card-summary text-start border-0 p-3 rounded-4" style="background:#eafbf1;">
         <div class="d-flex justify-content-between">
           <div>
-            <small>Completed</small>
+            <small class="fw-bold fs-6">Completed</small>
             <h4 class="fw-bold mt-2"><%= @completed %></h4>
             <small class="text-success">Results available</small>
           </div>
@@ -61,10 +64,10 @@
     </div>
 
     <div class="col-md-3">
-      <div class="card-summary text-start border-0 shadow-sm p-3 rounded-4" style="background:#f6efff;">
+      <div class="card-summary text-start border-0 p-3 rounded-4" style="background:#f6efff;">
         <div class="d-flex justify-content-between">
           <div>
-            <small>Pending</small>
+            <small class="fw-bold fs-6">Pending</small>
             <h4 class="fw-bold mt-2"><%= @pending %></h4>
             <small class="text-info">Awaiting results</small>
           </div>
@@ -74,10 +77,10 @@
     </div>
 
     <div class="col-md-3">
-      <div class="card-summary text-start border-0 shadow-sm p-3 rounded-4" style="background:#fff5eb;">
+      <div class="card-summary text-start border-0 p-3 rounded-4" style="background:#fff5eb;">
         <div class="d-flex justify-content-between">
           <div>
-            <small>Abnormal</small>
+            <small class="fw-bold fs-6">Abnormal</small>
             <h4 class="fw-bold mt-2"><%= @abnormal %></h4>
             <small class="text-warning">Require attention</small>
           </div>
@@ -138,8 +141,6 @@
           <div class="col-md-6">
             <h6 class="section-title fw-bold mb-1">Test Information</h6>
             <p class="mb-1"><strong>Ordered:</strong> <%= t.test_date %></p>
-            <p class="mb-1"><strong>Sample Date:</strong> <%#= t.test_date %></p>
-            <p class="mb-1"><strong>Result Date:</strong> </p>
             <p class="mb-1"><strong>Ordered by:</strong> Dr. <%= t.doctor.full_name %></p>
           </div>
 

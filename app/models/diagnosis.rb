@@ -5,7 +5,18 @@ class Diagnosis < ApplicationRecord
 
   has_many :treatments
 
-  validates :primary_diagnosis, presence: true
+  validates :patient_id,
+            :doctor_id,
+            :medical_record_id,
+            :primary_diagnosis,
+            :secondary_diagnosis,
+            :icd_code,
+            :symptoms,
+            :notes,
+            :follow_up_date,
+            :diagnoses_start_date, 
+            presence: true
+
   validates :severity, inclusion: { in: %w[Mild Moderate Severe Critical] }, allow_blank: true
-  validates :status, inclusion: { in: %w[Active Resolved Chronic Under Inverstigation] }, allow_blank: true
+  validates :status, inclusion: { in: ["Active", "Resolved", "Chronic", "Under Investigation"] }, allow_blank: true
 end

@@ -5,22 +5,22 @@
 <div class="tab-pane fade show active" id="diagnoses">
   <% if @patient.diagnoses.present? %>
     <% @patient.diagnoses.order(created_at: :desc).each do |d| %>
-      <div class="card mb-2 p-3">
-        <h6><%= d.primary_diagnosis.humanize %></h6>
-        <small class="text-muted"> ICD-10 <%= d.icd_code %></small>
+      <div class="card mb-2 p-3 mt-2">
+        <h6><%= d.primary_diagnosis.humanize.presence || "NA" %></h6>
+        <small class="text-muted"> ICD-10 <%= d.icd_code.presence || "NA" %></small>
 
         <div class="mt-2">
-          <span class="badge bg-info"><%= d.severity.humanize %></span>
-          <span class="badge bg-success"><%= d.status.humanize %></span>
+          <span class="badge bg-info"><%= d.severity.humanize.presence || "NA" %></span>
+          <span class="badge bg-success"><%= d.status.humanize.presence || "NA" %></span>
         </div>
 
-        <p class="mt-2"><strong>Symptoms:</strong> <%= d.symptoms.humanize %></p>
-        <p><strong>Notes:</strong> <%= d.notes.humanize %></p>
+        <p class="mt-2 mb-2"><strong>Symptoms:</strong> <%= d.symptoms.humanize.presence || "NA" %></p>
+        <p class="mt-2 mb-2 bg-light p-2 rounded"><strong>Notes:</strong> <%= d.notes.humanize.presence || "NA" %></p>
 
-        <small>Follow-up: <%= d.follow_up_date %></small>
+        <small>Follow-up: <%= d.follow_up_date.presence || "NA" %></small>
       </div>
     <% end %>
   <% else %>
-    <div class="alert alert-info">No Diagnoses found.</div>
+    <div class="alert alert-info mt-2">No Diagnoses found.</div>
   <% end %>
 </div>

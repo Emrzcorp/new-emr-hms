@@ -76,7 +76,7 @@
           <i class="bi bi-clock text-purple"></i>
         </div>
 
-        <% last_record = @medical_records.first %>
+        <% last_record = @medical_records&.first %>
 
         <h5 class="fw-bold mt-3">
           <%= last_record&.visit_date || "N/A" %>
@@ -97,19 +97,21 @@
           <i class="bi bi-person me-2"></i> Personal Information
         </h6>
 
-        <div class="d-flex justify-content-between py-2 border-bottom">
-          <span class="text-muted">Patient ID</span>
-          <strong>P<%= @patient.id.to_s.rjust(3, "0") %></strong>
-        </div>
+        <% if @patient.present? %>
+          <div class="d-flex justify-content-between py-2 border-bottom">
+            <span class="text-muted">Patient ID</span>
+            <strong>P<%= @patient.id.to_s.rjust(3, "0") %></strong>
+          </div>
+        <% end %>
 
         <div class="d-flex justify-content-between py-2 border-bottom">
           <span class="text-muted">Age</span>
-          <strong><%= @patient.age %> years</strong>
+          <strong><%= @patient&.age %> years</strong>
         </div>
 
         <div class="d-flex justify-content-between py-2 border-bottom">
           <span class="text-muted">Gender</span>
-          <strong><%= @patient.gender %></strong>
+          <strong><%= @patient&.gender %></strong>
         </div>
 
         <div class="d-flex justify-content-between py-2 border-bottom">
@@ -153,13 +155,146 @@
         <div class="p-3 rounded-3" style="background:#eef2f7;">
           <strong>Emergency Contact</strong>
           <p class="mb-0 small mt-1">
-            <%= @patient.emergency_contact_person_name.humanize || "N/A" %> <br>
-            (<%= @patient.emergency_contact_number || "N/A" %>)
+            <%= @patient&.emergency_contact_person_name&.humanize || "N/A" %> <br>
+            (<%= @patient&.emergency_contact_number || "N/A" %>)
           </p>
         </div>
 
       </div>
     </div>
 
+  </div>
+
+  <!-- 🩺 PATIENT DATA SECTIONS -->
+  <div class="row g-4 mt-1">
+    <!-- 💊 CURRENT MEDICATIONS -->
+    <div class="col-12">
+      <div class="card p-3 rounded-4">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+          <h6 class="fw-bold mb-0">
+            <i class="bi bi-capsule-pill me-2 text-primary"></i>
+            Current Medications
+          </h6>
+
+          <%# <span class="badge bg-primary"> %>
+            <%#= @active_treatments.count %>
+          <%# </span> %>
+        </div>
+
+        <% if @active_treatments.present? %>
+          <% @active_treatments.each do |treatment| %>
+            <div class="border rounded-3 p-3 mb-2 bg-light">
+              <div class="d-flex justify-content-between align-items-start">
+                <div>
+                  <strong><%= treatment.treatment_name %></strong>
+                  <div class="small text-muted mt-1">
+                    <%= treatment.clinical_notes.presence || "No additional instructions" %>
+                  </div>
+                </div>
+                <span class="badge bg-success">
+                  <%= treatment.status %>
+                </span>
+              </div>
+            </div>
+          <% end %>
+        <% else %>
+          <div class="text-muted">
+            No active treatments found.
+          </div>
+        <% end %>
+      </div>
+    </div>
+
+    <!-- 📅 UPCOMING APPOINTMENTS -->
+    <div class="col-12">
+      <div class="card p-3 rounded-4">
+
+        <div class="d-flex justify-content-between align-items-center mb-3">
+          <h6 class="fw-bold mb-0">
+            <i class="bi bi-calendar-event me-2 text-success"></i>
+            Upcoming Appointments
+          </h6>
+
+          <%# <span class="badge bg-success"> %>
+            <%#= @upcoming_appointments.count %>
+          <%# </span> %>
+        </div>
+
+        <% if @upcoming_appointments.present? %>
+          <% @upcoming_appointments.each do |appointment| %>
+            <div class="border rounded-3 p-3 mb-2"
+                 style="background:#f0fdf4;">
+              <div class="d-flex justify-content-between">
+                <div>
+                  <strong>
+                    <%= appointment.reason_for_visit&.humanize.presence || "NA" %>
+                  </strong>
+                  <div class="small text-muted mt-1">
+                    <%= appointment.date.strftime("%b %d, %Y") %>
+                    at
+                    <%= appointment.time.strftime("%I:%M %p") rescue "N/A" %>
+                  </div>
+                  <div class="small text-muted">
+                    Dr. <%= appointment.doctor&.full_name %>
+                  </div>
+                </div>
+                <div>
+                  <span class="badge bg-primary">
+                    <%= appointment.status&.humanize %>
+                  </span>
+                </div>
+              </div>
+            </div>
+          <% end %>
+        <% else %>
+          <div class="text-muted">
+            No upcoming appointments.
+          </div>
+        <% end %>
+      </div>
+    </div>
+
+    <!-- 🧪 RECENT LAB RESULTS -->
+    <div class="col-12">
+      <div class="card p-3 rounded-4">
+
+        <div class="d-flex justify-content-between align-items-center mb-3">
+          <h6 class="fw-bold mb-0">
+            <i class="bi bi-clipboard2-pulse me-2 text-info"></i>
+            Recent Test Results
+          </h6>
+
+          <%# <span class="badge bg-info"> %>
+            <%#= @laboratory_results.count %>
+          <%# </span> %>
+        </div>
+
+        <% if @laboratory_results.present? %>
+          <% @laboratory_results.each do |lab| %>
+            <div class="border rounded-3 p-3 mb-2 bg-white">
+              <div class="d-flex justify-content-between">
+                <div>
+                  <strong><%= lab.test_name %></strong>
+                  <div class="small text-muted">
+                    <%= lab.created_at.strftime("%b %d, %Y") %>
+                  </div>
+                </div>
+                <div class="text-end">
+                  <div>
+                    <span class="badge bg-success">
+                      <%= lab.status %>
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          <% end %>
+        <% else %>
+          <div class="text-muted">
+            No lab results available.
+          </div>
+        <% end %>
+      </div>
+    </div>
   </div>
 </div>

@@ -15,6 +15,7 @@ class TreatmentsController < ApplicationController
 
       @patients = @doctor.patients
       @diagnoses = Diagnosis.where(doctor_id: @doctor.id)
+      @treatment = Treatment.new
 
     elsif current_user.patient.present?
       @patient = current_user.patient
@@ -67,7 +68,20 @@ class TreatmentsController < ApplicationController
       redirect_to treatments_path, notice: "Treatment created successfully"
     else
       load_dropdowns
-      render :index, status: :unprocessable_entity
+
+      respond_to do |format|
+        format.turbo_stream do
+          render turbo_stream: turbo_stream.replace(
+            "treatment_form",
+            partial: "treatments/form",
+            locals: { treatment: @treatment }
+          ), status: :unprocessable_entity
+        end
+
+        format.html do
+          render :index, status: :unprocessable_entity
+        end
+      end
     end
   end
 

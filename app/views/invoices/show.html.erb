@@ -1,0 +1,122 @@
+<div class="container my-4">
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    <div>
+      <h3 class="fw-bold">
+        <i class="bi bi-receipt me-2"></i> Invoice
+      </h3>
+      <small class="text-muted"><%= @invoice.invoice_number %></small>
+    </div>
+
+    <div>
+      <%= link_to "Back", invoices_path, class: "btn btn-outline-secondary btn-sm" %>
+
+      <%= link_to download_pdf_invoice_path(@invoice),
+			    class: "btn btn-dark btn-sm",
+			    target: "_blank" do %>
+			  <i class="bi bi-file-earmark-pdf me-1"></i> Download PDF
+			<% end %>
+		
+      <% if current_user.doctor? || current_user.admin? %>
+        <%= link_to "Edit", edit_invoice_path(@invoice), class: "btn btn-outline-primary btn-sm" %>
+      <% end %>
+    </div>
+  </div>
+
+  <div class="card p-4 border rounded-3 mb-3">
+    <div class="row">
+      <div class="col-md-6">
+        <h5>Patient</h5>
+        <p class="mb-1"><strong><%= @invoice.patient.full_name %></strong></p>
+        <small><%= @invoice.patient.phone_number %></small>
+      </div>
+
+      <div class="col-md-6 text-md-end">
+        <h5>Doctor</h5>
+        <p class="mb-1">Dr. <%= @invoice.doctor.full_name %></p>
+        <small>Date: <%= @invoice.invoice_date %></small>
+      </div>
+    </div>
+  </div>
+
+  <div class="card p-4 border rounded-3 mb-3">
+    <h5>Invoice Details</h5>
+
+    <p><strong>Type:</strong> <%= @invoice.invoice_type %></p>
+
+    <% if @invoice.invoice_type == "Consultation" %>
+      <p>
+        <strong>Valid Until:</strong>
+        <span class="text-primary"><%= @invoice.valid_until || "NA" %></span>
+      </p>
+
+      <% if @invoice.consultation_valid? %>
+        <span class="badge bg-success">Consultation Valid</span>
+      <% else %>
+        <span class="badge bg-secondary">Expired / Not Paid</span>
+      <% end %>
+    <% end %>
+  </div>
+
+  <div class="card p-4 border rounded-3 mb-3">
+    <h5>Items</h5>
+
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Item</th>
+          <th>Description</th>
+          <th>Qty</th>
+          <th>Price</th>
+          <th>Total</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <% @invoice.invoice_items.each do |item| %>
+          <tr>
+            <td><%= item.item_name %></td>
+            <td><%= item.description %></td>
+            <td><%= item.quantity %></td>
+            <td>₹<%= item.unit_price %></td>
+            <td>₹<%= item.total_price %></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="card p-4 border rounded-3">
+    <div class="row">
+      <div class="col-md-6">
+        <p><strong>Payment Method:</strong> <%= @invoice.payment_method || "NA" %></p>
+        <p><strong>Status:</strong> <%= @invoice.payment_status.humanize %></p>
+      </div>
+
+      <div class="col-md-6 text-md-end">
+        <p>Subtotal: ₹<%= @invoice.subtotal %></p>
+        <p>Tax: ₹<%= @invoice.tax_amount %></p>
+        <p>Discount: ₹<%= @invoice.discount_amount %></p>
+        <h4>Total: ₹<%= @invoice.total_amount %></h4>
+        <p>Paid: ₹<%= @invoice.paid_amount %></p>
+      </div>
+    </div>
+
+    <% if !@invoice.paid? && (current_user.doctor? || current_user.admin?) %>
+      <hr>
+
+      <%= form_with url: mark_paid_invoice_path(@invoice), method: :patch, local: true do %>
+        <div class="row">
+          <div class="col-md-4">
+            <%= select_tag :payment_method,
+              options_for_select(Invoice::PAYMENT_METHODS),
+              class: "form-select" %>
+          </div>
+
+          <div class="col-md-3">
+            <%= submit_tag "Accept Full Payment", class: "btn btn-success" %>
+          </div>
+        </div>
+      <% end %>
+    <% end %>
+  </div>
+</div>

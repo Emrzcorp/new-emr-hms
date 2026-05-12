@@ -45,8 +45,24 @@ class PatientAppointmentsController < ApplicationController
     if @appointment.save
       redirect_to patient_appointments_path, notice: "Appointment requested successfully!"
     else
-      @appointments = current_user.patient.appointments.includes(:doctor)
-      render :index, status: :unprocessable_entity
+      @appointments = current_user.patient.appointments
+                                  .includes(:doctor)
+                                  .order(created_at: :desc)
+                                  .paginate(page: params[:page], per_page: 10)
+
+      respond_to do |format|
+        format.turbo_stream do
+          render turbo_stream: turbo_stream.replace(
+            "patient_appointment_form",
+            partial: "patient_appointments/form",
+            locals: { appointment: @appointment }
+          ), status: :unprocessable_entity
+        end
+
+        format.html do
+          render :index, status: :unprocessable_entity
+        end
+      end
     end
   end
 
@@ -58,7 +74,7 @@ class PatientAppointmentsController < ApplicationController
 
   def appointment_params
     params.require(:appointment).permit(
-      :doctor_id, :date, :time, :appointment_type,
+      :doctor_id, :date, :time, :appointment_type_int,
       :reason_for_visit, :additional_notes
     )
   end

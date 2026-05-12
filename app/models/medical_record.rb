@@ -13,7 +13,21 @@ class MedicalRecord < ApplicationRecord
     "Post-Surgery"
   ]
 
-  validates :visit_date, :visit_type, :diagnosis, presence: true
+  validates :patient_id,
+            :doctor_id,
+            :visit_date,
+            :visit_type,
+            :diagnosis,
+            :symptoms,
+            :treatment_provided,
+            :blood_pressure,
+            :heart_rate,
+            :temperature,
+            :weight,
+            :clinical_notes,
+            :follow_up_date, 
+            presence: true
+
   validate :patient_belongs_to_doctor
 
   def patient_belongs_to_doctor

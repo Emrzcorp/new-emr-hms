@@ -11,35 +11,38 @@
       <%= link_to new_treatment_path, class: 'btn btn-primary btn-sm mb-2 rounded-3', data: { bs_toggle: 'modal', bs_target: "#treatmentModal" }  do %>
           <i class="fa-solid fa-plus me-2"></i> Add New Patients
       <% end %>
-    <% end %>
+    
 
-    <!-- Modal -->
-    <div class="modal fade" id="treatmentModal" tabindex="-1" aria-labelledby="treatmentModalLabel" aria-hidden="true">
-      <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h1 class="modal-title fs-5" id="treatmentModalLabel"><i class="bi bi-activity me-1"></i> Add New Treament
-              <br>
-              <p class="text-muted fs-6">Create a new treatment plan for a patient.</p>
-            </h1>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-          </div>
-          <div class="modal-body">
-            <%= render 'treatments/form', treatment: @treatment %>
+      <!-- Modal -->
+      <div class="modal fade" id="treatmentModal" tabindex="-1" aria-labelledby="treatmentModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h1 class="modal-title fs-5" id="treatmentModalLabel"><i class="bi bi-activity me-1"></i> Add New Treament
+                <br>
+                <p class="text-muted fs-6">Create a new treatment plan for a patient.</p>
+              </h1>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <%= turbo_frame_tag "treatment_form" do %>
+                <%= render "treatments/form", treatment: @treatment %>
+              <% end %>
+            </div>
           </div>
         </div>
       </div>
-    </div>
+    <% end %>
   </div>
 
   <!-- Summary Cards -->
-  <div class="row g-3 mb-4">
+  <div class="row g-3 mb-4 mt-2">
     <div class="col-md-3">
-      <div class="card-summary text-start border-0 p-3 rounded-3" style="background:#eaf3ff;">
+      <div class="card-summary text-start border-0 p-3 rounded-4" style="background:#eaf3ff;">
         <div class="d-flex justify-content-between">
           <div>
-            <small>Total Treatments</small>
-            <h4 class="fw-bold mt-2"><%= @total_treatments %></h4>
+            <small class="fw-bold fs-6">Total Treatments</small>
+            <h4 class="mt-2"><%= @total_treatments %></h4>
             <small class="text-primary">All treatment records</small>
           </div>
           <i class="fa-solid fa-bolt text-primary"></i>
@@ -48,10 +51,10 @@
     </div>
 
     <div class="col-md-3">
-      <div class="card-summary text-start border-0 p-3 rounded-3" style="background:#eafbf1;">
+      <div class="card-summary text-start border-0 p-3 rounded-4" style="background:#eafbf1;">
         <div class="d-flex justify-content-between">
           <div>
-            <small>Active Treatments</small>
+            <small class="fw-bold fs-6">Active Treatments</small>
             <h4 class="fw-bold mt-2"><%= @active_treatments %></h4>
             <small class="text-success">Currently ongoing</small>
           </div>
@@ -61,10 +64,10 @@
     </div>
 
     <div class="col-md-3">
-      <div class="card-summary text-start border-0 p-3 rounded-3" style="background:#f6efff;">
+      <div class="card-summary text-start border-0 p-3 rounded-4" style="background:#f6efff;">
         <div class="d-flex justify-content-between">
           <div>
-            <small>Medications</small>
+            <small class="fw-bold fs-6">Medications</small>
             <h4 class="fw-bold mt-2"><%= @medications_count %></h4>
             <small class="text-info">Prescribed medications</small>
           </div>
@@ -74,10 +77,10 @@
     </div>
 
     <div class="col-md-3">
-      <div class="card-summary text-start border-0 p-3 rounded-3" style="background:#fff5eb;">
+      <div class="card-summary text-start border-0 p-3 rounded-4" style="background:#fff5eb;">
         <div class="d-flex justify-content-between">
           <div>
-            <small>Completed</small>
+            <small class="fw-bold fs-6">Completed</small>
             <h4 class="fw-bold mt-2"><%= @completed_treatments %></h4>
             <small class="text-warning">Finished treatments</small>
           </div>

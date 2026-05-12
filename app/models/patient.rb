@@ -1,12 +1,29 @@
 class Patient < ApplicationRecord
   belongs_to :user, optional: true
   belongs_to :doctor, optional: true
+  has_one_attached :profile_picture
   has_many :appointments, dependent: :destroy
   has_many :medical_records, dependent: :destroy
-  has_one_attached :profile_picture
   has_many :diagnoses
+  has_many :treatments
+  has_many :laboratory_results
+  has_many :invoices, dependent: :destroy
 
-  validates :first_name, :last_name, :date_of_birth, :email_address, presence: true
+  validates :first_name,
+            :last_name,
+            :date_of_birth,
+            :gender,
+            :phone_number,
+            :email_address,
+            :address1,
+            :address2,
+            :city,
+            :state,
+            :country,
+            :zip_code,
+            :emergency_contact_number,
+            :emergency_contact_person_name,
+            presence: true
 
   # validates :active, inclusion: { in: [true, false] } 
 
@@ -17,7 +34,14 @@ class Patient < ApplicationRecord
   end
 
   def complete_address
-    "#{address1} #{address2} #{city} #{state} #{country} #{zip_code}"
+    [
+      address1,
+      address2,
+      city,
+      state,
+      country,
+      zip_code
+    ].reject(&:blank?).join(", ")
   end
 
   def age

@@ -22,7 +22,9 @@
 			        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 			      </div>
 			      <div class="modal-body">
-			        <%= render 'patients/form', patient: @patient %>
+			        <%= turbo_frame_tag "patient_form" do %>
+                <%= render 'patients/form', patient: @patient %>
+              <% end %>
 			      </div>
 			    </div>
 			  </div>
@@ -41,28 +43,28 @@
   <!-- Summary Cards -->
   <div class="row g-3 mb-4 mt-2">
     <div class="col-6 col-md-3">
-      <div class="card-summary bg-light">
-        <span><i class="fa-solid fa-user fs-6 me-2"></i> <b>Total Patients</b></span>
-        <h5><%= @patients.count %></h5>
+      <div class="card-summary text-center p-3 rounded-4 shadow-sm bg-light">
+        <small class="fs-6"><i class="fa-solid fa-user fs-6 me-2"></i> <b>Total Patients</b></small>
+        <h5 class="mt-2"><%= @patients.count %></h5>
       </div>
     </div>
 
     <div class="col-6 col-md-3">
-      <div class="card-summary" style="background-color: #e6f9e8;">
-        <span><i class="fa-solid fa-heart fs-6 me-2"></i> <b>Active Patients</b></span>
-        <h5><%= @active_patients_count %></h5>
+      <div class="card-summary text-center p-3 rounded-4 shadow-sm" style="background-color: #e6f9e8;">
+        <small class="fs-6"><i class="fa-solid fa-heart fs-6 me-2"></i> <b>Active Patients</b></small>
+        <h5 class="mt-2"><%= @active_patients_count %></h5>
       </div>
     </div>
     <div class="col-6 col-md-3">
-      <div class="card-summary" style="background-color: #fff4e5;">
-        <span><i class="fa-solid fa-triangle-exclamation fs-6 me-2"></i> <b>High Priority</b></span>
-        <h5><%= @high_priority_count %></h5>
+      <div class="card-summary text-center p-3 rounded-4 shadow-sm" style="background-color: #fff4e5;">
+        <small class="fs-6"><i class="fa-solid fa-triangle-exclamation fs-6 me-2"></i> <b>High Priority</b></small>
+        <h5 class="mt-2"><%= @high_priority_count %></h5>
       </div>
     </div>
     <div class="col-6 col-md-3">
-      <div class="card-summary" style="background-color: #f4e8ff;">
-        <span><i class="fa-solid fa-calendar fs-6 me-2"></i> <b>Today's Appointments</b></span>
-        <h5><%= @today_appointments_count %></h5>
+      <div class="card-summary text-center p-3 rounded-4 shadow-sm" style="background-color: #f4e8ff;">
+        <small class="fs-6"><i class="fa-solid fa-calendar fs-6 me-2"></i> <b>Today's Appointments</b></small>
+        <h5 class="mt-2"><%= @today_appointments_count %></h5>
       </div>
     </div>
   </div>
