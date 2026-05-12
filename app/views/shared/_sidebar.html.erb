@@ -67,6 +67,16 @@
         <% end %>
       </li>
 
+      <% if current_user.patient? %>
+        <li>
+          <%= link_to invoices_path,
+            class: "nav-item-custom #{current_page?(invoices_path) ? 'active' : ''}" do %>
+            <i class="bi bi-receipt"></i>
+            My Bills
+          <% end %>
+        </li>
+      <% end %>
+
       <li>
         <%= link_to profile_path,
           class: "nav-item-custom #{current_page?(profile_path) ? 'active' : ''}" do %>
@@ -137,6 +147,14 @@
           Test Results
         <% end %>
       </li>
+
+      <li>
+        <%= link_to invoices_path, class: "nav-link link-dark nav-item-custom #{current_page?(invoices_path) ? 'active' : ''}" do %>
+          <i class="bi bi-receipt me-2 fs-6"></i>
+          Billing
+        <% end %>
+      </li>
+      
       <li>
         <%= link_to profile_path, class: "nav-link link-dark nav-item-custom #{current_page?(profile_path) ? 'active' : ''}" do %>
           <i class="bi bi-gear me-2 fs-6"></i>

@@ -14,6 +14,7 @@ class LaboratoryResultsController < ApplicationController
                   .paginate(page: params[:page], per_page: 10)
 
 	    @patients = @doctor.patients
+      @result = LaboratoryResult.new
 
 	  elsif current_user.patient.present?
 	    @patient = current_user.patient
@@ -72,7 +73,20 @@ class LaboratoryResultsController < ApplicationController
       redirect_to laboratory_results_path, notice: "Test result created"
     else
       load_dropdowns
-      render :new, status: :unprocessable_entity
+
+      respond_to do |format|
+        format.turbo_stream do
+          render turbo_stream: turbo_stream.replace(
+            "laboratory_result_form",
+            partial: "laboratory_results/form",
+            locals: { result: @result }
+          ), status: :unprocessable_entity
+        end
+
+        format.html do
+          render :index, status: :unprocessable_entity
+        end
+      end
     end
   end
 

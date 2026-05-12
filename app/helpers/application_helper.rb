@@ -14,15 +14,17 @@ module ApplicationHelper
   end
 
   def status_badge_class(status)
-    case status
+    case status.to_s.downcase
+    when "pending"
+      "bg-warning text-dark"
     when "completed"
       "bg-success"
-    when "confirmed"
+    when "in progress"
       "bg-primary"
-    when "pending"
-      "bg-secondary"
+    when "cancelled"
+      "bg-danger"
     else
-      "bg-light text-dark"
+      "bg-secondary"
     end
   end
 

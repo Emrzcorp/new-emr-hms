@@ -26,7 +26,9 @@
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
           <div class="modal-body">
-            <%= render 'appointments/form', appointment: @appointment %>
+            <%= turbo_frame_tag "appointment_form" do %>
+              <%= render 'appointments/form', appointment: @appointment %>
+            <% end %>
           </div>
         </div>
       </div>
@@ -36,29 +38,29 @@
   <!-- Summary Cards -->
   <div class="row g-3 mb-4">
     <div class="col-6 col-md-3">
-      <div class="card-summary bg-light text-center p-3 rounded-3 shadow-sm" style="min-height: 110px;">
-        <span><i class="fa-solid fa-calendar fs-6 me-2"></i> <b>Today</b></span>
+      <div class="card-summary border-0 p-3 rounded-4 bg-light">
+        <small class="fs-6"><i class="fa-solid fa-calendar fs-6 me-2"></i> <b>Today</b></small>
         <h5 class="mt-2"><%= @today_count %></h5>
       </div>
     </div>
 
     <div class="col-6 col-md-3">
-      <div class="card-summary text-center p-3 rounded-3 shadow-sm" style="background-color: #e6f9e8; min-height: 110px;">
-        <span><i class="fa-solid fa-clock fs-6 me-2"></i> <b>Upcoming</b></span>
+      <div class="card-summary border-0 p-3 rounded-4" style="background-color: #e6f9e8;">
+        <small class="fs-6"><i class="fa-solid fa-clock fs-6 me-2"></i> <b>Upcoming</b></small>
         <h5 class="mt-2"><%= @upcoming_count %></h5>
       </div>
     </div>
 
     <div class="col-6 col-md-3">
-      <div class="card-summary text-center p-3 rounded-3 shadow-sm" style="background-color: #fff4e5; min-height: 110px;">
-        <span><i class="fa-solid fa-circle-check fs-6 me-2"></i> <b>Completed Today</b></span>
+      <div class="card-summary text-center p-3 rounded-4 shadow-sm" style="background-color: #fff4e5;">
+        <small class="fs-6"><i class="fa-solid fa-circle-check fs-6 me-2"></i> <b>Completed Today</b></small>
         <h5 class="mt-2">0</h5>
       </div>
     </div>
 
     <div class="col-6 col-md-3">
-      <div class="card-summary text-center p-3 rounded-3 shadow-sm" style="background-color: #f4e8ff; min-height: 110px;">
-        <span><i class="fa-solid fa-circle-exclamation fs-6 me-2"></i> <b>Pending</b></span>
+      <div class="card-summary text-center p-3 rounded-4 shadow-sm" style="background-color: #f4e8ff;">
+        <small class="fs-6"><i class="fa-solid fa-circle-exclamation fs-6 me-2"></i> <b>Pending</b></small>
         <h5 class="mt-2"><%= @pending_count %></h5>
       </div>
     </div>

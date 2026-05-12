@@ -57,6 +57,7 @@ class MedicalRecordsController < ApplicationController
     if current_user.doctor.present?
       @patients = current_user.doctor.patients
       @doctors = [current_user.doctor]
+      @medical_record = MedicalRecord.new
     end
   end
 
@@ -68,7 +69,6 @@ class MedicalRecordsController < ApplicationController
 
   def create
     @medical_record = MedicalRecord.new(medical_record_params)
-
     @medical_record.doctor = current_user.doctor
 
     if @medical_record.save
@@ -76,7 +76,20 @@ class MedicalRecordsController < ApplicationController
     else
       @patients = current_user.doctor.patients
       @doctors = [current_user.doctor]
-      render :new, status: :unprocessable_entity
+
+      respond_to do |format|
+        format.turbo_stream do
+          render turbo_stream: turbo_stream.replace(
+            "medical_records_form",
+            partial: "medical_records/form",
+            locals: { medical_record: @medical_record }
+          ), status: :unprocessable_entity
+        end
+
+        format.html do
+          render :new, status: :unprocessable_entity
+        end
+      end
     end
   end
 

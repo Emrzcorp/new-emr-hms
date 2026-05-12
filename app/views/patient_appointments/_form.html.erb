@@ -1,42 +1,93 @@
 <div class="container">
-  <%= form_with(model: @appointment, url: patient_appointments_path) do |f| %>
-
+  <%= form_with model: appointment, url: patient_appointments_path do |f| %>
     <h5>Appointment Details</h5>
+
     <div class="row">
       <div class="col-lg-6 mb-3">
-        <%= f.label :appointment_type %>
+        <%= f.label :appointment_type_int, "Appointment Type *" %>
+
         <%= f.select :appointment_type_int,
               Appointment.appointment_type_ints.keys.map { |k| [k.humanize, k] },
               { prompt: "Select Type" },
-              class: "form-select" %>
+              class: "form-select #{'is-invalid' if appointment.errors[:appointment_type_int].present?}" %>
+
+        <% if appointment.errors[:appointment_type_int].present? %>
+          <div class="invalid-feedback d-block">
+            <%= appointment.errors.full_messages_for(:appointment_type_int).first %>
+          </div>
+        <% end %>
       </div>
 
       <div class="col-lg-6 mb-3">
-        <%= f.label :doctor_id, "Select Doctor" %>
-        <%= f.collection_select :doctor_id, @doctors, :id, :full_name, { prompt: true }, class: "form-select" %>
+        <%= f.label :doctor_id, "Select Doctor *" %>
+
+        <%= f.collection_select :doctor_id,
+              @doctors,
+              :id,
+              :full_name,
+              { prompt: "Select Doctor" },
+              class: "form-select #{'is-invalid' if appointment.errors[:doctor_id].present?}" %>
+
+        <% if appointment.errors[:doctor_id].present? %>
+          <div class="invalid-feedback d-block">
+            <%= appointment.errors.full_messages_for(:doctor_id).first %>
+          </div>
+        <% end %>
       </div>
     </div>
 
     <div class="row">
       <div class="col-lg-6 mb-3">
-        <%= f.label :date, "Preferred Date" %>
-        <%= f.date_field :date, class: "form-control" %>
+        <%= f.label :date, "Preferred Date *" %>
+
+        <%= f.date_field :date,
+              class: "form-control #{'is-invalid' if appointment.errors[:date].present?}" %>
+
+        <% if appointment.errors[:date].present? %>
+          <div class="invalid-feedback d-block">
+            <%= appointment.errors.full_messages_for(:date).first %>
+          </div>
+        <% end %>
       </div>
 
       <div class="col-lg-6 mb-3">
-        <%= f.label :time, "Preferred Time" %>
-        <%= f.time_field :time, class: "form-control" %>
+        <%= f.label :time, "Preferred Time *" %>
+
+        <%= f.time_field :time,
+              class: "form-control #{'is-invalid' if appointment.errors[:time].present?}" %>
+
+        <% if appointment.errors[:time].present? %>
+          <div class="invalid-feedback d-block">
+            <%= appointment.errors.full_messages_for(:time).first %>
+          </div>
+        <% end %>
       </div>
     </div>
 
     <div class="mb-3">
-      <%= f.label :reason_for_visit, "Reason for visit" %>
-      <%= f.text_area :reason_for_visit, class: "form-control" %>
+      <%= f.label :reason_for_visit, "Reason for visit *" %>
+
+      <%= f.text_area :reason_for_visit,
+            class: "form-control #{'is-invalid' if appointment.errors[:reason_for_visit].present?}" %>
+
+      <% if appointment.errors[:reason_for_visit].present? %>
+        <div class="invalid-feedback d-block">
+          <%= appointment.errors.full_messages_for(:reason_for_visit).first %>
+        </div>
+      <% end %>
     </div>
 
     <div class="mb-3">
       <%= f.label :additional_notes, "Additional Notes" %>
-      <%= f.text_area :additional_notes, class: "form-control" %>
+
+      <%= f.text_area :additional_notes,
+            class: "form-control #{'is-invalid' if appointment.errors[:additional_notes].present?}" %>
+
+      <% if appointment.errors[:additional_notes].present? %>
+        <div class="invalid-feedback d-block">
+          <%= appointment.errors.full_messages_for(:additional_notes).first %>
+        </div>
+      <% end %>
     </div>
 
     <%= f.submit "Request Appointment", class: "btn btn-primary btn-sm" %>

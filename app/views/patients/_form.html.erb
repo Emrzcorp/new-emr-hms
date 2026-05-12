@@ -1,83 +1,176 @@
 <div class="container">
-	<%= form_with model: patient, scope: :patient, local: true do |f| %>
+
+	<%= form_with model: patient, scope: :patient do |f| %>
 
 		<h5>Personal Information</h5>
 	  <div class="form-group row">
 	    <div class="col-md-6">
 	      <%= f.label :first_name %>
-	      <%= f.text_field :first_name, class: "form-control", required: true, placeholder: 'Enter First Name' %>
+	      <%= f.text_field :first_name, class: "form-control #{'is-invalid' if patient.errors[:first_name].present?}", placeholder: 'Enter First Name' %>
+
+	      <% if patient.errors[:first_name].present? %>
+			    <div class="invalid-feedback d-block">
+			      <%= patient.errors.full_messages_for(:first_name).first %>
+			    </div>
+			  <% end %>
 	    </div>
+
 	    <div class="col-md-6">
 	      <%= f.label :last_name %>
-	      <%= f.text_field :last_name, class: "form-control", required: true, placeholder: 'Enter Last Name' %>
+	      <%= f.text_field :last_name, class: "form-control #{'is-invalid' if patient.errors[:last_name].present?}", placeholder: 'Enter Last Name' %>
+
+	      <% if patient.errors[:last_name].present? %>
+			    <div class="invalid-feedback d-block">
+			      <%= patient.errors.full_messages_for(:last_name).first %>
+			    </div>
+			  <% end %>
 	    </div>
 	  </div>
 
 	  <h5 class="mt-3">Contact Information</h5>
 	  <div class="form-group row mt-2">
-	    <div class="col-md-6">
+
+	  	<div class="col-md-6">
 	      <%= f.label :date_of_birth %>
-	      <%= f.date_field :date_of_birth, class: "form-control", required: true, placeholder: 'Enter Date of Birth Name' %>
+	      <%= f.date_field :date_of_birth, class: "form-control #{'is-invalid' if patient.errors[:date_of_birth].present?}", placeholder: 'Enter DOB' %>
+
+	      <% if patient.errors[:date_of_birth].present? %>
+			    <div class="invalid-feedback d-block">
+			      <%= patient.errors.full_messages_for(:date_of_birth).first %>
+			    </div>
+			  <% end %>
 	    </div>
+
 	    <div class="col-md-6">
 	      <%= f.label :gender %>
-	      <%= f.select :gender, ["Male", "Female", "Other"], { prompt: "Select Gender" }, class: "form-control" %>
+	      <%= f.select :gender, ["Male", "Female", "Other"], { prompt: "Select Gender" }, class: "form-select #{'is-invalid' if patient.errors[:gender].present?}", placeholder: 'Enter Gender' %>
+
+	      <% if patient.errors[:gender].present? %>
+			    <div class="invalid-feedback d-block">
+			      <%= patient.errors.full_messages_for(:gender).first %>
+			    </div>
+			  <% end %>
 	    </div>
 	  </div>
 
 	  <div class="form-group row mt-2">
-	    <div class="col-md-6">
+	  	<div class="col-md-6">
 	      <%= f.label :phone_number %>
-	      <%= f.text_field :phone_number, class: "form-control", required: true, placeholder: 'Enter Phone Number' %>
+	      <%= f.text_field :phone_number, class: "form-control #{'is-invalid' if patient.errors[:phone_number].present?}", placeholder: 'Enter Phone Number' %>
+
+	      <% if patient.errors[:phone_number].present? %>
+			    <div class="invalid-feedback d-block">
+			      <%= patient.errors.full_messages_for(:phone_number).first %>
+			    </div>
+			  <% end %>
 	    </div>
+
 	    <div class="col-md-6">
 	      <%= f.label :email_address %>
-	      <%= f.email_field :email_address, class: "form-control", required: true, placeholder: 'Enter Email Address' %>
+	      <%= f.email_field :email_address, class: "form-control #{'is-invalid' if patient.errors[:email_address].present?}", placeholder: 'Enter Email Address' %>
+
+	      <% if patient.errors[:email_address].present? %>
+			    <div class="invalid-feedback d-block">
+			      <%= patient.errors.full_messages_for(:email_address).first %>
+			    </div>
+			  <% end %>
 	    </div>
 	  </div>
 
 	  <div class="form-group row mt-2">
-	    <div class="col-md-6">
-	      <%= f.label :address1, "Address Line 1" %>
-	      <%= f.text_field :address1, class: "form-control", required: true, placeholder: 'Enter Address 1' %>
+	  	<div class="col-md-6">
+	      <%= f.label :address1 %>
+	      <%= f.text_field :address1, class: "form-control #{'is-invalid' if patient.errors[:address1].present?}", placeholder: 'Enter Address1' %>
+
+	      <% if patient.errors[:address1].present? %>
+			    <div class="invalid-feedback d-block">
+			      <%= patient.errors.full_messages_for(:address1).first %>
+			    </div>
+			  <% end %>
 	    </div>
+
 	    <div class="col-md-6">
-	      <%= f.label :address2, "Address Line 2" %>
-	      <%= f.text_field :address2, class: "form-control", required: true, placeholder: 'Enter Address 2' %>
+	      <%= f.label :address2 %>
+	      <%= f.text_field :address2, class: "form-control #{'is-invalid' if patient.errors[:address2].present?}", placeholder: 'Enter Address2' %>
+
+	      <% if patient.errors[:address2].present? %>
+			    <div class="invalid-feedback d-block">
+			      <%= patient.errors.full_messages_for(:address2).first %>
+			    </div>
+			  <% end %>
 	    </div>
 	  </div>
 
 	  <div class="form-group row mt-2">
-	    <div class="col-md-6">
+	  	<div class="col-md-6">
 	      <%= f.label :city %>
-	      <%= f.text_field :city, class: "form-control", required: true, placeholder: 'Enter City' %>
+	      <%= f.text_field :city, class: "form-control #{'is-invalid' if patient.errors[:city].present?}", placeholder: 'Enter City' %>
+
+	      <% if patient.errors[:city].present? %>
+			    <div class="invalid-feedback d-block">
+			      <%= patient.errors.full_messages_for(:city).first %>
+			    </div>
+			  <% end %>
 	    </div>
+
 	    <div class="col-md-6">
 	      <%= f.label :state %>
-	      <%= f.text_field :state, class: "form-control", required: true, placeholder: 'Enter State' %>
+	      <%= f.text_field :state, class: "form-control #{'is-invalid' if patient.errors[:state].present?}", placeholder: 'Enter State' %>
+
+	      <% if patient.errors[:state].present? %>
+			    <div class="invalid-feedback d-block">
+			      <%= patient.errors.full_messages_for(:state).first %>
+			    </div>
+			  <% end %>
 	    </div>
 	  </div>
 
 	  <div class="form-group row mt-2">
-	    <div class="col-md-6">
-	      <%= f.label :country %>
-	      <%= f.text_field :country, class: "form-control", required: true, placeholder: 'Enter Country' %>
-	    </div>
 	  	<div class="col-md-6">
-		    <%= f.label :zip_code %>
-		    <%= f.text_field :zip_code, class: "form-control", required: true, placeholder: 'Enter Zip Code' %>
-	  	</div>
+	      <%= f.label :country %>
+	      <%= f.text_field :country, class: "form-control #{'is-invalid' if patient.errors[:country].present?}", placeholder: 'Enter Country' %>
+
+	      <% if patient.errors[:country].present? %>
+			    <div class="invalid-feedback d-block">
+			      <%= patient.errors.full_messages_for(:country).first %>
+			    </div>
+			  <% end %>
+	    </div>
+
+	    <div class="col-md-6">
+	      <%= f.label :zip_code %>
+	      <%= f.text_field :zip_code, class: "form-control #{'is-invalid' if patient.errors[:zip_code].present?}", placeholder: 'Enter Zip Code' %>
+
+	      <% if patient.errors[:zip_code].present? %>
+			    <div class="invalid-feedback d-block">
+			      <%= patient.errors.full_messages_for(:zip_code).first %>
+			    </div>
+			  <% end %>
+	    </div>
 	  </div>
 
 	  <h5 class="mt-3">Emergency Contact</h5>
 	  <div class="form-group row">
-	    <div class="col-md-6">
-	      <%= f.label :emergency_contact_person_name, "Contact Person" %>
-	      <%= f.text_field :emergency_contact_person_name, class: "form-control", required: true, placeholder: 'Enter Emergency Contact Person Name' %>
+	  	<div class="col-md-6">
+	      <%= f.label :emergency_contact_person_name %>
+	      <%= f.text_field :emergency_contact_person_name, class: "form-control #{'is-invalid' if patient.errors[:emergency_contact_person_name].present?}", placeholder: 'Enter Emergency Contact Person Name' %>
+
+	      <% if patient.errors[:emergency_contact_person_name].present? %>
+			    <div class="invalid-feedback d-block">
+			      <%= patient.errors.full_messages_for(:emergency_contact_person_name).first %>
+			    </div>
+			  <% end %>
 	    </div>
+
 	    <div class="col-md-6">
-	      <%= f.label :emergency_contact_number, "Contact Number" %>
-	      <%= f.text_field :emergency_contact_number, class: "form-control", required: true, placeholder: 'Enter Emergency Contact Number' %>
+	      <%= f.label :emergency_contact_number %>
+	      <%= f.text_field :emergency_contact_number, class: "form-control #{'is-invalid' if patient.errors[:emergency_contact_number].present?}", placeholder: 'Enter Emergency Contact Number' %>
+
+	      <% if patient.errors[:emergency_contact_number].present? %>
+			    <div class="invalid-feedback d-block">
+			      <%= patient.errors.full_messages_for(:emergency_contact_number).first %>
+			    </div>
+			  <% end %>
 	    </div>
 	  </div>
 

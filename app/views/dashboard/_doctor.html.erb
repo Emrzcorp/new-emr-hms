@@ -4,7 +4,7 @@
 			<h2>Welcome Dr. <%= current_user.doctor.full_name %></h2>
 		</div>
 		<div class="col-lg-3">
-			<%= link_to new_appointment_path, class: 'btn btn-light me-2 mb-2' do %>
+			<%= link_to new_appointment_path(current_user.doctor), class: 'btn btn-light me-2 mb-2', data: { bs_toggle: 'modal', bs_target: "#appointmentModal" }  do %>
 				<i class="fa-solid fa-calendar me-2"></i> Schedule
 			<% end %>
 
@@ -15,7 +15,7 @@
 				<% end %>
 			<% end %>
 
-			<!-- Modal -->
+			<!-- Patient Modal -->
 			<div class="modal fade" id="patientModal" tabindex="-1" aria-labelledby="patientModalLabel" aria-hidden="true">
 			  <div class="modal-dialog modal-lg">
 			    <div class="modal-content">
@@ -27,8 +27,34 @@
 			        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 			      </div>
 			      <div class="modal-body">
-			        <%= render 'patients/form', doctor: @doctor, patient: @doctor.patients.build %>
+						  <%= turbo_frame_tag "patient_form" do %>
+						    <%= render 'patients/form',
+						        doctor: @doctor,
+						        patient: @patient %>
+						  <% end %>
+						</div>
+			    </div>
+			  </div>
+			</div>
+
+			<!-- Appointment Modal -->
+			<div class="modal fade" id="appointmentModal" tabindex="-1" aria-labelledby="appointmentModalLabel" aria-hidden="true">
+			  <div class="modal-dialog modal-lg">
+			    <div class="modal-content">
+			      <div class="modal-header">
+			        <h1 class="modal-title fs-5" id="appointmentModalLabel"><i class="fa-solid fa-calendar me-1"></i> Schedule Appointment
+			        	<br>
+			        	<p class="text-muted fs-6">Schedule a new appointment for a patient.</p>
+			        </h1>
+			        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 			      </div>
+			      <div class="modal-body">
+						  <%= turbo_frame_tag "appointment_form" do %>
+							  <%= render 'appointments/form',
+							      appointment: @appointment,
+							      patients: @patients %>
+							<% end %>
+						</div>
 			    </div>
 			  </div>
 			</div>
@@ -106,12 +132,12 @@
 			            </small>
 
 			            <% if activity[:status].present? %>
-			              <div>
-			                <span class="badge bg-danger">
-			                  <%= activity[:status].to_s.titleize %>
-			                </span>
-			              </div>
-			            <% end %>
+									  <div>
+									    <span class="badge <%= status_badge_class(activity[:status]) %>">
+									      <%= activity[:status].to_s.titleize %>
+									    </span>
+									  </div>
+									<% end %>
 			          </div>
 
 			        </div>
@@ -144,7 +170,7 @@
 			    <% if @today_appointments.any? %>
 			      <% @today_appointments.each do |appt| %>
 			        <div class="appointment-card mb-3 p-3 d-flex justify-content-between align-items-center
-			                    <%= appointment_status_class(appt.status) %>">
+			          <%= appointment_status_class(appt.status) %>">
 
 			          <!-- Left -->
 			          <div class="d-flex align-items-center">
@@ -164,7 +190,7 @@
 			          </div>
 
 			          <!-- Right Status -->
-			          <span class="badge <%= status_badge_class(appt.status) %>">
+			          <span class="badge <%= appointment_status_class(appt.status) %>">
 			            <%= appt.status.titleize %>
 			          </span>
 
@@ -173,7 +199,6 @@
 			    <% else %>
 			      <p class="text-muted">No appointments today</p>
 			    <% end %>
-
 			  </div>
 			</div>
 		</div>

@@ -4,8 +4,19 @@ class Appointment < ApplicationRecord
 
   validate :patient_belongs_to_doctor
 
-  validates :date, :time, :duration, :appointment_type, :reason_for_visit, presence: true
-  validates :priority, presence: true
+  validates  :patient_id,
+             :new_patient_name,
+             :date,
+             :time,
+             :duration,
+             :appointment_type,
+             :priority,
+             :reason_for_visit,
+             :additional_notes,
+             :doctor_id,
+             :status,
+             :appointment_type_int,
+             presence: true
 
   enum status: { pending: 0, confirmed: 1, completed: 2, cancelled: 3 }
 

@@ -1,5 +1,5 @@
 Rails.application.routes.draw do
-    
+
   devise_for :users, controllers: {
     sessions: 'users/sessions',
     registrations: "users/registrations"
@@ -24,4 +24,11 @@ Rails.application.routes.draw do
   resources :laboratory_results
 
   resources :patient_appointments, only: [:index, :new, :create]
+
+  resources :invoices do
+    member do
+      patch :mark_paid
+      get :download_pdf
+    end
+  end
 end

@@ -26,7 +26,9 @@
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
           <div class="modal-body">
-            <%= render 'patient_appointments/form', appointment: @appointment %>
+            <%= turbo_frame_tag "patient_appointment_form" do %>
+              <%= render "patient_appointments/form", appointment: @appointment %>
+            <% end %>
           </div>
         </div>
       </div>

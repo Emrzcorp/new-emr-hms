@@ -7,8 +7,7 @@ class Doctor < ApplicationRecord
   has_many :diagnoses
 
   has_one_attached :profile_picture
-
-  # validates :first_name, :last_name, :email_address, :phone_number, :medical_specialty, :license_number, :npi_number, :professional_bio, presence: true
+  has_many :invoices, dependent: :destroy
 
   validates :first_name, presence: true
   

@@ -12,52 +12,55 @@
           data-bs-target="#diagnosesModal">
           + New Diagnosis
         </button>
-      <% end %>
+      
 
-      <!-- Modal -->
-      <div class="modal fade" id="diagnosesModal" tabindex="-1" aria-labelledby="diagnosesModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-lg">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h1 class="modal-title fs-5" id="diagnosesModalLabel"><i class="fa-solid fa-stethoscope me-1"></i> Add New Diagnosis
-                <br>
-                <p class="text-muted fs-6">Create a new diagnosis record for a patient.</p>
-              </h1>
-              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-              <%= render 'diagnoses/form', diagnosis: Diagnosis.new %>
+        <!-- Modal -->
+        <div class="modal fade" id="diagnosesModal" tabindex="-1" aria-labelledby="diagnosesModalLabel" aria-hidden="true">
+          <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h1 class="modal-title fs-5" id="diagnosesModalLabel"><i class="fa-solid fa-stethoscope me-1"></i> Add New Diagnosis
+                  <br>
+                  <p class="text-muted fs-6">Create a new diagnosis record for a patient.</p>
+                </h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+              <div class="modal-body">
+                <%= turbo_frame_tag "diagnosis_form" do %>
+                  <%= render "diagnoses/form", diagnosis: @diagnosis %>
+                <% end %>
+              </div>
             </div>
           </div>
         </div>
-      </div>
+      <% end %>
   </div>
 
   <!-- Summary Cards -->
   <div class="row g-3 mb-4 mt-2">
     <div class="col-6 col-md-3">
-      <div class="card-summary bg-light">
-        <span><i class="fa-solid fa-user fs-6 me-2"></i> <b>Total Diagnoses</b></span>
-        <h5><%= @total_diagnoses %></h5>
+      <div class="card-summary text-center p-3 rounded-4 shadow-sm bg-light">
+        <small class="fs-6"><i class="fa-solid fa-user fs-6 me-2"></i> <b>Total Diagnoses</b></small>
+        <h5 class="mt-2"><%= @total_diagnoses %></h5>
       </div>
     </div>
 
     <div class="col-6 col-md-3">
-      <div class="card-summary" style="background-color: #e6f9e8;">
-        <span><i class="fa-solid fa-heart fs-6 me-2"></i> <b>Active Cases</b></span>
-        <h5><%= @active_cases %></h5>
+      <div class="card-summary text-center p-3 rounded-4 shadow-sm" style="background-color: #e6f9e8;">
+        <small class="fs-6"><i class="fa-solid fa-heart fs-6 me-2"></i> <b>Active Cases</b></small>
+        <h5 class="mt-2"><%= @active_cases %></h5>
       </div>
     </div>
     <div class="col-6 col-md-3">
-      <div class="card-summary" style="background-color: #fff4e5;">
-        <span><i class="fa-solid fa-triangle-exclamation fs-6 me-2"></i> <b>Resolving</b></span>
-        <h5><%= @resolving_cases %></h5>
+      <div class="card-summary text-center p-3 rounded-4 shadow-sm" style="background-color: #fff4e5;">
+        <small class="fs-6"><i class="fa-solid fa-triangle-exclamation fs-6 me-2"></i> <b>Resolving</b></small>
+        <h5 class="mt-2"><%= @resolving_cases %></h5>
       </div>
     </div>
     <div class="col-6 col-md-3">
-      <div class="card-summary" style="background-color: #f4e8ff;">
-        <span><i class="fa-solid fa-calendar fs-6 me-2"></i> <b>Follow-up Required</b></span>
-        <h5><%= @follow_up_required %></h5>
+      <div class="card-summary text-center p-3 rounded-4 shadow-sm" style="background-color: #f4e8ff;">
+        <small class="fs-6"><i class="fa-solid fa-calendar fs-6 me-2"></i> <b>Follow-up Required</b></small>
+        <h5 class="mt-2"><%= @follow_up_required %></h5>
       </div>
     </div>
   </div>
