@@ -101,7 +101,8 @@ class PatientsController < ApplicationController
     end
 
     redirect_to patients_path,
-      notice: "Patient created. Temporary password: #{generated_password}"
+      notice: "Patient created. Temporary password: #{generated_password}",
+      status: :see_other
 
     rescue => e
     Rails.logger.error(e.message)

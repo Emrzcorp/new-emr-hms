@@ -1,0 +1,81 @@
+<div class="card border rounded-3 p-3 mb-2">
+  <h5 class="fw-bold mb-3">
+    <i class="fa-solid fa-vial me-2"></i>
+    Lab Workflow
+  </h5>
+
+  <div class="d-flex flex-wrap gap-2 mb-3">
+
+    <% steps = {
+      "ordered" => "Ordered",
+      "sample_collected" => "Sample Collected",
+      "processing" => "Processing",
+      "completed" => "Completed",
+      "report_sent" => "Report Sent"
+    } %>
+
+    <% steps.each do |key, label| %>
+      <% active = @result.workflow_status == key %>
+
+      <span class="badge <%= active ? 'bg-primary' : 'bg-light text-dark border' %> px-3 py-2">
+        <%= label %>
+      </span>
+    <% end %>
+  </div>
+
+  <div class="row g-2">
+    <div class="col-md-3">
+      <small class="text-muted">Sample Collected</small>
+      <div><%= @result.sample_collected_at&.strftime("%d %b %Y %I:%M %p") || "Pending" %></div>
+    </div>
+
+    <div class="col-md-3">
+      <small class="text-muted">Processing Started</small>
+      <div><%= @result.processing_started_at&.strftime("%d %b %Y %I:%M %p") || "Pending" %></div>
+    </div>
+
+    <div class="col-md-3">
+      <small class="text-muted">Completed</small>
+      <div><%= @result.completed_at&.strftime("%d %b %Y %I:%M %p") || "Pending" %></div>
+    </div>
+
+    <div class="col-md-3">
+      <small class="text-muted">Report Sent</small>
+      <div><%= @result.report_sent_at&.strftime("%d %b %Y %I:%M %p") || "Pending" %></div>
+    </div>
+  </div>
+
+  <% if current_user.doctor? || current_user.admin? %>
+    <hr>
+
+    <div class="d-flex flex-wrap gap-2">
+      <% if @result.workflow_status == "ordered" %>
+        <%= button_to "Collect Sample",
+          collect_sample_laboratory_result_path(@result),
+          method: :patch,
+          class: "btn btn-outline-primary btn-sm" %>
+      <% end %>
+
+      <% if @result.workflow_status == "sample_collected" %>
+        <%= button_to "Start Processing",
+          start_processing_laboratory_result_path(@result),
+          method: :patch,
+          class: "btn btn-outline-info btn-sm" %>
+      <% end %>
+
+      <% if @result.workflow_status == "processing" %>
+        <%= button_to "Complete Report",
+          complete_report_laboratory_result_path(@result),
+          method: :patch,
+          class: "btn btn-outline-success btn-sm" %>
+      <% end %>
+
+      <% if @result.workflow_status == "completed" %>
+        <%= button_to "Mark Report Sent",
+          send_report_laboratory_result_path(@result),
+          method: :patch,
+          class: "btn btn-outline-dark btn-sm" %>
+      <% end %>
+    </div>
+  <% end %>
+</div>

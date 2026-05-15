@@ -1,5 +1,5 @@
 <div class="container">
-	<%= form_with model: diagnosis, scope: :diagnosis do |f| %>
+	<%= form_with model: diagnosis, scope: :diagnosis, data: { turbo_frame: "_top" } do |f| %>
 
 		<h5>Patient Information</h5>
 	  <div class="form-group row">

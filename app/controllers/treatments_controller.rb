@@ -65,7 +65,8 @@ class TreatmentsController < ApplicationController
     @treatment.doctor = current_user.doctor
 
     if @treatment.save
-      redirect_to treatments_path, notice: "Treatment created successfully"
+      redirect_to treatments_path, notice: "Treatment created successfully",
+      status: :see_other
     else
       load_dropdowns
 

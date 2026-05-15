@@ -8,17 +8,17 @@
     </div>
 
     <% if current_user.doctor? %>
-      <%= link_to new_laboratory_result_path, class: 'btn btn-primary btn-sm mb-2 rounded-3', data: { bs_toggle: 'modal', bs_target: "#treatmentModal" }  do %>
+      <%= link_to new_laboratory_result_path, class: 'btn btn-primary btn-sm mb-2 rounded-3', data: { bs_toggle: 'modal', bs_target: "#laboratoryResultModal" }  do %>
         <i class="fa-solid fa-plus me-2"></i> Order New Test
       <% end %>
     
 
       <!-- Modal -->
-      <div class="modal fade" id="treatmentModal" tabindex="-1" aria-labelledby="treatmentModalLabel" aria-hidden="true">
+      <div class="modal fade" id="laboratoryResultModal" tabindex="-1" aria-labelledby="laboratoryResultModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg">
           <div class="modal-content">
             <div class="modal-header">
-              <h1 class="modal-title fs-5" id="treatmentModalLabel"><i class="fa-solid fa-vial me-1"></i> Add Test Result
+              <h1 class="modal-title fs-5" id="laboratoryResultModalLabel"><i class="fa-solid fa-vial me-1"></i> Add Test Result
                 <br>
                 <p class="text-muted fs-6">Record a new test result for a patient.</p>
               </h1>
@@ -103,7 +103,7 @@
           <div>
             <h5 class="fw-bold mb-1">
               <i class="fa-solid fa-vial text-primary me-2"></i>
-              <%= t.test_name.humanize %>
+              <%= t.test_name.upcase %>
             </h5>
             <small class="text-muted">
               <%= t.patient.full_name %> • <%= t.test_type || "NA" %>
@@ -131,6 +131,31 @@
             <% else %>
               <span class="badge bg-secondary">Routine</span>
             <% end %>
+
+            <% case t.workflow_status %>
+            <% when "ordered" %>
+              <span class="badge bg-secondary">Ordered</span>
+            <% when "sample_collected" %>
+              <span class="badge bg-primary">Sample Collected</span>
+            <% when "processing" %>
+              <span class="badge bg-info text-dark">Processing</span>
+            <% when "completed" %>
+              <span class="badge bg-success">Completed</span>
+            <% when "report_sent" %>
+              <span class="badge bg-dark">Report Sent</span>
+            <% end %>
+
+            <% if t.invoice.present? %>
+            <% if t.invoice.payment_status == "paid" %>
+              <span class="badge bg-success">Invoice Paid</span>
+            <% else %>
+              <span class="badge bg-danger">
+                Invoice <%= t.invoice.payment_status.humanize %>
+              </span>
+            <% end %>
+          <% else %>
+            <span class="badge bg-secondary">No Invoice</span>
+          <% end %>
           </div>
         </div>
 
@@ -227,17 +252,22 @@
     <div class="alert alert-info mt-4 text-center">No Treatment detail found.</div>
   <% end %>
 
-  <% if @results %>
+  <% if @results.present? %>
     <div class="col-lg-12 mt-3 mb-3">
-      <div class="d-flex justify-content-between bg-light rounded align-items-center py-3">
-        <div class="page_info ms-3 text-black">
+      <div class="d-flex flex-column flex-md-row justify-content-between bg-light rounded align-items-center py-3 px-3 gap-2">
+
+        <div class="page_info text-black small">
           <%= page_entries_info @results %>
         </div>
-        <% if params[:per_page ].present? %>
-          <%= will_paginate @results, :params =>  {per_page: @per_page }, renderer: WillPaginate::ActionView::BootstrapLinkRenderer %>
-        <% else %>
-          <%= will_paginate @results, renderer: WillPaginate::ActionView::BootstrapLinkRenderer %>
-        <% end %>
+
+        <div class="pagination-wrapper">
+          <%= will_paginate @results,
+            renderer: WillPaginate::ActionView::BootstrapLinkRenderer,
+            previous_label: "← Previous",
+            next_label: "Next →",
+            class: "pagination pagination-sm mb-0" %>
+        </div>
+
       </div>
     </div>
   <% end %>

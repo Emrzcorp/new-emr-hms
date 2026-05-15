@@ -1,4 +1,4 @@
-<%= form_with model: appointment do |f| %>
+<%= form_with model: appointment, scope: :appointment, data: { turbo_frame: "_top" } do |f| %>
   <div class="row mb-3">
     <div class="col-md-6">
       <%= f.label :patient_id %>
@@ -12,14 +12,14 @@
     </div>
 
     <div class="col-md-6">
-      <%= f.label :appointment_type %>
+      <%= f.label :appointment_type_int, "Appointment Type" %>
       <%= f.select :appointment_type_int,
             Appointment.appointment_type_ints.keys.map { |k| [k.humanize, k] },
-            { prompt: "Select Type" }, class: "form-select #{'is-invalid' if appointment.errors[:appointment_type].present?}", placeholder: 'Select Appointment Type' %>
+            { prompt: "Select Type" }, class: "form-select #{'is-invalid' if appointment.errors[:appointment_type_int].present?}", placeholder: 'Select Appointment Type' %>
 
-      <% if appointment.errors[:appointment_type].present? %>
+      <% if appointment.errors[:appointment_type_int].present? %>
         <div class="invalid-feedback d-block">
-          <%= appointment.errors.full_messages_for(:appointment_type).first %>
+          <%= appointment.errors.full_messages_for(:appointment_type_int).first %>
         </div>
       <% end %>
     </div>
@@ -28,7 +28,7 @@
   <div class="row mb-3">
     <div class="col-md-6">
       <%= f.label :date %>
-      <%= f.date_field :date, class: "form-select #{'is-invalid' if appointment.errors[:date].present?}", placeholder: 'Select Date' %>
+      <%= f.date_field :date, class: "form-control #{'is-invalid' if appointment.errors[:date].present?}", placeholder: 'Select Date' %>
 
       <% if appointment.errors[:date].present? %>
         <div class="invalid-feedback d-block">

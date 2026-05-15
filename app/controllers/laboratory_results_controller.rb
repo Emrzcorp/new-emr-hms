@@ -1,7 +1,16 @@
 class LaboratoryResultsController < ApplicationController
   before_action :authenticate_user!
   before_action :set_doctor, if: -> { current_user.doctor.present? }
-  before_action :set_result, only: [:show, :edit, :update, :destroy]
+  before_action :set_result, only: [
+                :show, 
+                :edit, 
+                :update, 
+                :destroy,
+                :collect_sample,
+                :start_processing,
+                :complete_report,
+                :send_report
+              ]
 
   def index
 	  if current_user.doctor.present?
@@ -70,7 +79,11 @@ class LaboratoryResultsController < ApplicationController
     @result.doctor = current_user.doctor
 
     if @result.save
-      redirect_to laboratory_results_path, notice: "Test result created"
+      LabInvoiceService.new(@result).call if @result.test_price.to_f > 0
+
+      redirect_to laboratory_results_path,
+        notice: "Test result created and lab invoice generated",
+        status: :see_other
     else
       load_dropdowns
 
@@ -110,6 +123,45 @@ class LaboratoryResultsController < ApplicationController
     redirect_to laboratory_results_path, notice: "Deleted"
   end
 
+  def collect_sample
+    @result.update(
+      workflow_status: "sample_collected",
+      sample_collected_at: Time.current,
+      status: "In Progress"
+    )
+
+    redirect_to laboratory_result_path(@result), notice: "Sample collected successfully."
+  end
+
+  def start_processing
+    @result.update(
+      workflow_status: "processing",
+      processing_started_at: Time.current,
+      status: "In Progress"
+    )
+
+    redirect_to laboratory_result_path(@result), notice: "Test processing started."
+  end
+
+  def complete_report
+    @result.update(
+      workflow_status: "completed",
+      completed_at: Time.current,
+      status: "Completed"
+    )
+
+    redirect_to laboratory_result_path(@result), notice: "Lab report completed."
+  end
+
+  def send_report
+    @result.update(
+      workflow_status: "report_sent",
+      report_sent_at: Time.current
+    )
+
+    redirect_to laboratory_result_path(@result), notice: "Report marked as sent."
+  end
+
   private
 
   def set_doctor
@@ -144,7 +196,8 @@ class LaboratoryResultsController < ApplicationController
       :additional_notes,
       :abnormal,
       :critical,
-      :follow_up_required
+      :follow_up_required,
+      :test_price
     )
   end
 end

@@ -64,7 +64,8 @@ class DiagnosesController < ApplicationController
 	  @diagnosis.doctor = current_user.doctor
 
 	  if @diagnosis.save
-	    redirect_to diagnoses_path, notice: "Diagnosis added successfully"
+	    redirect_to diagnoses_path, notice: "Diagnosis added successfully",
+	    status: :see_other
 	  else
 		  @patients = current_user.doctor.patients
 

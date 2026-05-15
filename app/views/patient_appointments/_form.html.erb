@@ -1,5 +1,5 @@
 <div class="container">
-  <%= form_with model: appointment, url: patient_appointments_path do |f| %>
+  <%= form_with model: appointment, url: patient_appointments_path, data: { turbo_frame: "_top" } do |f| %>
     <h5>Appointment Details</h5>
 
     <div class="row">

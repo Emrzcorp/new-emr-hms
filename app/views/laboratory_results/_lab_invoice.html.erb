@@ -1,0 +1,40 @@
+<% if @result.invoice.present? %>
+  <div class="card border rounded-3 p-3 mb-2">
+    <h6 class="fw-bold">
+      <i class="bi bi-receipt me-2"></i>
+      Lab Invoice
+    </h6>
+
+    <p class="mb-1">
+      Invoice No:
+      <strong><%= @result.invoice.invoice_number %></strong>
+    </p>
+
+    <p class="mb-1">
+      Amount:
+      <strong>Rs. <%= @result.invoice.total_amount %></strong>
+    </p>
+
+    <p class="mb-2">
+      Status:
+      <% if @result.invoice.payment_status == "paid" %>
+        <span class="badge bg-success">Paid</span>
+      <% else %>
+        <span class="badge bg-danger">
+          <%= @result.invoice.payment_status.humanize %>
+        </span>
+      <% end %>
+    </p>
+
+    <%= link_to "View Invoice",
+        invoice_path(@result.invoice),
+        class: "btn btn-outline-primary btn-sm" %>
+
+    <% if @result.invoice.paid? %>    
+      <%= link_to "Download PDF",
+          download_pdf_invoice_path(@result.invoice),
+          class: "btn btn-dark btn-sm mt-2",
+          target: "_blank" %>
+    <% end %>
+  </div>
+<% end %>
