@@ -3,10 +3,7 @@ class Treatment < ApplicationRecord
   belongs_to :doctor
   belongs_to :diagnosis
 
-  validates :patient_id,
-            :doctor_id,
-            :diagnosis_id,
-            :treatment_start_date,
+  validates :treatment_start_date,
             :treatment_type,
             :treatment_name,
             :priority,

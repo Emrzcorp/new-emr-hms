@@ -43,7 +43,8 @@ class PatientAppointmentsController < ApplicationController
     @appointment.status = :pending
 
     if @appointment.save
-      redirect_to patient_appointments_path, notice: "Appointment requested successfully!"
+      redirect_to patient_appointments_path, notice: "Appointment requested successfully!",
+      status: :see_other
     else
       @appointments = current_user.patient.appointments
                                   .includes(:doctor)

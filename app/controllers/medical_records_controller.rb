@@ -72,7 +72,8 @@ class MedicalRecordsController < ApplicationController
     @medical_record.doctor = current_user.doctor
 
     if @medical_record.save
-      redirect_to medical_records_path, notice: "Medical record created successfully."
+      redirect_to medical_records_path, notice: "Medical record created successfully.",
+      status: :see_other
     else
       @patients = current_user.doctor.patients
       @doctors = [current_user.doctor]

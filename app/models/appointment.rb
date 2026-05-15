@@ -2,18 +2,16 @@ class Appointment < ApplicationRecord
   belongs_to :patient
   belongs_to :doctor
 
+  before_validation :sync_appointment_type
+
   validate :patient_belongs_to_doctor
 
-  validates  :patient_id,
-             :new_patient_name,
-             :date,
+  validates  :date,
              :time,
              :duration,
-             :appointment_type,
              :priority,
              :reason_for_visit,
              :additional_notes,
-             :doctor_id,
              :status,
              :appointment_type_int,
              presence: true
@@ -35,13 +33,14 @@ class Appointment < ApplicationRecord
 
   private
 
+  def sync_appointment_type
+    return if appointment_type_int.blank?
+
+    self.appointment_type = appointment_type_int.humanize
+  end
+
   def patient_belongs_to_doctor
     return unless doctor.present? && patient.present?
-
-    # # Only enforce if patient already assigned to a doctor
-    # if patient.doctor_id.present? && patient.doctor_id != doctor.id
-    #   errors.add(:patient_id, "must belong to the same doctor as the appointment")
-    # end
   end
 end
 

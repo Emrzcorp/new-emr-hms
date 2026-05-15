@@ -13,9 +13,7 @@ class MedicalRecord < ApplicationRecord
     "Post-Surgery"
   ]
 
-  validates :patient_id,
-            :doctor_id,
-            :visit_date,
+  validates :visit_date,
             :visit_type,
             :diagnosis,
             :symptoms,

@@ -5,10 +5,7 @@ class Diagnosis < ApplicationRecord
 
   has_many :treatments
 
-  validates :patient_id,
-            :doctor_id,
-            :medical_record_id,
-            :primary_diagnosis,
+  validates :primary_diagnosis,
             :secondary_diagnosis,
             :icd_code,
             :symptoms,

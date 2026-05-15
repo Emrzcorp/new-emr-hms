@@ -21,7 +21,15 @@ Rails.application.routes.draw do
   resources :medical_records
   resources :diagnoses
   resources :treatments
-  resources :laboratory_results
+  
+  resources :laboratory_results do
+    member  do
+      patch :collect_sample
+      patch :start_processing
+      patch :complete_report
+      patch :send_report
+    end
+  end
 
   resources :patient_appointments, only: [:index, :new, :create]
 

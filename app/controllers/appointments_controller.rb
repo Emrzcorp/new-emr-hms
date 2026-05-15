@@ -47,22 +47,58 @@ class AppointmentsController < ApplicationController
   end
 
   def create
+    @result = LaboratoryResult.new(result_params)
+    @result.doctor = current_user.doctor
+
+    if @result.save
+      LabInvoiceService.new(@result).call if @result.test_price.to_f > 0
+
+      redirect_to laboratory_results_path,
+        notice: "Test result created and lab invoice generated",
+        status: :see_other
+    else
+      load_dropdowns
+
+      respond_to do |format|
+        format.turbo_stream do
+          render turbo_stream: turbo_stream.replace(
+            "laboratory_result_form",
+            partial: "laboratory_results/form",
+            locals: { result: @result }
+          ), status: :unprocessable_entity
+        end
+
+        format.html do
+          render :index, status: :unprocessable_entity
+        end
+      end
+    end
+  end
+
+  def create
     @appointment = @doctor.appointments.build(appointment_params)
     @appointment.status ||= :pending
 
     if @appointment.save
-      redirect_to dashboard_index_path,
-        notice: "Appointment created successfully!"
+      redirect_to appointments_path,
+        notice: "Appointment created successfully!",
+        status: :see_other
     else
       @patients = @doctor.patients
 
-      render turbo_stream: turbo_stream.replace(
-        "appointment_form",
-        partial: "appointments/form",
-        locals: {
-          appointment: @appointment
-        }
-      ), status: :unprocessable_content
+      respond_to do |format|
+        format.turbo_stream do
+          render turbo_stream: turbo_stream.replace(
+            "appointment_form",
+            partial: "appointments/form",
+            locals: { appointment: @appointment }
+          ), status: :unprocessable_entity
+        end
+
+        format.html do
+          render :appointments_path, status: :unprocessable_entity
+        end
+      end
     end
   end
 

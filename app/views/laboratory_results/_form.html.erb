@@ -1,6 +1,6 @@
 <div class="container">
 
-  <%= form_with model: result, scope: :laboratory_result do |f| %>
+  <%= form_with model: result, scope: :laboratory_result, data: { turbo_frame: "_top" } do |f| %>
 
     <h5>Patient Information</h5>
 
@@ -9,7 +9,7 @@
         <%= f.label :patient_id, "Patient *" %>
 
         <%= f.collection_select :patient_id,
-          @patients,
+          @patients || [],
           :id,
           :full_name,
           { prompt: "Select Patient" },
@@ -84,7 +84,7 @@
         <% end %>
       </div>
 
-      <div class="col-md-3">
+      <div class="col-md-6">
         <%= f.label :status, "Status *" %>
 
         <%= f.select :status,
@@ -98,8 +98,10 @@
           </div>
         <% end %>
       </div>
+    </div>
 
-      <div class="col-md-3">
+    <div class="row mt-2">
+      <div class="col-md-6">
         <%= f.label :priority, "Priority *" %>
 
         <%= f.select :priority,
@@ -110,6 +112,21 @@
         <% if result.errors[:priority].present? %>
           <div class="invalid-feedback d-block">
             <%= result.errors.full_messages_for(:priority).first %>
+          </div>
+        <% end %>
+      </div>
+
+      <div class="col-md-6">
+        <%= f.label :test_price, "Test Price *" %>
+
+        <%= f.number_field :test_price,
+          step: 0.01,
+          class: "form-control #{'is-invalid' if result.errors[:test_price].present?}",
+          placeholder: "Enter test price" %>
+
+        <% if result.errors[:test_price].present? %>
+          <div class="invalid-feedback d-block">
+            <%= result.errors.full_messages_for(:test_price).first %>
           </div>
         <% end %>
       </div>

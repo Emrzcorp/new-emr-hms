@@ -2,6 +2,7 @@ class Invoice < ApplicationRecord
   belongs_to :patient
   belongs_to :doctor
   has_many :invoice_items, dependent: :destroy
+  has_many :laboratory_results
 
   accepts_nested_attributes_for :invoice_items, allow_destroy: true
 
@@ -9,7 +10,7 @@ class Invoice < ApplicationRecord
   PAYMENT_METHODS = ["Cash", "UPI", "Card"]
   PAYMENT_STATUSES = ["unpaid", "partial", "paid"]
 
-  validates :patient_id, :doctor_id, :invoice_type, :invoice_date, presence: true
+  validates :invoice_type, :invoice_date, presence: true
   validates :invoice_type, inclusion: { in: INVOICE_TYPES }
   validates :payment_status, inclusion: { in: PAYMENT_STATUSES }
   validates :payment_method, inclusion: { in: PAYMENT_METHODS }, allow_blank: true
